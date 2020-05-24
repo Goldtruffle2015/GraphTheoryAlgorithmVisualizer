@@ -14,21 +14,55 @@ window.addEventListener("load", () => {
     class CustomNode {  // Builds nodes
         constructor(x, y) {
             this.x = x;
-            this.y = y - window.innerHeight * 0.25; // Canvas position is offset by 1/4 of viewport height 
+            this.y = y;
+        }
+
+        get getX() {
+            return this.x;
+        }
+
+        get getY() {
+            return this.y;
         }
 
         draw() {    // Draws the node
             ctx.beginPath();
             ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);
-            ctx.fillStyle = "#397EC9"
+            ctx.fillStyle = "#397EC9";
             ctx.fill();
         }
+
+    }
+
+    // -- Functions -- //
+    function distance(x1, x2, y1, y2) {
+        return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
     }
 
     canvas.addEventListener("click", (e) => {
-        if (e.clientX < 40 || e.clientX > window.innerWidth - 40) return;  // Ensures node is not overflowing out of page
-        if (e.clientY < window.innerHeight * 0.25 + 40 || e.clientY > window.innerHeight - 40) return; // Ensures node is not overflowing out of page
-        node_li.push(new CustomNode(e.clientX, e.clientY));
-        node_li[node_li.length - 1].draw();
+        if (add_node_bool) {
+            // -- Add Node -- //
+            if (e.offsetX < 40 || e.offsetX > canvas.width - 40) return;  // Ensures node is not overflowing out of page
+            if (e.offsetY < 40 || e.offsetY > canvas.height - 40) return; // Ensures node is not overflowing out of page
+            node_li.push(new CustomNode(e.offsetX, e.offsetY));
+            node_li[node_li.length - 1].draw();    
+        } else if (rem_node_bool) {
+            // -- Remove Node -- //
+            for (let i=0; i<node_li.length; i++) {
+                if (distance(node_li[i].getX, e.offsetX, node_li[i].getY, e.offsetY) <= 40) {
+                    node_li.splice(i, 1);
+                    break;
+                }
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (c of node_li) {
+                c.draw();
+            }
+        } else if (add_edge_bool) {
+
+        } else if (rem_edge_bool) {
+
+        }
     })
 })

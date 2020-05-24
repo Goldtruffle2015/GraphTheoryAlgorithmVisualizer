@@ -1,6 +1,11 @@
 /*
 File handles all nav functionality
 */
+// -- Global Variables -- //
+let add_node_bool = false;  // Checks active state of button
+let rem_node_bool = false;  // Checks active state of button
+let add_edge_bool = false;  // Checks active state of button
+let rem_edge_bool = false;  // Checks active state of button
 
 window.addEventListener("load", () => {
     // -- Attributes -- //
@@ -8,11 +13,6 @@ window.addEventListener("load", () => {
     const rem_node_button = document.getElementById("rem-node-but");
     const add_edge_button = document.getElementById("add-edge-but");
     const rem_edge_button = document.getElementById("rem-edge-but");
-
-    let add_node_bool = false;  // Checks active state of button
-    let rem_node_bool = false;  // Checks active state of button
-    let add_edge_bool = false;  // Checks active state of button
-    let rem_edge_bool = false;  // Checks active state of button
 
     // -- Code Starts Here -- //
     add_node_button.addEventListener("click", () => {
