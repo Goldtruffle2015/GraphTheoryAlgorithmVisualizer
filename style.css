@@ -1,5 +1,27 @@
 * {
     margin: 0px;
+    border-width: 0px;
     padding: 0px;
     box-sizing: border-box;
+}
+
+#legend {
+    display: block;
+    padding: 10px;
+    background-color: red;
+    height: 15vh;
+}
+
+.canvas {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+nav {
+    display: flex;
+    background-color: blue;
+    width: 100vw;
+    height: 10vh;
 }
