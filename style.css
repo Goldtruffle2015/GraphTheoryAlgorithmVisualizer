@@ -5,26 +5,26 @@
     box-sizing: border-box;
 }
 
-#nav-title {
+#nav-title {    /*Styles the title of the navigation bar*/
     font-size: 20pt;
     color: #05E9FF;
 }
 
-#buttons {
+#buttons {  /*Styles the div containing all the buttons*/
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: 70%;
 }
 
-#legend {
+#legend {   /*Styles the div containing all the legends*/
     display: block;
     padding: 10px;
     background-color: red;
     height: 15vh;
 }
 
-#start-but {
+#start-but {    /*Styles the start button*/
     background: none;
     border: 2px solid #2ecc71;
     border-radius: 10px;
@@ -33,24 +33,27 @@
     transition: background-color 0.15s ease;
 }
 
-#start-but:hover {
+#start-but:hover {  /*Styles the start button on hover*/
     background-color: #2ecc71;
-    box-shadow: none;
 }
 
-.canvas {
+.canvas {   /*Styles the canvas*/
     display: block;
     position: absolute;
     top: 25vh;
     left: 0px;
 }
 
-.options {
+.options {  /*Styles all div elements containing class=options*/
     display: flex;
     flex-direction: column;
 }
 
-nav {
+.node-edge-button-background-color-toggle { /*Toggles between on and off. Called in nav.js*/
+    background-color: rgb(4, 166, 247);
+}
+
+nav {   /*Styles the nav*/
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -59,7 +62,7 @@ nav {
     height: 10vh;
 }
 
-button {
+button {    /*Styles all buttons*/
     margin-top: 2px;
     margin-bottom: 2px;
     border-radius: 5px;
@@ -67,11 +70,11 @@ button {
     font-size: 10pt;
     text-align: center;
     color: white;
-    background-color: #0198E1;
-    transition: box-shadow 0.2s ease;
+    background-color: #4682B4;
+    transition: background-color 0.2s ease;
     cursor: pointer;
 }
 
-button:hover {
-    box-shadow: 0px 0px 10px #0198E1;
+button:hover {  /*Styles all buttons on hover*/
+    background-color: rgb(4, 166, 247);
 }

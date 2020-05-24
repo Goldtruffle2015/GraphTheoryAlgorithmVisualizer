@@ -1,3 +1,7 @@
+/*
+File handles all canvas functionality
+*/
+
 window.addEventListener("load", () => {
     const canvas = document.querySelector(".canvas");
     const ctx = canvas.getContext("2d"); 
@@ -26,7 +30,5 @@ window.addEventListener("load", () => {
         if (e.clientY < window.innerHeight * 0.25 + 40 || e.clientY > window.innerHeight - 40) return; // Ensures node is not overflowing out of page
         node_li.push(new CustomNode(e.clientX, e.clientY));
         node_li[node_li.length - 1].draw();
-        // testNode = new CustomNode(e.clientX, e.clientY);
-        // testNode.draw();
     })
 })
