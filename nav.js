@@ -9,49 +9,73 @@ window.addEventListener("load", () => {
     const add_edge_button = document.getElementById("add-edge-but");
     const rem_edge_button = document.getElementById("rem-edge-but");
 
-    let toggle_add_node_button = true;  // Checks if button can be toggled
-    let toggle_rem_node_button = true;  // Checks if button can be toggled
-    let toggle_add_edge_button = true;  // Checks if button can be toggled
-    let toggle_rem_edge_button = true;  // Checks if button can be toggled
+    let add_node_bool = false;  // Checks active state of button
+    let rem_node_bool = false;  // Checks active state of button
+    let add_edge_bool = false;  // Checks active state of button
+    let rem_edge_bool = false;  // Checks active state of button
 
     // -- Code Starts Here -- //
     add_node_button.addEventListener("click", () => {
-        if (toggle_add_node_button) {
-            add_node_button.classList.toggle("node-edge-button-background-color-toggle");
-            // Enables/isables remaining buttons //
-            toggle_rem_node_button = toggle_rem_node_button ? false : true; // Flips the boolean
-            toggle_add_edge_button = toggle_add_edge_button ? false : true; // Flips the boolean
-            toggle_rem_edge_button = toggle_rem_edge_button ? false : true; // Fiips the boolean
-        }
+        // Toggle active state of button 
+        add_node_button.classList.toggle("node-edge-button-background-color-toggle");
+        add_node_bool = add_node_bool ? false : true;   // Switches the active state
+
+        // Remove active background from remaining buttons
+        rem_node_button.classList.remove("node-edge-button-background-color-toggle");
+        add_edge_button.classList.remove("node-edge-button-background-color-toggle");
+        rem_edge_button.classList.remove("node-edge-button-background-color-toggle");
+
+        // Set remaining bools to false
+        rem_node_bool = false;
+        add_edge_bool = false;
+        rem_edge_bool = false;
     })
 
     rem_node_button.addEventListener("click", () => {
-        if (toggle_rem_node_button) {
-            rem_node_button.classList.toggle("node-edge-button-background-color-toggle");  
-            // Enables/disables remaining buttons //
-            toggle_add_node_button = toggle_add_node_button ? false : true; // Flips the boolean
-            toggle_add_edge_button = toggle_add_edge_button ? false : true; // Flips the boolean
-            toggle_rem_edge_button = toggle_rem_edge_button ? false : true; // Flips the boolean
-        }
+        // Toggle active state of button 
+        rem_node_button.classList.toggle("node-edge-button-background-color-toggle");
+        rem_node_bool = rem_node_bool ? false : true;
+
+        // Remove active background from remaining buttons
+        add_node_button.classList.remove("node-edge-button-background-color-toggle");
+        add_edge_button.classList.remove("node-edge-button-background-color-toggle");
+        rem_edge_button.classList.remove("node-edge-button-background-color-toggle"); 
+
+        // Set remaining bools to false
+        add_node_bool = false;
+        add_edge_bool = false;
+        rem_edge_bool = false;
     })
 
     add_edge_button.addEventListener("click", () => {
-        if (toggle_add_edge_button) {
-            add_edge_button.classList.toggle("node-edge-button-background-color-toggle");
-            // Enables/disables remaining buttons //
-            toggle_add_node_button = toggle_add_node_button ? false : true; // Flips the boolean
-            toggle_rem_node_button = toggle_rem_node_button ? false : true; // Flips the boolean
-            toggle_rem_edge_button = toggle_rem_edge_button ? false : true; // Flips the boolean
-        }
+        // Toggle active state of button 
+        add_edge_button.classList.toggle("node-edge-button-background-color-toggle");
+        add_edge_bool = add_edge_bool ? false : true;
+
+        // Remove active background from remaining buttons
+        add_node_button.classList.remove("node-edge-button-background-color-toggle");
+        rem_node_button.classList.remove("node-edge-button-background-color-toggle");
+        rem_edge_button.classList.remove("node-edge-button-background-color-toggle");
+
+        // Set remaining bools to false
+        add_node_bool = false;
+        rem_node_bool = false;
+        rem_edge_bool = false;
     })
 
     rem_edge_button.addEventListener("click", () => {
-        if (toggle_rem_edge_button) {
-            rem_edge_button.classList.toggle("node-edge-button-background-color-toggle");
-            // Enables/disables remaining buttons //
-            toggle_add_node_button = toggle_add_node_button ? false : true; // Flips the boolean
-            toggle_rem_node_button = toggle_rem_node_button ? false : true; // Flips the boolean
-            toggle_add_edge_button = toggle_add_edge_button ? false : true; // Flips the boolean    
-        }
+        // Toggle active state of button 
+        rem_edge_button.classList.toggle("node-edge-button-background-color-toggle");
+        rem_edge_bool = rem_edge_bool ? false : true;
+
+        // Remove active background from remaining buttons
+        add_node_button.classList.remove("node-edge-button-background-color-toggle");
+        rem_node_button.classList.remove("node-edge-button-background-color-toggle");
+        add_edge_button.classList.remove("node-edge-button-background-color-toggle");
+
+        // Set remaining bools to false
+        add_node_bool = false;
+        rem_node_bool = false;
+        add_edge_bool = false;
     })
 })
