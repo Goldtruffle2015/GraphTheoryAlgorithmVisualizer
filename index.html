@@ -9,9 +9,35 @@
     </head>
     <body>
         <nav>
-            <h3>Graph Theory Algorithm Visualizer</h3>
-            <div>
-                <button>Algorithms</button>
+            <h3 id="nav-title">Graph Theory Algorithm Visualizer</h3>
+            <div id="buttons">
+                <button id="algo-but">Algorithms &#9660</button>
+
+                <div id="node-options" class="options">
+                    <button id="add-node-but">Add Node</button>
+                    <button id="rem-node-but">Remove Node</button>    
+                </div>
+
+                <div id="start-end-options" class="options">
+                    <button id="set-start-node">Set Start</button>
+                    <button id="set-end-node">Set Finish</button>
+                </div>
+
+                <div id="edge-options" class="options">
+                    <button id="add-edge-but">Add Edge</button>
+                    <button id="rem-edge-but">Remove Edge</button>
+                </div>
+                
+                <div id="orientation-options" class="options">
+                    <button id="dir-but">Directed</button>
+                    <button id="undir-but">Undirected</button>
+                </div>
+                
+                <button id="clear-but">Clear</button>
+
+                <button id="speed-but">Speed</button>
+
+                <button id="start-but">START</button>
             </div>
         </nav>
         <div id="legend">
