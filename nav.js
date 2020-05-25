@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
 
     // -- Code Starts Here -- //
     add_node_button.addEventListener("click", () => {
-        if (node_li.length > 100) return;   // For simplicity this program will only handle up to 100 nodes
+        if (node_li.length > 100) return;   // For simplicity this program will only handle up to 100 nodes including
         // Toggle active state of button 
         add_node_button.classList.toggle("node-edge-button-background-color-toggle");
         add_node_bool = add_node_bool ? false : true;   // Switches the active state
@@ -33,6 +33,7 @@ window.addEventListener("load", () => {
     })
 
     rem_node_button.addEventListener("click", () => {
+        if (node_li.length == 0) return;    // Must be at least 1 node to use command
         // Toggle active state of button 
         rem_node_button.classList.toggle("node-edge-button-background-color-toggle");
         rem_node_bool = rem_node_bool ? false : true;
@@ -66,6 +67,7 @@ window.addEventListener("load", () => {
     })
 
     rem_edge_button.addEventListener("click", () => {
+        if (line_li.length == 0) return;    // Must be at least 1 line to use command
         // Toggle active state of button 
         rem_edge_button.classList.toggle("node-edge-button-background-color-toggle");
         rem_edge_bool = rem_edge_bool ? false : true;
