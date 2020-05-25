@@ -70,6 +70,43 @@ window.addEventListener("load", () => {
         return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));    // Pythagoras Theorem
     }
 
+    function point2LineDist(px, py, x1, y1, x2, y2) {   // Calculates the shortest distance from a line segment to a point
+        // Convert line and point to vectors
+        const vector_p = [px - x1, py - y1];  // Vector from start point to mouse click point
+        const vector_l = [x2 - x1, y2 - y1];  // Vector from start point to end point of line
+
+        // Scale both vectors by length of line
+        let unit_vector_p = []; 
+        let unit_vector_l = [];
+        const line_length = distance(x1, x2, y1, y2); // Calculates the magnitude of line
+        for (let i=0;i<2;i++) {
+            unit_vector_p[i] = vector_p[i] / line_length;
+            unit_vector_l[i] = vector_l[i] / line_length;
+        }
+
+        // Calculate dot product
+        dot_product = unit_vector_p[0]*unit_vector_l[0] + unit_vector_p[1]*unit_vector_l[1];
+
+        // Calculate nearest location on line
+        nearest_p = [x1 + vector_l[0] * dot_product, y1 + vector_l[1] * dot_product];
+
+        // Calculate distance between point and nearest point
+        return distance(px, nearest_p[0], py, nearest_p[1]);
+    }
+
+    function render() { // Draws the entire canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
+
+        for (l of line_li) {
+            l.initialize(); // Initializes the line
+            l.draw(l.endx, l.endy); // Draws the line
+        }
+
+        for (c of node_li) {    // Redraws remaining nodes
+            c.draw();
+        }
+    }
+
     // -- Event Listeners -- //
     canvas.addEventListener("click", (e) => {
         // -- Add node -- //
@@ -81,7 +118,7 @@ window.addEventListener("load", () => {
                 if (distance(c.x, e.offsetX, c.y, e.offsetY) < 80) return;    // Prevents nodes from overlapping
             }
             node_li.push(new CustomNode(e.offsetX, e.offsetY, cumulative_nodes)); // Adds node to node list
-            node_li[node_li.length - 1].draw();    // Draws newly added node
+            render();   // Redraw the entire canvas
             cumulative_nodes++; // Defined as nodes added + nodes removed
 
         // -- Remove node -- //
@@ -100,8 +137,6 @@ window.addEventListener("load", () => {
 
             if (!click_detected) return;    // If user did not click on a node exit out of event
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
-
             let indices_to_remove = []; // Stores the indices in line list to remove
             for (let l=0;l<line_li.length;l++) {
                 if (line_li[l].startNodeId == node_id_of_removed_node || line_li[l].endNodeId == node_id_of_removed_node) {
@@ -113,14 +148,7 @@ window.addEventListener("load", () => {
                 line_li.splice(index, 1);   // Removes the line from the line list
             }
 
-            for (l of line_li) {
-                l.initialize(); // Initializes the line
-                l.draw(l.endx, l.endy); // Draws the line
-            }
-
-            for (c of node_li) {    // Redraws remaining nodes
-                c.draw();
-            }
+            render();   // Redraw the entire canvas
         
         // -- Add edge -- //
         } else if (add_edge_bool) {
@@ -149,10 +177,7 @@ window.addEventListener("load", () => {
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = d;   // Sets element in adjacency matrix to distance
                             adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = d;   // Sets element in adjacency matrix to distance
                         }
-
-                        for (c_2 of node_li) {    // Draws all the nodes again. This ensures nodes are stacked on top of lines
-                            c_2.draw();
-                        }
+                        render();   // Redraw the entire canvas
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
                         break;
                     }
@@ -161,7 +186,13 @@ window.addEventListener("load", () => {
             
         // -- Remove edge -- //
         } else if (rem_edge_bool) {
-
+            for (let l=0;l<line_li.length;l++) {
+                if (point2LineDist(e.offsetX, e.offsetY, line_li[l].startx, line_li[l].starty, line_li[l].endx, line_li[l].endy) <= 5) {    // Find the shortest distance between mouse click and line
+                    line_li.splice(l, 1);   // Remove line from list
+                    render();   // Redraw the entire canvas
+                    return;
+                }
+            }
         }
     })
 })
