@@ -42,6 +42,7 @@
     position: absolute;
     top: 25vh;
     left: 0px;
+    background-color: black;
 }
 
 .options {  /*Styles all div elements containing class=options*/
