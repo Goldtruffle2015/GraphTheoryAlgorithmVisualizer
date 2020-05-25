@@ -36,6 +36,25 @@ window.addEventListener("load", () => {
 
     }
 
+    class CustomLine {  // Builds lines
+        constructor(x1, y1) {
+            this.startx = x1;
+            this.starty = y1;
+        }
+
+        initialize() {
+            ctx.beginPath();    // Initializes the line
+            ctx.moveTo(this.startx, this.starty);   // Starts the line at the selected node
+        }
+
+        draw(x2, y2) {
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 5;
+            ctx.stroke();
+        }
+    }
+
     // -- Functions -- //
     function distance(x1, x2, y1, y2) { // Calculates distance between mouse click and node center
         return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));    // Pythagoras Theorem
@@ -66,8 +85,8 @@ window.addEventListener("load", () => {
             if (!edge_draw_active) {
                 for (c of node_li) {    // Checks each node
                     if (distance(c.getX, e.offsetX, c.getY, e.offsetY) <= 40) { // Checks if user clicked on a node
-                        ctx.beginPath();    // Initializes the line
-                        ctx.moveTo(c.getX, c.getY); // Starts the line at the selected node
+                        line_li.push(new CustomLine(c.getX, c.getY));
+                        line_li[line_li.length - 1].initialize();
                         break;
                     }
                 }    
@@ -75,10 +94,7 @@ window.addEventListener("load", () => {
             if (edge_draw_active) {
                 for (c of node_li) {
                     if (distance(c.getX, e.offsetX, c.getY, e.offsetY) <= 40) {
-                        ctx.lineTo(c.getX, c.getY); 
-                        ctx.strokeStyle = "white";
-                        ctx.lineWidth = 5;
-                        ctx.stroke();
+                        line_li[line_li.length - 1].draw(c.getX, c.getY);
                         break;
                     }
                 }
