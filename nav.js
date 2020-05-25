@@ -16,6 +16,7 @@ window.addEventListener("load", () => {
 
     // -- Code Starts Here -- //
     add_node_button.addEventListener("click", () => {
+        if (node_li.length > 100) return;   // For simplicity this program will only handle up to 100 nodes
         // Toggle active state of button 
         add_node_button.classList.toggle("node-edge-button-background-color-toggle");
         add_node_bool = add_node_bool ? false : true;   // Switches the active state
@@ -48,6 +49,7 @@ window.addEventListener("load", () => {
     })
 
     add_edge_button.addEventListener("click", () => {
+        if (node_li.length < 2) return; // There must be at least 2 nodes to place one edge
         // Toggle active state of button 
         add_edge_button.classList.toggle("node-edge-button-background-color-toggle");
         add_edge_bool = add_edge_bool ? false : true;
