@@ -104,26 +104,27 @@ window.addEventListener("load", () => {
             if (!edge_draw_active) {
                 for (c of node_li) {    // Checks each node
                     if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) { // Checks if user clicked on a node
-                        //line_li.push(new CustomLine(c.getX, c.getY));
-                        //line_li[line_li.length - 1].initialize();   // Initializes the line
                         temp_line = new CustomLine(c.x, c.y, c.id); // Creates a new line object
                         temp_line.initialize(); // Initializes the line
+                        edge_draw_active = true;
+                        console.log("line initialized");
                         break;
                     }
-                }    
+                }   
+                return; // Breaks out of event
             }
             if (edge_draw_active) {
                 for (c of node_li) {
                     if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) {
-                        //line_li[line_li.length - 1].draw(c.getX, c.getY);   // Draws the line
                         temp_line.draw(c.x, c.y);   // Draws the line
                         temp_line.endNodeId = c.id; // Sets the end node id
+                        console.log("line drawn");
 
                         if ((adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] == Infinity) || (adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] == Infinity)) {// Checks if line does not exist
                             temp_line.endx = c.x;   // Sets endx
                             temp_line.endy = c.y;   // Sets endy 
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
-                            d = distance(temp_line.startx, temp_line.starty, temp_line.endx, temp_line.endy);   // Calculate distance of line
+                            d = distance(temp_line.startx, temp_line.endx, temp_line.starty, temp_line.endy);   // Calculate distance of line
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = d;   // Sets element in adjacency matrix to distance
                             adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = d;   // Sets element in adjacency matrix to distance
                         }
@@ -131,13 +132,11 @@ window.addEventListener("load", () => {
                         for (c_2 of node_li) {    // Draws all the nodes again
                             c_2.draw();
                         }
-
+                        edge_draw_active = false;
                         break;
                     }
                 }
             }
-
-            edge_draw_active = edge_draw_active ? false : true; // Switches edge draw active state
             
         // -- Remove edge -- //
         } else if (rem_edge_bool) {
