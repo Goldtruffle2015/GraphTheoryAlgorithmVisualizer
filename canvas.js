@@ -10,10 +10,6 @@ window.addEventListener("load", () => {
     canvas.height = window.innerHeight * 0.75;  // Canvas is 3/4 of virtual height
 
     // -- Functions -- //
-    function distance(x1, x2, y1, y2) { // Calculates distance between mouse click and node center
-        return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));    // Pythagoras Theorem
-    }
-
     function point2LineDist(px, py, x1, y1, x2, y2) {   // Calculates the shortest distance from a line segment to a point
         // Convert line and point to vectors
         const vector_p = [px - x1, py - y1];  // Vector from start point to mouse click point
@@ -97,16 +93,17 @@ window.addEventListener("load", () => {
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
                     if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) {   // Checks if user clicked on a node
+                        temp_line.endx = c.x;
+                        temp_line.endy = c.y;
                         temp_line.draw(c.x, c.y);   // Draws the line
                         temp_line.endNodeId = c.id; // Sets the end node id
 
-                        if ((adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] == Infinity) || (adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] == Infinity)) {// Checks if line does not exist
+                        if ((adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] == Infinity)) {// Checks if line does not exist
                             temp_line.endx = c.x;   // Sets endx
                             temp_line.endy = c.y;   // Sets endy 
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
                             d = distance(temp_line.startx, temp_line.endx, temp_line.starty, temp_line.endy);   // Calculate distance of line
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = d;   // Sets element in adjacency matrix to distance
-                            adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = d;   // Sets element in adjacency matrix to distance
                         }
                         render();   // Redraw the entire canvas
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
@@ -120,7 +117,6 @@ window.addEventListener("load", () => {
             for (let l=0;l<line_li.length;l++) {
                 if (point2LineDist(e.offsetX, e.offsetY, line_li[l].startx, line_li[l].starty, line_li[l].endx, line_li[l].endy) <= 5) {    // Find the shortest distance between mouse click and line
                     adjacency_matrix[line_li[l].startNodeId][line_li[l].endNodeId] = Infinity;  // Updates adjacency matrix
-                    adjacency_matrix[line_li[l].endNodeId][line_li[l].startNodeId] = Infinity;  // Updates adjacency matrix
                     line_li.splice(l, 1);   // Remove line from list
                     render();   // Redraw the entire canvas
                     return;

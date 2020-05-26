@@ -50,7 +50,7 @@
     flex-direction: column;
 }
 
-.node-edge-button-background-color-toggle { /*Toggles between on and off. Called in nav.js*/
+.button-active-background-color { /*Toggles between on and off. Called in nav.js*/
     background-color: rgb(4, 166, 247);
 }
 
