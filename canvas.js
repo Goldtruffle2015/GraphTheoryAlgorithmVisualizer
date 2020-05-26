@@ -188,6 +188,8 @@ window.addEventListener("load", () => {
         } else if (rem_edge_bool) {
             for (let l=0;l<line_li.length;l++) {
                 if (point2LineDist(e.offsetX, e.offsetY, line_li[l].startx, line_li[l].starty, line_li[l].endx, line_li[l].endy) <= 5) {    // Find the shortest distance between mouse click and line
+                    adjacency_matrix[line_li[l].startNodeId][line_li[l].endNodeId] = Infinity;
+                    adjacency_matrix[line_li[l].endNodeId][line_li[l].startNodeId] = Infinity;
                     line_li.splice(l, 1);   // Remove line from list
                     render();   // Redraw the entire canvas
                     return;
