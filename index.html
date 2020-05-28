@@ -5,13 +5,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="style.css">
-        <title>Graph Theory Algorithm Visualizer</title>
+        <title>Graph Theory Visualizer</title>
     </head>
     <body>
         <nav>
-            <h3 id="nav-title">Graph Theory Algorithm Visualizer</h3>
+            <h3 id="nav-title">Graph Theory Visualizer</h3>
             <div id="buttons">
-                <button id="algo-but">Algorithms &#9660</button>
+                <div id="algo-div">
+                    <button id="algo-but">Algorithms &#9660</button>
+                    <ul id="algo-ul">
+                        <li><button>Depth First Search</button></li>
+                        <li><button>Breadth First Search</button></li>
+                        <li><button>Topological Sort</button></li>
+                        <li><button>Dijkstra's Shortest Path</button></li>
+                        <li><button>Bellman-Ford</button></li>
+                        <li><button>Floyd-Warshall</button></li> 
+                        <li><button>Bridge and Articulation Points</button></li>
+                        <li><button>Tarjans</button></li>
+                        <li><button>Eulerian Path</button></li>
+                        <li><button>Prim's</button></li>
+                        <li><button>Ford-Fulkerson</button></li>
+                        <li><button>Edmonds-Karp</button></li>
+                        <li><button>Dinic's</button></li>
+                    </ul>
+                </div>
 
                 <div id="node-options" class="options">
                     <button id="add-node-but">Add Node</button>
@@ -40,7 +57,14 @@
                 
                 <button id="clear-but">Clear</button>
 
-                <button id="speed-but">Speed &#9660</button>
+                <div id="speed-div">
+                    <button id="speed-but">Speed &#9660</button>
+                    <ul id="speed-ul">
+                        <li><button>Slow</button></li>
+                        <li><button>Medium</button></li>
+                        <li><button>Fast</button></li>
+                    </ul>
+                </div>
 
                 <button id="start-but">START</button>
             </div>

@@ -13,6 +13,9 @@ let unweighted_bool = true; // Checks active state of button
 
 window.addEventListener("load", () => {
     // -- Attributes -- //
+    const algo_button = document.getElementById("algo-but");
+    const algo_ul = document.getElementById("algo-ul");
+    algo_ul.classList.add("toggleDisplayNone");
     const add_node_button = document.getElementById("add-node-but");
     add_node_button.classList.add("button-active-background-color");
     const rem_node_button = document.getElementById("rem-node-but");
@@ -25,8 +28,17 @@ window.addEventListener("load", () => {
     const unweighted_button = document.getElementById("unweighted-but");
     unweighted_button.classList.add("button-active-background-color");
     const clear_button = document.getElementById("clear-but");
+    const speed_button = document.getElementById("speed-but");
+    const speed_ul = document.getElementById("speed-ul");
+    speed_ul.classList.add("toggleDisplayNone");
 
     // -- Code Starts Here -- //
+    // -- Algorithm Dropdown -- //
+    algo_button.addEventListener("click", () => {
+        algo_button.classList.toggle("button-active-background-color");
+        algo_ul.classList.toggle("toggleDisplayFlex");
+    })
+
     // -- Add Node Button -- //
     add_node_button.addEventListener("click", () => {
         if (node_li.length > 100) return;   // For simplicity this program will only handle up to 100 nodes including
@@ -167,5 +179,11 @@ window.addEventListener("load", () => {
             }
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
+    })
+
+    // -- Speed Button -- //
+    speed_button.addEventListener("click", () => {
+        speed_button.classList.toggle("button-active-background-color");
+        speed_ul.classList.toggle("toggleDisplayFlex");
     })
 })
