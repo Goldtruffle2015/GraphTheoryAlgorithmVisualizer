@@ -1,4 +1,4 @@
-/* This file stores all the variables, functions, and classes that require a global scope */
+/* This file stores all the variables, functions, and classes that require a global scope. All of these functions affect the canvas.js file and some affect the nav.js file */
 
 // -- Variables -- //
 let node_li = [];   // Stores nodes
@@ -6,6 +6,8 @@ let line_li = [];   // Stores lines
 let edge_draw_active = false;   // Tracks when the user is drawing a line or not
 let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the ones removed.
 let adjacency_matrix = [];   // Represents node relationships
+const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
+const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d"); 
 
@@ -20,6 +22,10 @@ for (let row=0;row<133;row++) {   // For simplicity the program will only handle
 // -- Functions -- //
 function distance(x1, x2, y1, y2) { // Calculates distance between mouse click and node center
     return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));    // Pythagoras Theorem
+}
+
+function midPoint(x1, x2, y1, y2) { // Calculates the midpoint 
+    return [(x1 + x2) / 2, (y1 + y2) / 2];
 }
 
 function render() { // Draws the entire canvas
@@ -59,6 +65,8 @@ class CustomLine {  // Builds lines
         this.endy = null;   // Stores the ending y-position
         this.startNodeId = startNodeId; // Stores the id of the starting node
         this.endNodeId = null;  // Stores the id of the ending node
+        this.weight = 99;   // 99 is the default weight
+        this.drawweight = false; // Boolean specifies if the weight should be drawn
     }
 
     initialize() {
@@ -74,6 +82,22 @@ class CustomLine {  // Builds lines
 
         if (dir_bool) { // If the line is a directed line
             this.drawPointer();
+        }
+
+        if (this.drawweight) {
+            const mid_p = midPoint(this.startx, this.endx, this.starty, this.endy);
+            // Draw the circle //
+            ctx.beginPath();    // Start the circle
+            ctx.arc(mid_p[0], mid_p[1], 20, 0, 2 * Math.PI);
+            ctx.fillStyle = "white";
+            ctx.fill();
+
+            // Draw the number //
+            ctx.font = "27px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(String(this.weight), mid_p[0], mid_p[1]);
         }
     }
 

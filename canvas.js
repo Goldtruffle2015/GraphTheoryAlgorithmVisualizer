@@ -102,11 +102,20 @@ window.addEventListener("load", () => {
                             temp_line.endx = c.x;   // Sets endx
                             temp_line.endy = c.y;   // Sets endy 
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
-                            d = distance(temp_line.startx, temp_line.endx, temp_line.starty, temp_line.endy);   // Calculate distance of line
-                            adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = d;   // Sets element in adjacency matrix to distance
+                            adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = 99;   // Sets element in adjacency matrix to 99 if no input is provided
                         }
                         render();   // Redraw the entire canvas
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
+
+                        // Get weight if applicable //
+                        if (weighted_bool) {
+                            weight_form.style.display = "block";
+                            const last_edge = line_li[line_li.length - 1];
+                            const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy);
+                            weight_form.style.left = `${mid_p[0] - 20}px`;
+                            weight_form.style.top = `${mid_p[1] - 20}px`;
+                        }
+
                         break;
                     }
                 }
@@ -123,6 +132,16 @@ window.addEventListener("load", () => {
                 }
             }
         }
+    })
+
+    weight_form.addEventListener("submit", (e) => {
+        e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
+        line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
+        line_li[line_li.length - 1].drawweight = true;
+
+        render();
+
+        weight_form.style.display = "none";
     })
 })
 

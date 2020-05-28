@@ -131,6 +131,12 @@ window.addEventListener("load", () => {
 
         weighted_bool = weighted_bool ? false : true;
         unweighted_bool = weighted_bool ? false : true;
+
+        for (x of line_li) {
+            x.drawweight = true;    // Enables displaying the weight of the node
+        }
+
+        render();
     })
 
     // -- Unweighted Button -- //
@@ -141,6 +147,12 @@ window.addEventListener("load", () => {
 
         unweighted_bool = unweighted_bool ? false : true;
         weighted_bool = unweighted_bool ? false : true;
+
+        for (x of line_li) {
+            x.drawweight = false;   // Disables displaying the weight of the node
+        }
+        
+        render();
     })
 
     // -- Clear Button -- //
