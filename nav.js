@@ -2,6 +2,9 @@
 File handles all nav functionality
 */
 // -- Global Variables -- //
+algo_options_bool_arr = [];
+speed_options_bool_arr = [];
+
 let add_node_bool = true;  // Checks active state of button
 let rem_node_bool = false;  // Checks active state of button
 let add_edge_bool = false;  // Checks active state of button
@@ -16,21 +19,40 @@ window.addEventListener("load", () => {
     const algo_button = document.getElementById("algo-but");
     const algo_ul = document.getElementById("algo-ul");
     algo_ul.classList.add("toggleDisplayNone");
+
+    const algo_options_buttons_arr = document.getElementById("algo-ul").getElementsByTagName("button"); // Gets a collection of the buttons under the algorithms dropdown
+    algo_options_buttons_arr[0].classList.add("button-active-background-color");    // Sets the depth first search option to true
+    algo_options_bool_arr[0] = true;
+    for (let i=1;i<algo_options_buttons_arr.length;i++) {
+        algo_options_bool_arr[i] = false;
+    }
+
     const add_node_button = document.getElementById("add-node-but");
     add_node_button.classList.add("button-active-background-color");
     const rem_node_button = document.getElementById("rem-node-but");
     const add_edge_button = document.getElementById("add-edge-but");
     const rem_edge_button = document.getElementById("rem-edge-but");
+
     const dir_button = document.getElementById("dir-but");
     const undir_button = document.getElementById("undir-but");
+
     undir_button.classList.add("button-active-background-color");   // undir_bool is set to true as default
     const weighted_button = document.getElementById("weighted-but");
     const unweighted_button = document.getElementById("unweighted-but");
     unweighted_button.classList.add("button-active-background-color");
+
     const clear_button = document.getElementById("clear-but");
+
     const speed_button = document.getElementById("speed-but");
     const speed_ul = document.getElementById("speed-ul");
     speed_ul.classList.add("toggleDisplayNone");
+
+    const speed_options_buttons_arr = document.getElementById("speed-ul").getElementsByTagName("button");   // Gets a collection of the buttons under the speed dropdown
+    speed_options_buttons_arr[0].classList.add("button-active-background-color");   // Sets the slow option to true
+    speed_options_bool_arr[0] = true;
+    for (let i=1;i<speed_options_buttons_arr.length;i++) {
+        speed_options_bool_arr[i] = false;
+    }
 
     // -- Code Starts Here -- //
     // -- Algorithm Dropdown -- //
@@ -38,6 +60,19 @@ window.addEventListener("load", () => {
         algo_button.classList.toggle("button-active-background-color");
         algo_ul.classList.toggle("toggleDisplayFlex");
     })
+
+    // -- Dropdown options -- //
+    for (let i=0;i<algo_options_buttons_arr.length;i++) {
+        algo_options_buttons_arr[i].addEventListener("click", () => {
+            if (algo_options_bool_arr[i]) return;    // Returns if the option is already active
+            for (let j=0;j<algo_options_buttons_arr.length;j++) {
+                algo_options_bool_arr[j] = false;   // Sets all buttons to false
+                algo_options_buttons_arr[j].classList.remove("button-active-background-color"); // Sets all button background to deactive state
+            }
+            algo_options_bool_arr[i] = true;    // Sets button user clicked on to true
+            algo_options_buttons_arr[i].classList.toggle("button-active-background-color"); // Sets button background to active
+        })
+    }
 
     // -- Add Node Button -- //
     add_node_button.addEventListener("click", () => {
@@ -186,4 +221,16 @@ window.addEventListener("load", () => {
         speed_button.classList.toggle("button-active-background-color");
         speed_ul.classList.toggle("toggleDisplayFlex");
     })
+
+    for (let i=0;i<speed_options_buttons_arr.length;i++) {
+        speed_options_buttons_arr[i].addEventListener("click", () => {
+            if (speed_options_bool_arr[i]) return;  // Returns if the option is already active
+            for (let j=0;j<speed_options_buttons_arr.length;j++) {
+                speed_options_bool_arr[j] = false;
+                speed_options_buttons_arr[j].classList.remove("button-active-background-color");
+            }
+            speed_options_bool_arr[i] = true;
+            speed_options_buttons_arr[i].classList.toggle("button-active-background-color");
+        })
+    }
 })
