@@ -85,6 +85,26 @@ window.addEventListener("load", () => {
             }
 
             render();   // Redraw the entire canvas
+
+        // -- Set Start Node -- //
+        if (set_start_bool) {   
+            for (n of node_li) {
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    startId = n.id; // Sets start node id
+                    return; // Breaks out of canvas click event
+                }
+            }
+        }
+
+        // -- Set End Node -- //
+        if (set_end_bool) {
+            for (n of node_li) {
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    endId = n.id;   // Sets start node id
+                    return;
+                }
+            }
+        }
         
         // -- Add edge -- //
         } else if (add_edge_bool) {

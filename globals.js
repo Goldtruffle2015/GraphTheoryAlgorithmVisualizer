@@ -6,6 +6,8 @@ let line_li = [];   // Stores lines
 let edge_draw_active = false;   // Tracks when the user is drawing a line or not
 let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the ones removed.
 let adjacency_matrix = [];   // Represents node relationships
+let startId = null; // Stores the starting node id
+let endId = null;   // Stores the ending node id
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
@@ -47,12 +49,13 @@ class CustomNode {  // Builds nodes
         this.x = x; // Stores the x-coordinate of node in pixels
         this.y = y; // Stores the y-coordinate of node in pixels
         this.id = id;   // Tracks the id of the node
+        this.color = "#397EC9"; // Defines the color of the node
     }
 
     draw() {    // Draws the node
         ctx.beginPath();    // Starts a new starting point
         ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);    // Draws a circle
-        ctx.fillStyle = "#397EC9";
+        ctx.fillStyle = this.color;
         ctx.fill();
     }
 }
