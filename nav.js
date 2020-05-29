@@ -72,6 +72,7 @@ window.addEventListener("load", () => {
     })
 
     // -- Dropdown options -- //
+    // Common Event Commands //
     for (let i=0;i<algo_options_buttons_arr.length;i++) {
         algo_options_buttons_arr[i].addEventListener("click", () => {
             if (algo_options_bool_arr[i]) return;    // Returns if the option is already active
@@ -83,6 +84,184 @@ window.addEventListener("load", () => {
             algo_options_buttons_arr[i].classList.toggle("button-active-background-color"); // Sets button background to active
         })
     }
+
+    // Depth First Search //
+    algo_options_buttons_arr[0].addEventListener("click", () => {
+        set_start_button.disabled = false;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = false;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = false;
+    })
+
+    // Breadth First Search //
+    algo_options_buttons_arr[1].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = false;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Topological Ordering //
+    algo_options_buttons_arr[2].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = true;
+        unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Dijkstra's Shortest Path //
+    algo_options_buttons_arr[3].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = 0;
+    })
+
+    // Bellman-Ford //
+    algo_options_buttons_arr[4].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Floyd-Warshall //
+    algo_options_buttons_arr[5].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = true;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Bridge and Articulation Points //
+    algo_options_buttons_arr[6].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = true;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = false;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Tarjans //
+    algo_options_buttons_arr[7].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = true;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Eulerian Path //
+    algo_options_buttons_arr[8].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = true;
+        set_end_button.disabled = true;
+        dir_button.disabled = false;
+        undir_button.disabled = false;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Prim's //
+    algo_options_buttons_arr[9].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = true;
+        set_end_button.disabled = true;
+        dir_button.disabled = true;
+        undir_button.disabled = false;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Ford-Fulkerson //
+    algo_options_buttons_arr[10].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = false;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Edmonds-Karp //
+    algo_options_buttons_arr[11].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = false;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // Dinic's //
+    algo_options_buttons_arr[12].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = false;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
+
+        // Other //
+        weight_input.min = -99;
+    })
 
     // -- Add Node Button -- //
     add_node_button.addEventListener("click", () => {

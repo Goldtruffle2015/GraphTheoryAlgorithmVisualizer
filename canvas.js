@@ -209,7 +209,11 @@ window.addEventListener("load", () => {
 
 
             // Weighted Button //
-
+            if (algo_options_bool_arr[1]) {
+                weighted_button.disabled = true;
+            } else {
+                weighted_button.disabled = false;
+            }
 
             // Unweighted Button //
 
