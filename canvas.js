@@ -158,6 +158,39 @@ window.addEventListener("load", () => {
                 }
             }
         }
+
+        // -- Button Handling -- //
+        if (node_li.length > 100) { // Checks if there are more than 100 cumulative nodes (nodes added + nodes removed)
+            add_node_button.disabled = true;    
+        } else {
+            add_node_button.disabled = false;
+        }
+
+        if (node_li.length == 0) {  // Checks if there are no nodes
+            rem_node_button.disabled = true;
+            set_start_button.disabled = true;
+            set_end_button.disabled = true;
+        } else {
+            rem_node_button.disabled = false;
+            set_start_button.disabled = false;
+            if (!algo_options_bool_arr[0]) {
+                set_end_button.disabled = false;    
+            }
+            
+        }
+
+        if (node_li.length < 2) {   // Checks if there are less than 2 nodes
+            add_edge_button.disabled = true;
+        } else {
+            add_edge_button.disabled = false;
+        }
+
+        if (line_li.length == 0) {  // Checks if there are no lines
+            rem_edge_button.disabled = true;
+        } else {
+            rem_edge_button.disabled = false;
+        }
+
     })
 
     weight_form.addEventListener("submit", (e) => {

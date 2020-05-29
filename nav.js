@@ -2,17 +2,41 @@
 File handles all nav functionality
 */
 // -- Global Variables -- //
-algo_options_bool_arr = [];
-speed_options_bool_arr = [];
+algo_options_bool_arr = []; // Stores which algorithm option is selected
+speed_options_bool_arr = [];    // Stores which speed option is selected
 
 let add_node_bool = true;  // Checks active state of button
 let rem_node_bool = false;  // Checks active state of button
+let set_start_bool = false;   // Checks active state of button
+let set_end_bool = false;  // Checks active state of button
 let add_edge_bool = false;  // Checks active state of button
 let rem_edge_bool = false;  // Checks active state of button
 let dir_bool = false;   // Checks active state of button
 let undir_bool = true; // Checks active state of button
 let weighted_bool = false;  // Checks active state of button
 let unweighted_bool = true; // Checks active state of button
+
+const add_node_button = document.getElementById("add-node-but");
+add_node_button.classList.add("button-active-background-color");
+const rem_node_button = document.getElementById("rem-node-but");
+rem_node_button.disabled = true;    // Button is disabled at start
+
+const set_start_button = document.getElementById("set-start-node");
+const set_end_button = document.getElementById("set-end-node");
+set_end_button.disabled = true; // Button is disabled at start
+
+const add_edge_button = document.getElementById("add-edge-but");
+add_edge_button.disabled = true;    // Button is disabled at start
+const rem_edge_button = document.getElementById("rem-edge-but");
+rem_edge_button.disabled = true;    // Button is disabled at start
+
+const dir_button = document.getElementById("dir-but");
+const undir_button = document.getElementById("undir-but");
+
+undir_button.classList.add("button-active-background-color");   // undir_bool is set to true as default
+const weighted_button = document.getElementById("weighted-but");
+const unweighted_button = document.getElementById("unweighted-but");
+unweighted_button.classList.add("button-active-background-color");
 
 window.addEventListener("load", () => {
     // -- Attributes -- //
@@ -22,24 +46,10 @@ window.addEventListener("load", () => {
 
     const algo_options_buttons_arr = document.getElementById("algo-ul").getElementsByTagName("button"); // Gets a collection of the buttons under the algorithms dropdown
     algo_options_buttons_arr[0].classList.add("button-active-background-color");    // Sets the depth first search option to true
-    algo_options_bool_arr[0] = true;
-    for (let i=1;i<algo_options_buttons_arr.length;i++) {
+    algo_options_bool_arr[0] = true;    // Sets Depth First Search bool to be true
+    for (let i=1;i<algo_options_buttons_arr.length;i++) {   // Sets all other algorithm options to false
         algo_options_bool_arr[i] = false;
     }
-
-    const add_node_button = document.getElementById("add-node-but");
-    add_node_button.classList.add("button-active-background-color");
-    const rem_node_button = document.getElementById("rem-node-but");
-    const add_edge_button = document.getElementById("add-edge-but");
-    const rem_edge_button = document.getElementById("rem-edge-but");
-
-    const dir_button = document.getElementById("dir-but");
-    const undir_button = document.getElementById("undir-but");
-
-    undir_button.classList.add("button-active-background-color");   // undir_bool is set to true as default
-    const weighted_button = document.getElementById("weighted-but");
-    const unweighted_button = document.getElementById("unweighted-but");
-    unweighted_button.classList.add("button-active-background-color");
 
     const clear_button = document.getElementById("clear-but");
 
@@ -76,7 +86,6 @@ window.addEventListener("load", () => {
 
     // -- Add Node Button -- //
     add_node_button.addEventListener("click", () => {
-        if (node_li.length > 100) return;   // For simplicity this program will only handle up to 100 nodes including
         // Toggle active state of button 
         add_node_button.classList.toggle("button-active-background-color");
         add_node_bool = add_node_bool ? false : true;   // Switches the active state
@@ -94,7 +103,6 @@ window.addEventListener("load", () => {
 
     // -- Remove Node Button -- //
     rem_node_button.addEventListener("click", () => {
-        if (node_li.length == 0) return;    // Must be at least 1 node to use command
         // Toggle active state of button 
         rem_node_button.classList.toggle("button-active-background-color");
         rem_node_bool = rem_node_bool ? false : true;
@@ -110,9 +118,26 @@ window.addEventListener("load", () => {
         rem_edge_bool = false;
     })
 
+    // -- Set Start Button -- //
+    set_start_button.addEventListener("click", () => {
+        set_start_button.classList.toggle("button-active-background-color");
+        set_start_bool = set_start_bool ? false : true;
+
+        set_end_button.classList.remove("button-active-background-color");
+        set_end_bool = false;
+    })
+
+    // -- Set End Button -- //
+    set_end_button.addEventListener("click", () => {
+        set_end_button.classList.toggle("button-active-background-color");
+        set_end_bool = set_end_bool ? false : true;
+        
+        set_start_button.classList.remove("button-active-background-color");
+        set_start_bool = false;
+    })
+
     // -- Add Edge Button -- //
     add_edge_button.addEventListener("click", () => {
-        if (node_li.length < 2) return; // There must be at least 2 nodes to place one edge
         // Toggle active state of button 
         add_edge_button.classList.toggle("button-active-background-color");
         add_edge_bool = add_edge_bool ? false : true;
@@ -130,7 +155,6 @@ window.addEventListener("load", () => {
 
     // -- Remove Edge Button -- //
     rem_edge_button.addEventListener("click", () => {
-        if (line_li.length == 0) return;    // Must be at least 1 line to use command
         // Toggle active state of button 
         rem_edge_button.classList.toggle("button-active-background-color");
         rem_edge_bool = rem_edge_bool ? false : true;

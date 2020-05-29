@@ -81,7 +81,7 @@
     position: absolute;
     flex-direction: column;
     margin-top: 25px;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px 14px;
     width: 250px;
     height: 500px;
@@ -141,4 +141,9 @@ button {    /*Styles all buttons*/
 
 button:hover {  /*Styles all buttons on hover*/
     background-color: rgb(4, 166, 247);
+}
+
+button:disabled {   /*Styles all buttons that are disabled*/
+    cursor: not-allowed;
+    background-color: rgb(26, 93, 148);
 }
