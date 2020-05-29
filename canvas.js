@@ -66,13 +66,22 @@ window.addEventListener("load", () => {
 
             let indices_to_remove = []; // Stores the indices in line list to remove
             for (let l=0;l<line_li.length;l++) {
-                if (line_li[l].startNodeId == node_id_of_removed_node || line_li[l].endNodeId == node_id_of_removed_node) {
+                if (line_li[l].startNodeId == node_id_of_removed_node || line_li[l].endNodeId == node_id_of_removed_node) { // Finds the lines that are connected to the node that got removed
                     indices_to_remove.unshift(l);   // Adds index at beginning of array so that array is in decending order
                 }
             }
 
             for (index of indices_to_remove) {
                 line_li.splice(index, 1);   // Removes the line from the line list
+            }
+
+            // Update adjacency matrix //
+            for (let col=0;col<adjacency_matrix[node_id_of_removed_node].length;col++) {
+                adjacency_matrix[node_id_of_removed_node][col] = Infinity;        // Sets the row of removed node to infinity
+            }
+
+            for (let row=0;row<adjacency_matrix.length;row++) {
+                adjacency_matrix[row][node_id_of_removed_node] = Infinity;  // Sets the column of removed node to infinity
             }
 
             render();   // Redraw the entire canvas
@@ -100,16 +109,22 @@ window.addEventListener("load", () => {
                         temp_line.endNodeId = c.id; // Sets the end node id
 
                         if ((adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] == Infinity)) {// Checks if line does not exist
-                            temp_line.endx = c.x;   // Sets endx
-                            temp_line.endy = c.y;   // Sets endy 
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = 99;   // Sets element in adjacency matrix to 99 if no input is provided
+                            if (undir_bool) {   // If line is unweighted
+                                temp_line_rev = new CustomLine(temp_line.endx, temp_line.endy, temp_line.endNodeId);    // Creating a line starting at the last created line's endpoint
+                                temp_line_rev.endx = temp_line.startx;  // Set endpoint of new line
+                                temp_line_rev.endy = temp_line.starty;  // Set endpoint of new line
+                                temp_line_rev.endNodeId = temp_line.startNodeId;
+                                line_li.push(temp_line_rev);    // Add the line going in reverse
+                                adjacency_matrix[temp_line_rev.startNodeId][temp_line_rev.endNodeId] == 99; // Update the adjacency matrix
+                            }
                         }
 
                         if (dir_bool) { // Check if edge is a directed graph
                             if (adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] != Infinity) { // Check if a line exists going the opposite direction
                                 adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId];    // Set the edge weight to the line going the other way
-                                line_li[line_li.length - 1].weight = adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId];
+                                line_li[line_li.length - 1].weight = adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId];  // Update the adjacency matrix
                                 line_li[line_li.length - 1].drawweight = true;
                                 getInputBool = false;
                             }
@@ -149,6 +164,11 @@ window.addEventListener("load", () => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
         line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
         line_li[line_li.length - 1].drawweight = true;  // Specifies line to display the edge weight
+
+        if (undir_bool) {   // If graph is undirected
+            line_li[line_li.length - 2].weight = line_li[line_li.length - 1].weight;    // Update the edge weight going in reverse
+            line_li[line_li.length - 2].drawweight = true;  // Update the draw bool of edge going in reverse
+        }
 
         render();
 
