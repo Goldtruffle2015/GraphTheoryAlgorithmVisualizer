@@ -134,7 +134,7 @@ window.addEventListener("load", () => {
                                 temp_line_rev.endy = temp_line.starty;  // Set endpoint of new line
                                 temp_line_rev.endNodeId = temp_line.startNodeId;
                                 line_li.push(temp_line_rev);    // Add the line going in reverse
-                                adjacency_matrix[temp_line_rev.startNodeId][temp_line_rev.endNodeId] == 99; // Update the adjacency matrix
+                                adjacency_matrix[temp_line_rev.startNodeId][temp_line_rev.endNodeId] = 99; // Update the adjacency matrix
                             }
                         }
 
