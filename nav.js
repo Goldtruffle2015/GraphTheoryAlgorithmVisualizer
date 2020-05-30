@@ -4,6 +4,7 @@ File handles all nav functionality
 // -- Global Variables -- //
 algo_options_bool_arr = []; // Stores which algorithm option is selected
 speed_options_bool_arr = [];    // Stores which speed option is selected
+let sleep_time = 0;  // Number of ms for algorithm to wait before next iteration
 
 let add_node_bool = true;  // Checks active state of button
 let rem_node_bool = false;  // Checks active state of button
@@ -55,6 +56,7 @@ window.addEventListener("load", () => {
         algo_options_bool_arr[i] = false;
     }
 
+    const reset_button = document.getElementById("reset-but");
     const clear_button = document.getElementById("clear-but");
 
     const speed_button = document.getElementById("speed-but");
@@ -63,7 +65,8 @@ window.addEventListener("load", () => {
 
     const speed_options_buttons_arr = document.getElementById("speed-ul").getElementsByTagName("button");   // Gets a collection of the buttons under the speed dropdown
     speed_options_buttons_arr[0].classList.add("button-active-background-color");   // Sets the slow option to true
-    speed_options_bool_arr[0] = true;
+    speed_options_bool_arr[0] = true;   // Sets the slow boolean to be true
+    sleep_time = 1000;  // Sets the sleep time of the algorithm
     for (let i=1;i<speed_options_buttons_arr.length;i++) {
         speed_options_bool_arr[i] = false;
     }
@@ -409,6 +412,16 @@ window.addEventListener("load", () => {
         render();
     })
 
+    // -- Reset Button -- //
+    reset_button.addEventListener("click", () => {
+        for (node of node_li) {
+            node.color = "#397EC9";   // Resets the node color
+        }
+        for (edge of line_li) {
+            edge.color = "white";   // Resets the line color
+        }
+    })
+
     // -- Clear Button -- //
     clear_button.addEventListener("click", () => {
         node_li = [];   // Clears the nodes
@@ -428,7 +441,7 @@ window.addEventListener("load", () => {
         speed_button.classList.toggle("button-active-background-color");
         speed_ul.classList.toggle("toggleDisplayFlex");
     })
-
+        // Common Code //
     for (let i=0;i<speed_options_buttons_arr.length;i++) {
         speed_options_buttons_arr[i].addEventListener("click", () => {
             if (speed_options_bool_arr[i]) return;  // Returns if the option is already active
@@ -440,6 +453,21 @@ window.addEventListener("load", () => {
             speed_options_buttons_arr[i].classList.toggle("button-active-background-color");
         })
     }
+        // Code specific to button //
+            // Slow //
+    speed_options_buttons_arr[0].addEventListener("click", () => {
+        sleep_time = 900;
+    })
+
+            // Medium //
+    speed_options_buttons_arr[1].addEventListener("click", () => {
+        sleep_time = 600;
+    })
+
+            // Fast //
+    speed_options_buttons_arr[2].addEventListener("click", () => {
+        sleep_time = 300;
+    })
 
     // -- Start Button -- //
     start_button.addEventListener("click", () => {
@@ -447,13 +475,17 @@ window.addEventListener("load", () => {
         if (algo_options_bool_arr[0]) {
             worker = new Worker("../algorithms/depthFirstSearch.js");
             worker.onmessage = (event) => {    // Listens for messsage from web worker
-                console.log(event.data.toString());
+                if (event.data == "terminate") {
+                    worker.terminate();
+                    worker = undefined;
+                    return;
+                }
                 node_li[event.data[0]].color = event.data[1];
             }
             worker.onerror = (event) => {
                 console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
             }
-            worker.postMessage([startId, node_li, adjacency_matrix]);
+            worker.postMessage([startId, node_li, adjacency_matrix, sleep_time]);
         }
     })
 })

@@ -22,7 +22,7 @@ self.onmessage = (e) => {
                     break;
                 }
             }
-            sleep(1000);
+            sleep(e.data[3]);
         }
 
         // -- Function Starts Here -- //
@@ -45,4 +45,5 @@ self.onmessage = (e) => {
     }
 
     depthFirstSearch(e.data[0]); // Invokes the function
+    self.postMessage("terminate");
 };

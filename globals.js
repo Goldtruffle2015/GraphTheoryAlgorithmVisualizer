@@ -70,6 +70,7 @@ class CustomLine {  // Builds lines
         this.endNodeId = null;  // Stores the id of the ending node
         this.weight = 99;   // 99 is the default weight
         this.drawweight = false; // Boolean specifies if the weight should be drawn
+        this.color = "white";
     }
 
     initialize() {
@@ -92,7 +93,7 @@ class CustomLine {  // Builds lines
             // Draw the circle //
             ctx.beginPath();    // Start the circle
             ctx.arc(mid_p[0], mid_p[1], 20, 0, 2 * Math.PI);
-            ctx.fillStyle = "white";
+            ctx.fillStyle = this.color;
             ctx.fill();
 
             // Draw the number //
