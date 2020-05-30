@@ -6,8 +6,8 @@ let line_li = [];   // Stores lines
 let edge_draw_active = false;   // Tracks when the user is drawing a line or not
 let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the ones removed.
 let adjacency_matrix = [];   // Represents node relationships
-let startId = null; // Stores the starting node id
-let endId = null;   // Stores the ending node id
+let startId = 0; // Stores the starting node id
+let endId = 0;   // Stores the ending node id
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
@@ -153,3 +153,10 @@ class CustomLine {  // Builds lines
         ctx.fill();
     }
 }
+
+function animate() {    // Animated the canvas
+    render();   // Renders the canvas
+    requestAnimationFrame(animate);
+}
+
+animate();

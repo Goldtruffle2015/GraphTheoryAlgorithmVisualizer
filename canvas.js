@@ -45,7 +45,6 @@ window.addEventListener("load", () => {
                 if (distance(c.x, e.offsetX, c.y, e.offsetY) < 80) return;    // Prevents nodes from overlapping
             }
             node_li.push(new CustomNode(e.offsetX, e.offsetY, cumulative_nodes)); // Adds node to node list
-            render();   // Redraw the entire canvas
             cumulative_nodes++; // Defined as nodes added + nodes removed
 
         // -- Remove node -- //
@@ -83,8 +82,6 @@ window.addEventListener("load", () => {
             for (let row=0;row<adjacency_matrix.length;row++) {
                 adjacency_matrix[row][node_id_of_removed_node] = Infinity;  // Sets the column of removed node to infinity
             }
-
-            render();   // Redraw the entire canvas
 
         // -- Set Start Node -- //
         if (set_start_bool) {   
@@ -149,8 +146,6 @@ window.addEventListener("load", () => {
                                 getInputBool = false;
                             }
                         }
-
-                        render();   // Redraw the entire canvas
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
 
                         // Get weight if applicable //
@@ -173,7 +168,6 @@ window.addEventListener("load", () => {
                 if (point2LineDist(e.offsetX, e.offsetY, line_li[l].startx, line_li[l].starty, line_li[l].endx, line_li[l].endy) <= 5) {    // Find the shortest distance between mouse click and line
                     adjacency_matrix[line_li[l].startNodeId][line_li[l].endNodeId] = Infinity;  // Updates adjacency matrix
                     line_li.splice(l, 1);   // Remove line from list
-                    render();   // Redraw the entire canvas
                     return;
                 }
             }
@@ -250,8 +244,6 @@ window.addEventListener("load", () => {
             line_li[line_li.length - 2].drawweight = true;  // Update the draw bool of edge going in reverse
         }
 
-        render();
-
         weight_input.value = "99";  // Resets the value
         weight_form.style.display = "none"; // Hides the input field
 
@@ -265,6 +257,4 @@ window.addEventListener("resize", () => {
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight * 0.75;  // Canvas is 3/4 of virtual height
-
-    render();   // Redraw the canvas
 })

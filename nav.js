@@ -16,6 +16,8 @@ let undir_bool = true; // Checks active state of button
 let weighted_bool = false;  // Checks active state of button
 let unweighted_bool = true; // Checks active state of button
 
+var worker; // Defines the web worker
+
 const add_node_button = document.getElementById("add-node-but");
 add_node_button.classList.add("button-active-background-color");
 const rem_node_button = document.getElementById("rem-node-but");
@@ -37,6 +39,8 @@ undir_button.classList.add("button-active-background-color");   // undir_bool is
 const weighted_button = document.getElementById("weighted-but");
 const unweighted_button = document.getElementById("unweighted-but");
 unweighted_button.classList.add("button-active-background-color");
+
+const start_button = document.getElementById("start-but");
 
 window.addEventListener("load", () => {
     // -- Attributes -- //
@@ -436,4 +440,20 @@ window.addEventListener("load", () => {
             speed_options_buttons_arr[i].classList.toggle("button-active-background-color");
         })
     }
+
+    // -- Start Button -- //
+    start_button.addEventListener("click", () => {
+        // Depth First Search //
+        if (algo_options_bool_arr[0]) {
+            worker = new Worker("../algorithms/depthFirstSearch.js");
+            worker.onmessage = (event) => {    // Listens for messsage from web worker
+                console.log(event.data.toString());
+                node_li[event.data[0]].color = event.data[1];
+            }
+            worker.onerror = (event) => {
+                console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
+            }
+            worker.postMessage([startId, node_li, adjacency_matrix]);
+        }
+    })
 })
