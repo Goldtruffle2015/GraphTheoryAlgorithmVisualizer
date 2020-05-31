@@ -6,8 +6,8 @@ let line_li = [];   // Stores lines
 let edge_draw_active = false;   // Tracks when the user is drawing a line or not
 let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the ones removed.
 let adjacency_matrix = [];   // Represents node relationships
-let startId = 0; // Stores the starting node id
-let endId = 0;   // Stores the ending node id
+let startId; // Stores the starting node id
+let endId;   // Stores the ending node id
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
@@ -80,7 +80,7 @@ class CustomLine {  // Builds lines
 
     draw() {
         ctx.lineTo(this.endx, this.endy); // Draws line at end node
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = this.color;
         ctx.lineWidth = 5;
         ctx.stroke();   // Renders the line
 
@@ -93,7 +93,7 @@ class CustomLine {  // Builds lines
             // Draw the circle //
             ctx.beginPath();    // Start the circle
             ctx.arc(mid_p[0], mid_p[1], 20, 0, 2 * Math.PI);
-            ctx.fillStyle = this.color;
+            ctx.fillStyle = "white";
             ctx.fill();
 
             // Draw the number //
@@ -150,7 +150,7 @@ class CustomLine {  // Builds lines
         ctx.lineTo(p1[0], p1[1]);
         ctx.lineTo(p2[0], p2[1]);
         ctx.closePath();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = this.color;
         ctx.fill();
     }
 }

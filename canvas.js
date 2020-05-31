@@ -82,26 +82,6 @@ window.addEventListener("load", () => {
             for (let row=0;row<adjacency_matrix.length;row++) {
                 adjacency_matrix[row][node_id_of_removed_node] = Infinity;  // Sets the column of removed node to infinity
             }
-
-        // -- Set Start Node -- //
-        if (set_start_bool) {   
-            for (n of node_li) {
-                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
-                    startId = n.id; // Sets start node id
-                    return; // Breaks out of canvas click event
-                }
-            }
-        }
-
-        // -- Set End Node -- //
-        if (set_end_bool) {
-            for (n of node_li) {
-                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
-                    endId = n.id;   // Sets start node id
-                    return;
-                }
-            }
-        }
         
         // -- Add edge -- //
         } else if (add_edge_bool) {
@@ -171,65 +151,85 @@ window.addEventListener("load", () => {
                     return;
                 }
             }
+
+        // -- Set Start Node -- //
+        } else if (set_start_bool) { 
+            for (n of node_li) {
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    startId = n.id; // Sets start node id
+                    return; // Breaks out of canvas click event
+                }
+            }
+        
+        // -- Set End Node -- //
+        } else if (set_end_bool) {
+            for (n of node_li) {
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    endId = n.id;   // Sets start node id
+                    return;
+                }
+            }
+        } else {
+            ;
         }
 
         // -- Button Handling -- //
-            // Add Node Button //
-            if (node_li.length > 100) {
-                add_node_button.disabled = true;
-            } else {
-                add_node_button.disabled = false;
-            }
+        // Add Node Button //
+        if (node_li.length > 100) {
+            add_node_button.disabled = true;
+        } else {
+            add_node_button.disabled = false;
+        }
 
-            // Remove Node Button //
-            if (node_li.length == 0) {
-                rem_node_button.disabled = true;
-            } else {
-                rem_node_button.disabled = false;
-            }
+        // Remove Node Button //
+        if (node_li.length == 0) {
+            rem_node_button.disabled = true;
+        } else {
+            rem_node_button.disabled = false;
+        }
 
-            // Set Start Button //
-            if (node_li.length == 0) {
-                set_start_button.disabled = true;
-            } else {
-                set_start_button.disabled = false;
-            }
+        // Set Start Button //
+        if (node_li.length == 0) {
+            set_start_button.disabled = true;
+        } else {
+            set_start_button.disabled = false;
+        }
 
-            // Set End Button //
-            if (node_li.length == 0 || algo_options_bool_arr[0]) {
-                set_end_button.disabled = true;
-            } else {
-                set_end_button.disabled = false;
-            }
+        // Set End Button //
+        if (node_li.length == 0 || algo_options_bool_arr[0]) {
+            set_end_button.disabled = true;
+        } else {
+            set_end_button.disabled = false;
+        }
 
-            // Add Edge Button //
-            if (node_li.length < 2) {
-                add_edge_button.disabled = true;
-            } else {
-                add_edge_button.disabled = false;
-            }
+        // Add Edge Button //
+        if (node_li.length < 2) {
+            add_edge_button.disabled = true;
+        } else {
+            add_edge_button.disabled = false;
+        }
 
-            // Remove Edge Button //
-            if (line_li.length < 1) {
-                rem_edge_button.disabled = true;
-            } else {
-                rem_edge_button.disabled = false;
-            }
+        // Remove Edge Button //
+        if (line_li.length < 1) {
+            rem_edge_button.disabled = true;
+        } else {
+            rem_edge_button.disabled = false;
+        }
 
-            // Dir Button //
-
-
-            // Undir button //
+        // Dir Button //
 
 
-            // Weighted Button //
-            if (algo_options_bool_arr[1]) {
-                weighted_button.disabled = true;
-            } else {
-                weighted_button.disabled = false;
-            }
+        // Undir button //
 
-            // Unweighted Button //
+
+        // Weighted Button //
+        if (algo_options_bool_arr[1]) {
+            weighted_button.disabled = true;
+        } else {
+            weighted_button.disabled = false;
+        }
+
+        // Unweighted Button //
 
 
     })

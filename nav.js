@@ -94,22 +94,26 @@ window.addEventListener("load", () => {
 
     // Depth First Search //
     algo_options_buttons_arr[0].addEventListener("click", () => {
+        // enable/disble options //
         set_start_button.disabled = false;
         set_end_button.disabled = true;
         dir_button.disabled = false;
         undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
     })
 
     // Breadth First Search //
     algo_options_buttons_arr[1].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
-        set_end_button.disabled = true;
+        set_end_button.disabled = false;
         dir_button.disabled = false;
         undir_button.disabled = false;
-        weighted_button.disabled = false;
+        weighted_button.disabled = true;
         unweighted_button.disabled = false;
 
         // Other //
@@ -280,11 +284,15 @@ window.addEventListener("load", () => {
         rem_node_button.classList.remove("button-active-background-color");
         add_edge_button.classList.remove("button-active-background-color");
         rem_edge_button.classList.remove("button-active-background-color");
+        set_start_button.classList.remove("button-active-background-color");
+        set_end_button.classList.remove("button-active-background-color");
 
         // Set remaining bools to false
         rem_node_bool = false;
         add_edge_bool = false;
         rem_edge_bool = false;
+        set_start_bool = false;
+        set_end_bool = false;
     })
 
     // -- Remove Node Button -- //
@@ -297,17 +305,31 @@ window.addEventListener("load", () => {
         add_node_button.classList.remove("button-active-background-color");
         add_edge_button.classList.remove("button-active-background-color");
         rem_edge_button.classList.remove("button-active-background-color"); 
+        set_start_button.classList.remove("button-active-background-color");
+        set_end_button.classList.remove("button-active-background-color");
 
         // Set remaining bools to false
         add_node_bool = false;
         add_edge_bool = false;
         rem_edge_bool = false;
+        set_start_bool = false;
+        set_end_bool = false;
     })
 
     // -- Set Start Button -- //
     set_start_button.addEventListener("click", () => {
         set_start_button.classList.toggle("button-active-background-color");
         set_start_bool = set_start_bool ? false : true;
+
+        add_node_button.classList.remove("button-active-background-color");
+        rem_node_button.classList.remove("button-active-background-color");
+        add_edge_button.classList.remove("button-active-background-color");
+        rem_edge_button.classList.remove("button-active-background-color"); 
+
+        add_node_bool = false;
+        rem_node_bool = false;
+        add_edge_bool = false;
+        rem_edge_bool = false;
 
         set_end_button.classList.remove("button-active-background-color");
         set_end_bool = false;
@@ -318,6 +340,16 @@ window.addEventListener("load", () => {
         set_end_button.classList.toggle("button-active-background-color");
         set_end_bool = set_end_bool ? false : true;
         
+        add_node_button.classList.remove("button-active-background-color");
+        rem_node_button.classList.remove("button-active-background-color");
+        add_edge_button.classList.remove("button-active-background-color");
+        rem_edge_button.classList.remove("button-active-background-color");
+
+        add_node_bool = false;
+        rem_node_bool = false;
+        add_edge_bool = false;
+        rem_edge_bool = false;
+
         set_start_button.classList.remove("button-active-background-color");
         set_start_bool = false;
     })
@@ -332,11 +364,15 @@ window.addEventListener("load", () => {
         add_node_button.classList.remove("button-active-background-color");
         rem_node_button.classList.remove("button-active-background-color");
         rem_edge_button.classList.remove("button-active-background-color");
+        set_start_button.classList.remove("button-active-background-color");
+        set_end_button.classList.remove("button-active-background-color");
 
         // Set remaining bools to false
         add_node_bool = false;
         rem_node_bool = false;
         rem_edge_bool = false;
+        set_start_bool = false;
+        set_end_bool = false;
     })
 
     // -- Remove Edge Button -- //
@@ -349,11 +385,15 @@ window.addEventListener("load", () => {
         add_node_button.classList.remove("button-active-background-color");
         rem_node_button.classList.remove("button-active-background-color");
         add_edge_button.classList.remove("button-active-background-color");
+        set_start_button.classList.remove("button-active-background-color");
+        set_end_button.classList.remove("button-active-background-color");
 
         // Set remaining bools to false
         add_node_bool = false;
         rem_node_bool = false;
         add_edge_bool = false;
+        set_start_bool = false;
+        set_end_bool = false;
     })
 
     // -- Directed Button -- //
@@ -471,21 +511,35 @@ window.addEventListener("load", () => {
 
     // -- Start Button -- //
     start_button.addEventListener("click", () => {
-        // Depth First Search //
-        if (algo_options_bool_arr[0]) {
-            worker = new Worker("../algorithms/depthFirstSearch.js");
-            worker.onmessage = (event) => {    // Listens for messsage from web worker
-                if (event.data == "terminate") {
-                    worker.terminate();
-                    worker = undefined;
-                    return;
+        const dict = [
+            "../algorithms/depthFirstSearch.js",
+            "../algorithms/breadthFirstSearch.js"
+        ];
+        // Handle algorithms 
+        const number_of_algorithms = 2; // Temporary variable
+        for (let algo_option = 0;algo_option < number_of_algorithms;algo_option++) {
+            if (algo_options_bool_arr[algo_option]) {
+                worker = new Worker(dict[algo_option]);
+                worker.onmessage = (event) => {    // Listens for messsage from web worker
+                    if (event.data == "terminate") {
+                        worker.terminate(); // Ends the web worker
+                        worker = undefined;
+                        return;
+                    }
+                    if (event.data[0] != null) {
+                        node_li[event.data[0]].color = event.data[1];   // Update the node    
+                    }
+                    
+                    if (event.data[2] != null) {
+                        line_li[event.data[2]].color = event.data[3];   // Update the line    
+                    }
+                    
                 }
-                node_li[event.data[0]].color = event.data[1];
+                worker.onerror = (event) => {
+                    console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
+                }
+                worker.postMessage([startId, endId, node_li, line_li, adjacency_matrix, sleep_time]);  // Sends information to web worker
             }
-            worker.onerror = (event) => {
-                console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
-            }
-            worker.postMessage([startId, node_li, adjacency_matrix, sleep_time]);
         }
     })
 })
