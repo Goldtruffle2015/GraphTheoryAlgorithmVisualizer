@@ -45,7 +45,11 @@ window.addEventListener("load", () => {
                 if (distance(c.x, e.offsetX, c.y, e.offsetY) < 80) return;    // Prevents nodes from overlapping
             }
             node_li.push(new CustomNode(e.offsetX, e.offsetY, cumulative_nodes)); // Adds node to node list
+            if (cumulative_nodes == 0) {    // Checks if this is the first node
+                node_li[0].color = "yellow";    // Sets node to starting and ending color by default
+            }
             cumulative_nodes++; // Defined as nodes added + nodes removed
+
 
         // -- Remove node -- //
         } else if (rem_node_bool) {
@@ -156,7 +160,13 @@ window.addEventListener("load", () => {
         } else if (set_start_bool) { 
             for (n of node_li) {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    for (n2 of node_li) {   // Searches through the nodes
+                        if (n2.id == startId) { // Find the previous starting node
+                            n2.color = (n2.color == "cyan") ? "#397EC9" : "magenta"; // Resets the color
+                        }
+                    }
                     startId = n.id; // Sets start node id
+                    n.color = (n.color == "magenta") ? "yellow" : "cyan";   // Set node to proper color
                     return; // Breaks out of canvas click event
                 }
             }
@@ -165,7 +175,13 @@ window.addEventListener("load", () => {
         } else if (set_end_bool) {
             for (n of node_li) {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                    for (n2 of node_li) {   // Searches through the nodes
+                        if (n2.id == endId) { // Find the previous ending node
+                            n2.color = (n2.color == "magenta") ? "#397EC9" : "cyan"; // Resets the color
+                        }
+                    }
                     endId = n.id;   // Sets start node id
+                    n.color = (n.color == "cyan") ? "yellow" : "magenta";   // Set node to proper color
                     return;
                 }
             }

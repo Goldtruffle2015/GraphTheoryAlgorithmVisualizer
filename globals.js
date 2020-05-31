@@ -6,8 +6,9 @@ let line_li = [];   // Stores lines
 let edge_draw_active = false;   // Tracks when the user is drawing a line or not
 let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the ones removed.
 let adjacency_matrix = [];   // Represents node relationships
-let startId; // Stores the starting node id
-let endId;   // Stores the ending node id
+let startId = 0; // Stores the starting node id. Node is colored "cyan"
+let endId = 0;   // Stores the ending node id. Node is colored "magenta"
+// If node is both a start and end colored "yellow"
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
