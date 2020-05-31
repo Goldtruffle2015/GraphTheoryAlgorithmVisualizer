@@ -62,15 +62,15 @@ self.onmessage = (e) => {
 
             neighbors = [];
             // Get Neighbors //
-            for (let id = 0; id < adjacency_matrix[indexToId(nodeToCheck)].length; id++) {
-                if (adjacency_matrix[indexToId(nodeToCheck)][id] != Infinity) {
+            for (let id = 0; id < adjacency_matrix[indexToId(nodeToCheck)].length; id++) {  // Searches through the adjacency matrix
+                if (adjacency_matrix[indexToId(nodeToCheck)][id] != Infinity) { // If value is not infinity
                     neighbors.push(idToIndex(id));    // Gets the index position of neighbors
                 }
             }
 
             // Visit Neighbors //
-            for (next of neighbors) {
-                if (!visited[next]) {
+            for (next of neighbors) {   // For each of the neighbors
+                if (!visited[next]) {   // If the neighbor has not been visited
                     q.push(next);   // Adds node index to queue
                     visited[next] = true;   // Marks node index as visited
                     prev[next] = nodeToCheck;   // Sets previous node of current node
@@ -84,16 +84,14 @@ self.onmessage = (e) => {
         previousNode = prev[currentNode];   // Get the index of the previous node
         while (previousNode != null) {   // While a previous node exists
             for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                console.log(`StartNodeIndex: ${idToIndex(line_li[line_index].startNodeId)}`);
-                console.log(`EndNodeIndex: ${idToIndex(line_li[line_index].endNodeId)}`);
                 if (((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
                 (idToIndex(line_li[line_index].endNodeId) == previousNode)) || 
                 ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
-                (idToIndex(line_li[line_index].startNodeId) == previousNode))) {
+                (idToIndex(line_li[line_index].startNodeId) == previousNode))) {    // If an edge connects the current node and the previous node
                     updateLine(line_index, "#2F7B1F");   // Updates the line
                 }
             }
-            sleep(sleep_time);
+            sleep(sleep_time);  // Sleep
             currentNode = previousNode; // Sets current node to its previous node
             previousNode = prev[previousNode];  // Sets previous node to its corresponding previous node
         }

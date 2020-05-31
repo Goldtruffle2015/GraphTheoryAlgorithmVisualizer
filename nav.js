@@ -120,22 +120,8 @@ window.addEventListener("load", () => {
         weight_input.min = -99;
     })
 
-    // Topological Ordering //
-    algo_options_buttons_arr[2].addEventListener("click", () => {
-        // enable/disable options //
-        set_start_button.disabled = false;
-        set_end_button.disabled = true;
-        dir_button.disabled = false;
-        undir_button.disabled = true;
-        weighted_button.disabled = true;
-        unweighted_button.disabled = false;
-
-        // Other //
-        weight_input.min = -99;
-    })
-
     // Dijkstra's Shortest Path //
-    algo_options_buttons_arr[3].addEventListener("click", () => {
+    algo_options_buttons_arr[2].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
         set_end_button.disabled = true;
@@ -149,7 +135,7 @@ window.addEventListener("load", () => {
     })
 
     // Bellman-Ford //
-    algo_options_buttons_arr[4].addEventListener("click", () => {
+    algo_options_buttons_arr[3].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
         set_end_button.disabled = true;
@@ -163,7 +149,7 @@ window.addEventListener("load", () => {
     })
 
     // Floyd-Warshall //
-    algo_options_buttons_arr[5].addEventListener("click", () => {
+    algo_options_buttons_arr[4].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
         set_end_button.disabled = true;
@@ -177,7 +163,7 @@ window.addEventListener("load", () => {
     })
 
     // Bridge and Articulation Points //
-    algo_options_buttons_arr[6].addEventListener("click", () => {
+    algo_options_buttons_arr[5].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
         set_end_button.disabled = true;
@@ -191,7 +177,7 @@ window.addEventListener("load", () => {
     })
 
     // Tarjans //
-    algo_options_buttons_arr[7].addEventListener("click", () => {
+    algo_options_buttons_arr[6].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
         set_end_button.disabled = true;
@@ -199,6 +185,20 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = false;
+
+        // Other //
+        weight_input.min = -99;
+    })
+
+    // TSP (Dynamic Programming)
+    algo_options_buttons_arr[7].addEventListener("click", () => {
+        // enable/disable options //
+        set_start_button.disabled = false;
+        set_end_button.disabled = false;
+        dir_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = false;
+        unweighted_button.disabled = true;
 
         // Other //
         weight_input.min = -99;
@@ -496,17 +496,17 @@ window.addEventListener("load", () => {
         // Code specific to button //
             // Slow //
     speed_options_buttons_arr[0].addEventListener("click", () => {
-        sleep_time = 900;
+        sleep_time = 800;
     })
 
             // Medium //
     speed_options_buttons_arr[1].addEventListener("click", () => {
-        sleep_time = 600;
+        sleep_time = 500;
     })
 
             // Fast //
     speed_options_buttons_arr[2].addEventListener("click", () => {
-        sleep_time = 300;
+        sleep_time = 200;
     })
 
     // -- Start Button -- //

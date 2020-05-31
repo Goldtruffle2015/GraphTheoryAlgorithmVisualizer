@@ -29,20 +29,20 @@ self.onmessage = (e) => {
 
         // -- Function Starts Here -- //
         if (visited.includes(nodeId)) return;   // Backtrack if node was already visited
-        visited.push(nodeId);
+        visited.push(nodeId);   // Tracks nodes that have been visited
         updateNode("#FFA849");  // Sets node color indicating exploring
 
-        neighbors.push([]); // Pushes an empty array
-        for (let index=0;index<adjacency_matrix[nodeId].length;index++) {
-            if (adjacency_matrix[nodeId][index] != Infinity) {
-                neighbors[neighbors.length - 1].push(index);
+        neighbors.push([]); // Pushes an empty array    
+        for (let index=0;index<adjacency_matrix[nodeId].length;index++) {   // Searches through the adjacency matrix
+            if (adjacency_matrix[nodeId][index] != Infinity) {  // Finds any values that are not infinity
+                neighbors[neighbors.length - 1].push(index);    // Adds the index position if value is not infinity
             }
         }
 
-        for (i of neighbors[neighbors.length - 1]) {
-            depthFirstSearch(i);
+        for (i of neighbors[neighbors.length - 1]) {    // For each of the current nodes neighbors
+            depthFirstSearch(i);    // Recursively do a depth first search
         }
-        neighbors.pop();
+        neighbors.pop();    // Removes the neighbors once all of them have been searched
         updateNode("#858891");  // Sets node color indicating dead end
     }
 
