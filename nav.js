@@ -25,6 +25,7 @@ const rem_node_button = document.getElementById("rem-node-but");
 rem_node_button.disabled = true;    // Button is disabled at start
 
 const set_start_button = document.getElementById("set-start-node");
+set_start_button.disabled = true;
 const set_end_button = document.getElementById("set-end-node");
 set_end_button.disabled = true; // Button is disabled at start
 
@@ -544,4 +545,94 @@ window.addEventListener("load", () => {
             }
         }
     })
+})
+
+window.addEventListener("click", () => {    // Handles button disabling/activation
+    // Add Node Button //
+    if (node_li.length > 100) {
+        add_node_button.disabled = true;
+    } else {
+        add_node_button.disabled = false;
+    }
+
+    // Remove Node Button //
+    if (node_li.length == 0) {
+        rem_node_button.disabled = true;
+    } else {
+        rem_node_button.disabled = false;
+    }
+
+    // Set Start Button //
+    if (node_li.length == 0) {
+        set_start_button.disabled = true;
+    } else {
+        set_start_button.disabled = false;
+    }
+
+    // Set End Button //
+    if (node_li.length == 0 || algo_options_bool_arr[0]) {
+        set_end_button.disabled = true;
+    } else {
+        set_end_button.disabled = false;
+    }
+
+    // Add Edge Button //
+    if (node_li.length < 2) {
+        add_edge_button.disabled = true;
+    } else {
+        add_edge_button.disabled = false;
+    }
+
+    // Remove Edge Button //
+    if (line_li.length < 1) {
+        rem_edge_button.disabled = true;
+    } else {
+        rem_edge_button.disabled = false;
+    }
+
+    // Dir Button //
+    if (undir_button.disabled) {    // If undir button is disabled
+        // Enable dir button //
+        dir_bool = true;
+        undir_bool = false;
+
+        dir_button.classList.add("button-active-background-color");
+        undir_button.classList.remove("button-active-background-color");
+    }
+
+    // Undir button //
+    if (dir_button.disabled) {  // If dir button is disabled
+        // Enable undir button
+        dir_bool = false;
+        undir_bool = true;
+
+        dir_button.classList.remove("button-active-background-color");
+        undir_button.classList.add("button-active-background-color");
+    }
+
+    // Weighted Button //
+    if (algo_options_bool_arr[1]) {
+        weighted_button.disabled = true;
+    } else {
+        weighted_button.disabled = false;
+    }
+
+    if (unweighted_button.disabled) {   // If unweighted button is disabled
+        // Enable weighted button
+        weighted_bool = true;
+        unweighted_bool = false;
+
+        weighted_button.classList.add("button-active-background-color");
+        unweighted_button.classList.remove("button-active-background-color");
+    }
+
+    // Unweighted Button //
+    if (weighted_button.disabled) { // If weighted button is disabled
+        // Enable unweighted button
+        weighted_bool = false;
+        unweighted_bool = true;
+
+        weighted_button.classList.remove("button-active-background-color");
+        unweighted_button.classList.add("button-active-background-color");
+    }
 })
