@@ -1,4 +1,7 @@
-/* This file contains the Breadth First Search algorithm. This file runs in a separate thread from the main thread. */
+/* 
+This file contains the Breadth First Search algorithm. 
+This file runs in a separate thread from the main thread. 
+*/
 self.onmessage = (e) => {
     // -- Initialize variables -- //
     const startId = e.data[0];
@@ -32,11 +35,7 @@ self.onmessage = (e) => {
     }
 
     function idToIndex(id) {  // Find the index position of node with specified id
-        for (let index = 0;index < node_li.length;index++) {
-            if (node_li[index].id == id) {
-                return index;
-            }
-        }
+        return node_li.findIndex((element) => element.id == id);
     }
 
     function indexToId(index) { // Finds the id of the node given index

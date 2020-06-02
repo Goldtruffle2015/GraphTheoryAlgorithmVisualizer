@@ -204,6 +204,9 @@ window.addEventListener("load", () => {
         weight_form.style.display = "none"; // Hides the input field
 
         adjacency_matrix[line_li[line_li.length - 1].startNodeId][line_li[line_li.length - 1].endNodeId] = line_li[line_li.length - 1].weight;  // Updates the adjacency matrix
+        if (undir_bool) {   // If line is an undirected line
+            adjacency_matrix[line_li[line_li.length - 1].endNodeId][line_li[line_li.length - 1].startNodeId] = line_li[line_li.length - 1].weight;  // Updates the adjacency matrix
+        }
     })
 })
 

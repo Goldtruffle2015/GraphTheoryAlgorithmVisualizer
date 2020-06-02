@@ -1,6 +1,9 @@
-/* This file contains the Depth First Search algorithm. This file runs in a separate thread from the main thread. */
+/* 
+This file contains the Depth First Search algorithm. 
+This file runs in a separate thread from the main thread.
+*/
 self.onmessage = (e) => {
-    // Initialize Variables //
+    // -- Initialize Variables -- //
     const node_li = e.data[2];
     const adjacency_matrix = e.data[4];
 

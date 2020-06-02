@@ -65,9 +65,9 @@ window.addEventListener("load", () => {
     speed_ul.classList.add("toggleDisplayNone");
 
     const speed_options_buttons_arr = document.getElementById("speed-ul").getElementsByTagName("button");   // Gets a collection of the buttons under the speed dropdown
-    speed_options_buttons_arr[0].classList.add("button-active-background-color");   // Sets the slow option to true
-    speed_options_bool_arr[0] = true;   // Sets the slow boolean to be true
-    sleep_time = 1000;  // Sets the sleep time of the algorithm
+    speed_options_buttons_arr[2].classList.add("button-active-background-color");   // Sets the slow option to true
+    speed_options_bool_arr[2] = true;   // Sets the fast boolean to be true
+    sleep_time = 200;  // Sets the sleep time of the algorithm
     for (let i=1;i<speed_options_buttons_arr.length;i++) {
         speed_options_bool_arr[i] = false;
     }
@@ -125,9 +125,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[2].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
-        set_end_button.disabled = true;
+        set_end_button.disabled = false;
         dir_button.disabled = false;
-        undir_button.disabled = true;
+        undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
 
@@ -471,10 +471,7 @@ window.addEventListener("load", () => {
         startId = 0;
         endId = 0;
         for (let row=0;row<133;row++) { // Resets the adjacency matrix
-            adjacency_matrix[row] = [];    // Creates an empty row in adjacency matrix
-            for (let col=0;col<133;col++) {
-                adjacency_matrix[row][col] = Infinity;  // Infinity means there is no edge linking the two nodes
-            }
+            adjacency_matrix[row].fill(Infinity);
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
     })
@@ -516,10 +513,11 @@ window.addEventListener("load", () => {
     start_button.addEventListener("click", () => {
         const dict = [
             "../algorithms/depthFirstSearch.js",
-            "../algorithms/breadthFirstSearch.js"
+            "../algorithms/breadthFirstSearch.js",
+            "../algorithms/dijkstraShortestPath.js"
         ];
         // Handle algorithms 
-        const number_of_algorithms = 2; // Temporary variable
+        const number_of_algorithms = 3; // Temporary variable
         for (let algo_option = 0;algo_option < number_of_algorithms;algo_option++) {
             if (algo_options_bool_arr[algo_option]) {
                 worker = new Worker(dict[algo_option]);
@@ -634,5 +632,21 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         weighted_button.classList.remove("button-active-background-color");
         unweighted_button.classList.add("button-active-background-color");
+    }
+
+    // Start Node //
+    for (n of node_li) {
+        if (n.id == startId) {
+            n.color = (n.id == endId) ? "yellow" : "cyan";
+            break;
+        }
+    }
+
+    // End Node //
+    for (n of node_li) {
+        if (n.id == endId) {
+            n.color = (n.id == startId) ? "yellow" : "magenta";
+            break;
+        }
     }
 })

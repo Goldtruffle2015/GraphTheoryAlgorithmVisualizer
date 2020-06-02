@@ -94,7 +94,7 @@ class CustomLine {  // Builds lines
             // Draw the circle //
             ctx.beginPath();    // Start the circle
             ctx.arc(mid_p[0], mid_p[1], 20, 0, 2 * Math.PI);
-            ctx.fillStyle = "white";
+            ctx.fillStyle = this.color;
             ctx.fill();
 
             // Draw the number //
