@@ -1,5 +1,6 @@
 /* 
 This file contains the Depth First Search algorithm. 
+This algorithm is useless and only searches a graph.
 This file runs in a separate thread from the main thread.
 */
 self.onmessage = (e) => {

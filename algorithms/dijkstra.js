@@ -1,5 +1,6 @@
 /* 
 This file contains Dijkstra's Shortest Path algorithm.
+This algorithm finds the shortest path between two points on a weighted graph with no negative edge weights.
 This file runs in a separate thread from the main thread.
 */
 self.onmessage = (e) => {
@@ -117,7 +118,7 @@ self.onmessage = (e) => {
         unvisitedDistance = shortestDistance.filter((value, index) => unvisited[index]);   // Filters out the distance of already visited nodes
         bestDistance = Math.min.apply(Math, unvisitedDistance);  // Finds the best distance
         for (currentIndex = 0;currentIndex < shortestDistance.length;currentIndex++) {
-            if ((shortestDistance[currentIndex] == bestDistance) && (unvisited[currentIndex])) {
+            if ((shortestDistance[currentIndex] == bestDistance) && (unvisited[currentIndex])) {    // Find the index of the node containing the best distance while also being unvisited
                 break;
             }
         }

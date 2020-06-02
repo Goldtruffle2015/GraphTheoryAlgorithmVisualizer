@@ -67,7 +67,7 @@ window.addEventListener("load", () => {
     const speed_options_buttons_arr = document.getElementById("speed-ul").getElementsByTagName("button");   // Gets a collection of the buttons under the speed dropdown
     speed_options_buttons_arr[2].classList.add("button-active-background-color");   // Sets the slow option to true
     speed_options_bool_arr[2] = true;   // Sets the fast boolean to be true
-    sleep_time = 200;  // Sets the sleep time of the algorithm
+    sleep_time = 50;  // Sets the sleep time of the algorithm
     for (let i=1;i<speed_options_buttons_arr.length;i++) {
         speed_options_bool_arr[i] = false;
     }
@@ -139,9 +139,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[3].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
-        set_end_button.disabled = true;
+        set_end_button.disabled = false;
         dir_button.disabled = false;
-        undir_button.disabled = true;
+        undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
 
@@ -496,17 +496,17 @@ window.addEventListener("load", () => {
         // Code specific to button //
             // Slow //
     speed_options_buttons_arr[0].addEventListener("click", () => {
-        sleep_time = 800;
+        sleep_time = 450;
     })
 
             // Medium //
     speed_options_buttons_arr[1].addEventListener("click", () => {
-        sleep_time = 500;
+        sleep_time = 250;
     })
 
             // Fast //
     speed_options_buttons_arr[2].addEventListener("click", () => {
-        sleep_time = 200;
+        sleep_time = 50;
     })
 
     // -- Start Button -- //
@@ -514,11 +514,11 @@ window.addEventListener("load", () => {
         const dict = [
             "../algorithms/depthFirstSearch.js",
             "../algorithms/breadthFirstSearch.js",
-            "../algorithms/dijkstraShortestPath.js"
+            "../algorithms/dijkstra.js",
+            "../algorithms/bellmanFord.js"
         ];
         // Handle algorithms 
-        const number_of_algorithms = 3; // Temporary variable
-        for (let algo_option = 0;algo_option < number_of_algorithms;algo_option++) {
+        for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
             if (algo_options_bool_arr[algo_option]) {
                 worker = new Worker(dict[algo_option]);
                 worker.onmessage = (event) => {    // Listens for messsage from web worker

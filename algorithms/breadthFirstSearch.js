@@ -1,5 +1,6 @@
 /* 
 This file contains the Breadth First Search algorithm. 
+This algorithm finds the shortest path between two points on an unweighted graph.
 This file runs in a separate thread from the main thread. 
 */
 self.onmessage = (e) => {
