@@ -1,5 +1,6 @@
 /*
 File handles all nav functionality
+TODO: fix dir/undir and weighted/unweighted button disabling
 */
 // -- Global Variables -- //
 algo_options_bool_arr = []; // Stores which algorithm option is selected
@@ -598,6 +599,10 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
         undir_button.classList.remove("button-active-background-color");
     }
 
+    if (undir_bool && (line_li.length > 0)) {   // If undir button is selected and a line has been drawn
+        dir_button.disabled = true; // Disable dir button
+    }
+
     // Undir button //
     if (dir_button.disabled) {  // If dir button is disabled
         // Enable undir button
@@ -606,6 +611,10 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         dir_button.classList.remove("button-active-background-color");
         undir_button.classList.add("button-active-background-color");
+    }
+
+    if (dir_bool && (line_li.length > 0)) {
+        undir_button.disabled = true;
     }
 
     // Weighted Button //
@@ -624,6 +633,10 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
         unweighted_button.classList.remove("button-active-background-color");
     }
 
+    if (unweighted_bool && (line_li.length > 0)) {
+        weighted_button.disabled = true;
+    }
+
     // Unweighted Button //
     if (weighted_button.disabled) { // If weighted button is disabled
         // Enable unweighted button
@@ -632,6 +645,10 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         weighted_button.classList.remove("button-active-background-color");
         unweighted_button.classList.add("button-active-background-color");
+    }
+
+    if (weighted_bool && (line_li.length > 0)) {
+        unweighted_button.disabled = true;
     }
 
     // Start Node //

@@ -154,6 +154,22 @@ class CustomLine {  // Builds lines
         ctx.fillStyle = this.color;
         ctx.fill();
     }
+
+    offsetLine() {  // Offsets the line
+        const offsetDistance = 20;
+        const edge_vec = [this.endx - this.startx, this.endy - this.starty];
+        const x = edge_vec[0];
+        const y = edge_vec[1];
+        const edge_vec_mag = distance(this.startx, this.endx, this.starty, this.endy);
+        const sin_90 = Math.sin(Math.PI / 2);
+        const cos_90 = Math.cos(Math.PI / 2);
+        const edge_vec_perp = [-x*cos_90 - y*sin_90, x*sin_90 - y*cos_90];
+        const edge_vec_perp_unit = [edge_vec_perp[0] / edge_vec_mag, edge_vec_perp[1] / edge_vec_mag];
+        this.startx += offsetDistance * edge_vec_perp_unit[0];
+        this.endx += offsetDistance * edge_vec_perp_unit[0];
+        this.starty += offsetDistance * edge_vec_perp_unit[1];
+        this.endy += offsetDistance * edge_vec_perp_unit[1];
+    }
 }
 
 function animate() {    // Animated the canvas

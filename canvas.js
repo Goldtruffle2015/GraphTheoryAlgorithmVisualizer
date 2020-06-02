@@ -103,7 +103,6 @@ window.addEventListener("load", () => {
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
                     if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) {   // Checks if user clicked on a node
-                        let getInputBool = true;    // Specifies whether weight input is needed
                         temp_line.endx = c.x;
                         temp_line.endy = c.y;
                         temp_line.draw(c.x, c.y);   // Draws the line
@@ -113,27 +112,26 @@ window.addEventListener("load", () => {
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = 99;   // Sets element in adjacency matrix to 99 if no input is provided
                             if (undir_bool) {   // If line is unweighted
-                                temp_line_rev = new CustomLine(temp_line.endx, temp_line.endy, temp_line.endNodeId);    // Creating a line starting at the last created line's endpoint
-                                temp_line_rev.endx = temp_line.startx;  // Set endpoint of new line
-                                temp_line_rev.endy = temp_line.starty;  // Set endpoint of new line
-                                temp_line_rev.endNodeId = temp_line.startNodeId;
-                                line_li.push(temp_line_rev);    // Add the line going in reverse
                                 adjacency_matrix[temp_line_rev.startNodeId][temp_line_rev.endNodeId] = 99; // Update the adjacency matrix
                             }
                         }
 
-                        if (dir_bool) { // Check if edge is a directed graph
+                        if (dir_bool) { // Check if edge is a directed edge
                             if (adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] != Infinity) { // Check if a line exists going the opposite direction
-                                adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId];    // Set the edge weight to the line going the other way
-                                line_li[line_li.length - 1].weight = adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId];  // Update the adjacency matrix
-                                line_li[line_li.length - 1].drawweight = true;
-                                getInputBool = false;
+                                for (let li=0;li<line_li.length;li++) { // Loop through line list
+                                    if ((line_li[li].startNodeId == temp_line.endNodeId) &&
+                                        (line_li[li].endNodeId == temp_line.startNodeId)) {   // If line goes opposite of recently drawn line
+                                            line_li[li].offsetLine();   // Offset line
+                                            break;
+                                    }
+                                }
+                                line_li[line_li.length - 1].offsetLine();   // Offset last drawn line
                             }
                         }
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
 
                         // Get weight if applicable //
-                        if (weighted_bool && getInputBool) {
+                        if (weighted_bool) {
                             weight_form.style.display = "block";
                             const last_edge = line_li[line_li.length - 1];
                             const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy);
@@ -194,11 +192,6 @@ window.addEventListener("load", () => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
         line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
         line_li[line_li.length - 1].drawweight = true;  // Specifies line to display the edge weight
-
-        if (undir_bool) {   // If graph is undirected
-            line_li[line_li.length - 2].weight = line_li[line_li.length - 1].weight;    // Update the edge weight going in reverse
-            line_li[line_li.length - 2].drawweight = true;  // Update the draw bool of edge going in reverse
-        }
 
         weight_input.value = "99";  // Resets the value
         weight_form.style.display = "none"; // Hides the input field
