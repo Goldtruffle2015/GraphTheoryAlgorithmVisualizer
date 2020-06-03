@@ -72,6 +72,7 @@ class CustomLine {  // Builds lines
         this.weight = 99;   // 99 is the default weight
         this.drawweight = false; // Boolean specifies if the weight should be drawn
         this.color = "white";
+        this.offsetBool = false;    // Tracks whether the 
     }
 
     initialize() {
@@ -155,8 +156,8 @@ class CustomLine {  // Builds lines
         ctx.fill();
     }
 
-    offsetLine() {  // Offsets the line
-        const offsetDistance = 20;
+    offsetLine(arg0) {  // Offsets the line
+        const offsetDistance = arg0;
         const edge_vec = [this.endx - this.startx, this.endy - this.starty];
         const x = edge_vec[0];
         const y = edge_vec[1];

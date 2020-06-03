@@ -112,7 +112,7 @@ window.addEventListener("load", () => {
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = 99;   // Sets element in adjacency matrix to 99 if no input is provided
                             if (undir_bool) {   // If line is unweighted
-                                adjacency_matrix[temp_line_rev.startNodeId][temp_line_rev.endNodeId] = 99; // Update the adjacency matrix
+                                adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = 99; // Update the adjacency matrix
                             }
                         }
 
@@ -121,11 +121,13 @@ window.addEventListener("load", () => {
                                 for (let li=0;li<line_li.length;li++) { // Loop through line list
                                     if ((line_li[li].startNodeId == temp_line.endNodeId) &&
                                         (line_li[li].endNodeId == temp_line.startNodeId)) {   // If line goes opposite of recently drawn line
-                                            line_li[li].offsetLine();   // Offset line
+                                            line_li[li].offsetLine(20);   // Offset line
+                                            line_li[li].offsetBool = true;  // Line is offsetted
                                             break;
                                     }
                                 }
-                                line_li[line_li.length - 1].offsetLine();   // Offset last drawn line
+                                line_li[line_li.length - 1].offsetLine(20);   // Offset last drawn line
+                                line_li[line_li.length - 1].offsetBool = true;  // Line is offsetted
                             }
                         }
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
@@ -149,6 +151,15 @@ window.addEventListener("load", () => {
             for (let l=0;l<line_li.length;l++) {
                 if (point2LineDist(e.offsetX, e.offsetY, line_li[l].startx, line_li[l].starty, line_li[l].endx, line_li[l].endy) <= 5) {    // Find the shortest distance between mouse click and line
                     adjacency_matrix[line_li[l].startNodeId][line_li[l].endNodeId] = Infinity;  // Updates adjacency matrix
+                    if (line_li[l].offsetBool) {    // Checks if the line has been offsetted
+                        for (let l2=0;l2<line_li.length;l2++) { // Loop through each line
+                            if (((line_li[l2].startNodeId == line_li[l].endNodeId) &&
+                            (line_li[l2].endNodeId == line_li[l].startNodeId)) && dir_bool) {   // Find directed edge going the other way
+                                line_li[l2].offsetLine(-20);    // Un-offset line
+                                line_li[l2].offsetBool = false; // Line is no longer offsetted
+                            }
+                        }
+                    }
                     line_li.splice(l, 1);   // Remove line from list
                     return;
                 }

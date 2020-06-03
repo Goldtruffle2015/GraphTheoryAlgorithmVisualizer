@@ -18,6 +18,8 @@ self.onmessage = (e) => {
         }
     }
     const sleep_time = e.data[5];
+    const dir_bool = e.data[6];
+    const undir_bool = e.data[7];
 
     startIndex = idToIndex(startId);
     endIndex = idToIndex(endId);
@@ -90,20 +92,30 @@ self.onmessage = (e) => {
                 updateNode(n, "#FFA849");   // Program is currently searching this node
                 let line_index = 0;
                 for (line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
+                    if ((idToIndex(line_li[line_index].endNodeId) == n) && 
+                    (idToIndex(line_li[line_index].startNodeId) == currentIndex) && dir_bool) {    // If an edge connects the current node and the previous node
+                        updateLine(line_index, "#FFA849");   // Updates the line
+                        sleep(sleep_time);
+                    }
                     if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                     (idToIndex(line_li[line_index].endNodeId) == n)) || 
                     ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                    (idToIndex(line_li[line_index].startNodeId) == n))) {    // If an edge connects the current node and the previous node
+                    (idToIndex(line_li[line_index].startNodeId) == n)) && undir_bool) {    // If an edge connects the current node and the previous node
                         updateLine(line_index, "#FFA849");   // Updates the line
                     }
                 }
                 sleep(sleep_time);
                 updateNode(n, "#397EC9");
                 for (line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
+                    if ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
+                    (idToIndex(line_li[line_index].startNodeId) == n) && dir_bool) {    // If an edge connects the current node and the previous node
+                        updateLine(line_index, "white");   // Updates the line
+                        sleep(sleep_time);
+                    }
                     if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                     (idToIndex(line_li[line_index].endNodeId) == n)) || 
                     ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                    (idToIndex(line_li[line_index].startNodeId) == n))) {    // If an edge connects the current node and the previous node
+                    (idToIndex(line_li[line_index].startNodeId) == n)) && undir_bool) {    // If an edge connects the current node and the previous node
                         updateLine(line_index, "white");   // Updates the line
                     }
                 }
@@ -132,10 +144,15 @@ self.onmessage = (e) => {
     previousNode = prev[currentNode];
     while (previousNode != null) {   // While a previous node exists
         for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-            if (((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
+            if ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
+            (idToIndex(line_li[line_index].startNodeId) == previousNode) && dir_bool) {    // If an edge connects the current node and the previous node
+                updateLine(line_index, "#2F7B1F");   // Updates the line
+                sleep(sleep_time);
+            }
+            if ((((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
             (idToIndex(line_li[line_index].endNodeId) == previousNode)) || 
             ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
-            (idToIndex(line_li[line_index].startNodeId) == previousNode))) {    // If an edge connects the current node and the previous node
+            (idToIndex(line_li[line_index].startNodeId) == previousNode))) && undir_bool) {    // If an edge connects the current node and the previous node
                 updateLine(line_index, "#2F7B1F");   // Updates the line
             }
         }

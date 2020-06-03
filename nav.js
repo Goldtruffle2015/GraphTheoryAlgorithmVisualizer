@@ -156,7 +156,7 @@ window.addEventListener("load", () => {
         set_start_button.disabled = true;
         set_end_button.disabled = true;
         dir_button.disabled = false;
-        undir_button.disabled = true;
+        undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
 
@@ -516,7 +516,8 @@ window.addEventListener("load", () => {
             "../algorithms/depthFirstSearch.js",
             "../algorithms/breadthFirstSearch.js",
             "../algorithms/dijkstra.js",
-            "../algorithms/bellmanFord.js"
+            "../algorithms/bellmanFord.js",
+            "../algorithms/floydWarshall.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
@@ -540,7 +541,7 @@ window.addEventListener("load", () => {
                 worker.onerror = (event) => {
                     console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
                 }
-                worker.postMessage([startId, endId, node_li, line_li, adjacency_matrix, sleep_time]);  // Sends information to web worker
+                worker.postMessage([startId, endId, node_li, line_li, adjacency_matrix, sleep_time, dir_bool, undir_bool]);  // Sends information to web worker
             }
         }
     })

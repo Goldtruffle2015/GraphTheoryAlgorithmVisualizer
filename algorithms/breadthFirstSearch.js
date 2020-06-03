@@ -11,6 +11,8 @@ self.onmessage = (e) => {
     const line_li = e.data[3];
     const adjacency_matrix = e.data[4];
     const sleep_time = e.data[5];
+    const dir_bool = e.data[6];
+    const undir_bool = e.data[7];
 
     let q = []; // This is a queue data structure. Stores the index position of nodes.
     q.push(idToIndex(startId));
@@ -84,10 +86,15 @@ self.onmessage = (e) => {
         previousNode = prev[currentNode];   // Get the index of the previous node
         while (previousNode != null) {   // While a previous node exists
             for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
+                if ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
+                (idToIndex(line_li[line_index].startNodeId) == previousNode) && dir_bool) {    // If an edge connects the current node and the previous node
+                    updateLine(line_index, "#2F7B1F");   // Updates the line
+                    sleep(sleep_time);
+                }
                 if (((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
                 (idToIndex(line_li[line_index].endNodeId) == previousNode)) || 
                 ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
-                (idToIndex(line_li[line_index].startNodeId) == previousNode))) {    // If an edge connects the current node and the previous node
+                (idToIndex(line_li[line_index].startNodeId) == previousNode)) && undir_bool) {    // If an edge connects the current node and the previous node
                     updateLine(line_index, "#2F7B1F");   // Updates the line
                 }
             }
