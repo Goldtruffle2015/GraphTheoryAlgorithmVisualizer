@@ -86,7 +86,7 @@ self.onmessage = (e) => {
                 let betterPath = false;
                 if (dp[i][j] > dp[i][k] + dp[k][j]) {   // If route through intermediate is shorter
                     dp[i][j] = dp[i][k] + dp[k][j]; // Set new route
-                    next[i][j] = k; // Sets previous node to intermediate
+                    next[i][j] = next[i][k]; // Sets previous node to intermediate
                 }
                 // Send to main thread //
                 updateNode(j, "#FFA849");   // Sets node as being processed
@@ -223,7 +223,12 @@ self.onmessage = (e) => {
         updateNode(k, "#397EC9");
         sleep(sleep_time);
     }
-    console.log(`${next}`);
+    console.log(`${next[0]}`);
+    console.log(`${next[1]}`);
+    console.log(`${next[2]}`);
+    console.log(`${next[3]}`);
+    console.log(`${next[4]}`);
+    console.log(`${next[5]}`);
     // Reconstruct shortest path //
     currentIndex = startIndex;
     nextIndex = next[currentIndex][endIndex];
