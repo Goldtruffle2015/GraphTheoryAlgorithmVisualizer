@@ -45,9 +45,6 @@ window.addEventListener("load", () => {
                 if (distance(c.x, e.offsetX, c.y, e.offsetY) < 80) return;    // Prevents nodes from overlapping
             }
             node_li.push(new CustomNode(e.offsetX, e.offsetY, cumulative_nodes)); // Adds node to node list
-            if (cumulative_nodes == 0) {    // Checks if this is the first node
-                node_li[0].color = "yellow";    // Sets node to starting and ending color by default
-            }
             cumulative_nodes++; // Defined as nodes added + nodes removed
 
 
@@ -144,11 +141,11 @@ window.addEventListener("load", () => {
 
                         // Get weight if applicable //
                         if (weighted_bool && weight_draw) {
-                            weight_form.style.display = "block";
-                            const last_edge = line_li[line_li.length - 1];
-                            const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy);
-                            weight_form.style.left = `${mid_p[0] - 20}px`;
-                            weight_form.style.top = `${mid_p[1] - 20}px`;
+                            weight_form.style.display = "block";    // Show the weight input
+                            const last_edge = line_li[line_li.length - 1];  // Get the most recently added edge
+                            const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy); // Find the midpoint of the edge
+                            weight_form.style.left = `${mid_p[0] - 20}px`;  // Position the input
+                            weight_form.style.top = `${mid_p[1] - 20}px`;   // Position the input
                         }
 
                         break;
@@ -181,11 +178,11 @@ window.addEventListener("load", () => {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == startId) { // Find the previous starting node
-                            n2.color = (n2.color == "cyan") ? "#397EC9" : "magenta"; // Resets the color
+                            n2.color = (n2.id == endId) ? "magenta" : "#397EC9"; // If the previous starting node is also an end node set the color to magenta otherwise reset to blue
                         }
                     }
                     startId = n.id; // Sets start node id
-                    n.color = (n.color == "magenta") ? "yellow" : "cyan";   // Set node to proper color
+                    n.color = (n.id == endId) ? "yellow" : "cyan"; // If the node is also an end node set to yellow otherwise set to cyan
                     return; // Breaks out of canvas click event
                 }
             }
@@ -196,26 +193,26 @@ window.addEventListener("load", () => {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == endId) { // Find the previous ending node
-                            n2.color = (n2.color == "magenta") ? "#397EC9" : "cyan"; // Resets the color
+                            n2.color = (n2.id == startId) ? "cyan" : "#397EC9"; // If the previous ending node is also a starting node set the color to cyan otherwise reset to blue
                         }
                     }
                     endId = n.id;   // Sets start node id
-                    n.color = (n.color == "cyan") ? "yellow" : "magenta";   // Set node to proper color
+                    n.color = (n.id == startId) ? "yellow" : "magenta";   // If the node is also a start node set to yellow otherwise set to cyan
                     return;
                 }
             }
-        } else {
-            ;
         }
     })
 
     weight_form.addEventListener("submit", (e) => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
         if (undir_bool) {   // If edge is undirected
-            line_li[line_li.length - 1].weight = weight_input.value;
-            line_li[line_li.length - 1].drawweight = true;
-            line_li[line_li.length - 2].weight = weight_input.value;
-            line_li[line_li.length - 2].drawweight = true;
+            line_li[line_li.length - 1].weight = weight_input.value;    // Update the value of the edge 
+            line_li[line_li.length - 1].drawweight = true;  // Show the value
+
+            // Note: Updates 2 lines since creating an unweighted edge creates two lines going both directions
+            line_li[line_li.length - 2].weight = weight_input.value;    // Updates the value of the edge
+            line_li[line_li.length - 2].drawweight = true;  // Show the value
         } else {    // If edge is not undirected
             line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
             line_li[line_li.length - 1].drawweight = true;  // Specifies line to display the edge weight    

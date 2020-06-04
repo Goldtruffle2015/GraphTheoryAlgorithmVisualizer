@@ -22,10 +22,10 @@ self.onmessage = (e) => {
     const dir_bool = e.data[6];
     const undir_bool = e.data[7];
 
-    let startIndex = idToIndex(startId);
-    let endIndex = idToIndex(endId);
-    let currentIndex;
-    let nextIndex;
+    let startIndex = idToIndex(startId);    // Tracks the index of the starting node
+    let endIndex = idToIndex(endId);    // Tracks the index of the ending node
+    let currentIndex;   // Tracks the index of the current node 
+    let nextIndex;  // Tracks the index of the node proceeding the current index
 
     let dp = [];    // Tracks the best distance between any two pairs of nodes
     let next = [];  // Tracks the previous node
@@ -97,14 +97,14 @@ self.onmessage = (e) => {
                 while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
                     for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
                         if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
                             updateLine(line_index, "#FFA849");   // Updates the line
                             sleep(sleep_time);
                         }
                         if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                         (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
                         ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
                             updateLine(line_index, "#FFA849");   // Updates the line
                             sleep(sleep_time);
                         }
@@ -124,14 +124,14 @@ self.onmessage = (e) => {
                 while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
                     for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
                         if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
                             updateLine(line_index, "white");   // Updates the line
                             sleep(sleep_time);
                         }
                         if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                         (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
                         ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
                             updateLine(line_index, "white");   // Updates the line
                             sleep(sleep_time);
                         }
@@ -170,14 +170,14 @@ self.onmessage = (e) => {
                     while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
                         for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
                             if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
                                 updateLine(line_index, "#FFA849");   // Updates the line
                                 sleep(sleep_time);
                             }
                             if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                             (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
                             ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
                                 updateLine(line_index, "#FFA849");   // Updates the line
                                 sleep(sleep_time);
                             }
@@ -199,15 +199,15 @@ self.onmessage = (e) => {
                     while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
                         for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
                             if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "white");   // Updates the line
+                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
+                                updateLine(line_index, "white");   // Reverts the line color
                                 sleep(sleep_time);
                             }
                             if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                             (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
                             ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "white");   // Updates the line
+                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
+                                updateLine(line_index, "white");   // Reverts the line color
                                 sleep(sleep_time);
                             }
                         }
@@ -223,26 +223,21 @@ self.onmessage = (e) => {
         updateNode(k, "#397EC9");
         sleep(sleep_time);
     }
-    console.log(`${next[0]}`);
-    console.log(`${next[1]}`);
-    console.log(`${next[2]}`);
-    console.log(`${next[3]}`);
-    console.log(`${next[4]}`);
-    console.log(`${next[5]}`);
+
     // Reconstruct shortest path //
     currentIndex = startIndex;
     nextIndex = next[currentIndex][endIndex];
     while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
         for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
             if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
                 updateLine(line_index, "#2F7B1F");   // Updates the line
                 sleep(sleep_time);
             }
             if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
             (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
             ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
                 updateLine(line_index, "#2F7B1F");   // Updates the line
             }
         }
