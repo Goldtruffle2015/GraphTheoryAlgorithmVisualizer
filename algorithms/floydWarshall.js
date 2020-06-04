@@ -87,34 +87,31 @@ self.onmessage = (e) => {
                 if (dp[i][j] > dp[i][k] + dp[k][j]) {   // If route through intermediate is shorter
                     dp[i][j] = dp[i][k] + dp[k][j]; // Set new route
                     next[i][j] = k; // Sets previous node to intermediate
-                    betterPath = true;
                 }
                 // Send to main thread //
                 updateNode(j, "#FFA849");   // Sets node as being processed
 
                 // Draw path from i to j through k //
-                if (betterPath) {
-                    currentIndex = i;
-                    nextIndex = next[currentIndex][j];
-                    while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                                sleep(sleep_time);
-                            }
-                            if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                                sleep(sleep_time);
-                            }
+                currentIndex = i;
+                nextIndex = next[currentIndex][j];
+                while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
+                    for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
+                        if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
+                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+                            updateLine(line_index, "#FFA849");   // Updates the line
+                            sleep(sleep_time);
                         }
-                        currentIndex = nextIndex; // Sets current node to its previous node
-                        nextIndex = next[currentIndex][j];  // Sets previous node to its corresponding previous node
-                    }    
-                }
+                        if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
+                        (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
+                        ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
+                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+                            updateLine(line_index, "#FFA849");   // Updates the line
+                            sleep(sleep_time);
+                        }
+                    }
+                    currentIndex = nextIndex; // Sets current node to its previous node
+                    nextIndex = next[currentIndex][j];  // Sets previous node to its corresponding previous node
+                }    
                 
                 sleep(sleep_time);
 
@@ -122,28 +119,26 @@ self.onmessage = (e) => {
                 if ((k != j) && (i != j)) updateNode(j, "#397EC9");   // Sets node as being processed
 
                 // Draw path from i to j through k //
-                if (betterPath) {
-                    currentIndex = i;
-                    nextIndex = next[currentIndex][j];
-                    while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "white");   // Updates the line
-                                sleep(sleep_time);
-                            }
-                            if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
-                                updateLine(line_index, "white");   // Updates the line
-                                sleep(sleep_time);
-                            }
+                currentIndex = i;
+                nextIndex = next[currentIndex][j];
+                while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
+                    for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
+                        if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
+                        (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node
+                            updateLine(line_index, "white");   // Updates the line
+                            sleep(sleep_time);
                         }
-                        currentIndex = nextIndex; // Sets current node to its previous node
-                        nextIndex = next[currentIndex][j];  // Sets previous node to its corresponding previous node
-                    }    
-                }
+                        if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
+                        (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
+                        ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
+                        (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node
+                            updateLine(line_index, "white");   // Updates the line
+                            sleep(sleep_time);
+                        }
+                    }
+                    currentIndex = nextIndex; // Sets current node to its previous node
+                    nextIndex = next[currentIndex][j];  // Sets previous node to its corresponding previous node
+                }    
                 sleep(sleep_time);
             }
             if (k != i) updateNode(i, "#397EC9");
@@ -228,7 +223,7 @@ self.onmessage = (e) => {
         updateNode(k, "#397EC9");
         sleep(sleep_time);
     }
-    
+    console.log(`${next}`);
     // Reconstruct shortest path //
     currentIndex = startIndex;
     nextIndex = next[currentIndex][endIndex];

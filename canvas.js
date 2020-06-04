@@ -102,7 +102,10 @@ window.addEventListener("load", () => {
             }
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
+                    let weight_draw = true;
                     if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) {   // Checks if user clicked on a node
+                        let weight_active = true;   // Bool determines whether weight input needs to be provided
+
                         temp_line.endx = c.x;
                         temp_line.endy = c.y;
                         temp_line.draw(c.x, c.y);   // Draws the line
@@ -112,8 +115,15 @@ window.addEventListener("load", () => {
                             line_li.push(temp_line);    // Adds line to line list if line does not exist
                             adjacency_matrix[temp_line.startNodeId][temp_line.endNodeId] = 99;   // Sets element in adjacency matrix to 99 if no input is provided
                             if (undir_bool) {   // If line is unweighted
+                                temp_line_rev = new CustomLine(temp_line.endx, temp_line.endy, temp_line.endNodeId);    // Create another line going in reverse
+                                temp_line_rev.endx = temp_line.startx;  // Sets end x property
+                                temp_line_rev.endy = temp_line.starty;  // Sets end y property
+                                temp_line_rev.endNodeId = temp_line.startNodeId;    // Sets end node
+                                line_li.push(temp_line_rev);    // Add temporary line
                                 adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = 99; // Update the adjacency matrix
                             }
+                        } else {
+                            weight_draw = false;    // Prevent weight input from showing if line already exists
                         }
 
                         if (dir_bool) { // Check if edge is a directed edge
@@ -133,7 +143,7 @@ window.addEventListener("load", () => {
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
 
                         // Get weight if applicable //
-                        if (weighted_bool) {
+                        if (weighted_bool && weight_draw) {
                             weight_form.style.display = "block";
                             const last_edge = line_li[line_li.length - 1];
                             const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy);
@@ -201,8 +211,15 @@ window.addEventListener("load", () => {
 
     weight_form.addEventListener("submit", (e) => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
-        line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
-        line_li[line_li.length - 1].drawweight = true;  // Specifies line to display the edge weight
+        if (undir_bool) {   // If edge is undirected
+            line_li[line_li.length - 1].weight = weight_input.value;
+            line_li[line_li.length - 1].drawweight = true;
+            line_li[line_li.length - 2].weight = weight_input.value;
+            line_li[line_li.length - 2].drawweight = true;
+        } else {    // If edge is not undirected
+            line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
+            line_li[line_li.length - 1].drawweight = true;  // Specifies line to display the edge weight    
+        }
 
         weight_input.value = "99";  // Resets the value
         weight_form.style.display = "none"; // Hides the input field
