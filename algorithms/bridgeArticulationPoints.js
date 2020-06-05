@@ -26,6 +26,7 @@ self.onmessage = (e) => {
     let low = [];   // Tracks the low-link value of the node
     let cumul = 0;  // Tracks the cumulative number of nodes explored
     let lowVal;    // Tracks the low-link values
+    let art = [];   // Stores the index's of the articulation points
 
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
@@ -52,13 +53,23 @@ self.onmessage = (e) => {
         self.postMessage([null, null, index, color]);
     }
 
-    function findBridges(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
+    function countNeighbors(par) {
+        let counter = 0; // Tracks the number of neighbors 
+        for (let y=0;y<adjacency_matrix[par].length;y++) {    // Searches through the adjacency matrix
+            if (adjacency_matrix[par][y] != Infinity) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
             return low[nodeIndex]; 
         }    
         visited.push(nodeIndex);    // Tracks nodes that have been visited
-        disc[nodeIndex] = cumul;
-        low[nodeIndex] = cumul;
+        disc[nodeIndex] = cumul;    // Sets the disc => order node was explored
+        low[nodeIndex] = cumul; // Sets the low link value to the disc value
         cumul++;
         updateNode(nodeIndex, "#FFA849");  // Sets node color indicating exploring
         sleep(sleep_time);
@@ -72,30 +83,54 @@ self.onmessage = (e) => {
         let id_arr = [];  // Gets the last value for the variable
         for (id of neighbors[neighbors.length - 1]) {    // For each of the current nodes neighbors
             id_arr.push(id);
-            lowVal = findBridges(idToIndex(id_arr[id_arr.length - 1]), nodeIndex);   // Recursively do a depth first search. Returns the low-link value of the neighboring node
+            lowVal = find(idToIndex(id_arr[id_arr.length - 1]), nodeIndex);   // Recursively do a depth first search. Returns the low-link value of the neighboring node
             if (lowVal < low[nodeIndex]) { // If search finds a new lowest-value node
                 low[nodeIndex] = lowVal;   // Update lowest value node
             } 
 
             if (disc[nodeIndex] < low[idToIndex(id_arr[id_arr.length - 1])]) {  // Checks if edge connecting the two nodes is a bridge
-                for (let line_index=0;line_index<line_li.length;line_index++) {
-                    let from = idToIndex(line_li[line_index].startNodeId);
-                    let to = idToIndex(line_li[line_index].endNodeId);
+                // Finds articulation points //
+                neighbor_count = countNeighbors(nodeIndex);
+                if (neighbor_count >= 2) {  // If the node has at least 2 neighbors
+                    updateNode(nodeIndex, "red");   // Set node as articulation point
+                    art.push(nodeIndex);
+                    sleep(sleep_time);
+                }
+
+                // Find bridges //
+                for (let line_index=0;line_index<line_li.length;line_index++) { // Find the line(s) that match the above condition
+                    let from = idToIndex(line_li[line_index].startNodeId);  // Stores the index position of the starting node
+                    let to = idToIndex(line_li[line_index].endNodeId);  // stores the index position of the end node
                     if (((from == nodeIndex) && (to == idToIndex(id_arr[id_arr.length - 1]))) ||
-                    ((from == idToIndex(id_arr[id_arr.length - 1])) && (to == nodeIndex))) {
-                        updateLine(line_index, "red");
+                    ((from == idToIndex(id_arr[id_arr.length - 1])) && (to == nodeIndex))) {    // If a line connects the start and end node
+                        updateLine(line_index, "red");  // Draw line red
                     }
                 }
                 sleep(sleep_time);
             }
-            id_arr.pop();
+            id_arr.pop();   // Remove neighbor to check from stack
         }
         neighbors.pop();
-        updateNode(nodeIndex, "#397EC9");  // Sets node color indicating dead end
+        if (art.includes(nodeIndex)) {
+            updateNode(nodeIndex, "red");
+        } else {
+            if ((disc[nodeIndex] >= low[nodeIndex]) && (countNeighbors(nodeIndex) >= 3)) {    
+                updateNode(nodeIndex, "red");
+            } else {
+                updateNode(nodeIndex, "#397EC9");  // Resets the node color      
+            }
+        }
         sleep(sleep_time);
         return low[nodeIndex];
     }
 
     // -- Code Starts Here -- //
-    findBridges(0, null);
+    find(0, null);
 }
+
+// Notes //
+/*
+Conditions for articulation point(s):
+    a) A node is connected to a bridge and has at least 2 edges
+    b) The node is part of a cycle and has at least 3 neighbors
+*/
