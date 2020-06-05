@@ -114,7 +114,7 @@ self.onmessage = (e) => {
         if (art.includes(nodeIndex)) {
             updateNode(nodeIndex, "red");
         } else {
-            if ((disc[nodeIndex] >= low[nodeIndex]) && (countNeighbors(nodeIndex) >= 3)) {    
+            if ((disc[nodeIndex] == low[nodeIndex]) && (countNeighbors(nodeIndex) >= 3)) {    
                 updateNode(nodeIndex, "red");
             } else {
                 updateNode(nodeIndex, "#397EC9");  // Resets the node color      
