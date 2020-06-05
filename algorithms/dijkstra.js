@@ -80,7 +80,7 @@ self.onmessage = (e) => {
             }
         }
         
-        if (neighbors.length > 0) {
+        if (neighbors.length > 0) { // Checks if neighbors exist
             neighbors = neighbors.map((id) => idToIndex(id)).filter((index) => unvisited[index]);   // Convert id's to index's, then keep only the ones that are unvisited    
             // Find distance to neighbor from current node //
             for (n of neighbors) {
@@ -109,14 +109,14 @@ self.onmessage = (e) => {
                 for (line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
                     if ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
                     (idToIndex(line_li[line_index].startNodeId) == n) && dir_bool) {    // If an edge connects the current node and the previous node
-                        updateLine(line_index, "white");   // Updates the line
+                        updateLine(line_index, "white");   // Resets the line
                         sleep(sleep_time);
                     }
                     if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
                     (idToIndex(line_li[line_index].endNodeId) == n)) || 
                     ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
                     (idToIndex(line_li[line_index].startNodeId) == n)) && undir_bool) {    // If an edge connects the current node and the previous node
-                        updateLine(line_index, "white");   // Updates the line
+                        updateLine(line_index, "white");   // Resets the line
                     }
                 }
                 sleep(sleep_time);

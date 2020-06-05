@@ -100,7 +100,7 @@ window.addEventListener("load", () => {
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
                     let weight_draw = true;
-                    if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) {   // Checks if user clicked on a node
+                    if ((distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) && (c.id != temp_line.startNodeId)) {   // Checks if user clicked on a node and node is not starting node
                         let weight_active = true;   // Bool determines whether weight input needs to be provided
 
                         temp_line.endx = c.x;

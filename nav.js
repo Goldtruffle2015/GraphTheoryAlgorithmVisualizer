@@ -27,8 +27,10 @@ rem_node_button.disabled = true;    // Button is disabled at start
 
 const set_start_button = document.getElementById("set-start-node");
 set_start_button.disabled = true;
+let startPermaDisable = false;  // Bool tracks whether start button is permanently disabled for specified algorithm
 const set_end_button = document.getElementById("set-end-node");
 set_end_button.disabled = true; // Button is disabled at start
+let endPermaDisable = false;    // Bool tracks whether end button is permanently disabled for specified algorithm
 
 const add_edge_button = document.getElementById("add-edge-but");
 add_edge_button.disabled = true;    // Button is disabled at start
@@ -49,7 +51,7 @@ window.addEventListener("load", () => {
     // -- Attributes -- //
     const algo_button = document.getElementById("algo-but");
     const algo_ul = document.getElementById("algo-ul");
-    algo_ul.classList.add("toggleDisplayNone");
+    algo_ul.classList.add("toggleDisplayNone"); // Display cannot be set to none in css since id attribute override class attributes
 
     const algo_options_buttons_arr = document.getElementById("algo-ul").getElementsByTagName("button"); // Gets a collection of the buttons under the algorithms dropdown
     algo_options_buttons_arr[0].classList.add("button-active-background-color");    // Sets the depth first search option to true
@@ -63,7 +65,7 @@ window.addEventListener("load", () => {
 
     const speed_button = document.getElementById("speed-but");
     const speed_ul = document.getElementById("speed-ul");
-    speed_ul.classList.add("toggleDisplayNone");
+    speed_ul.classList.add("toggleDisplayNone");    // Display cannot be set to none in css since id attribute override class attributes
 
     const speed_options_buttons_arr = document.getElementById("speed-ul").getElementsByTagName("button");   // Gets a collection of the buttons under the speed dropdown
     speed_options_buttons_arr[2].classList.add("button-active-background-color");   // Sets the slow option to true
@@ -85,12 +87,13 @@ window.addEventListener("load", () => {
     for (let i=0;i<algo_options_buttons_arr.length;i++) {
         algo_options_buttons_arr[i].addEventListener("click", () => {
             if (algo_options_bool_arr[i]) return;    // Returns if the option is already active
-            for (let j=0;j<algo_options_buttons_arr.length;j++) {
+            for (let j=0;j<algo_options_buttons_arr.length;j++) {   // Loops through each algorithm button
                 algo_options_bool_arr[j] = false;   // Sets all buttons to false
                 algo_options_buttons_arr[j].classList.remove("button-active-background-color"); // Sets all button background to deactive state
             }
             algo_options_bool_arr[i] = true;    // Sets button user clicked on to true
             algo_options_buttons_arr[i].classList.toggle("button-active-background-color"); // Sets button background to active
+            clear_button.click();   // Simulates a click on the clear button.
         })
     }
 
@@ -98,7 +101,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[0].addEventListener("click", () => {
         // enable/disble options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = false;
         weighted_button.disabled = false;
@@ -112,7 +117,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[1].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = false;
         weighted_button.disabled = true;
@@ -126,7 +133,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[2].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = false;
         weighted_button.disabled = false;
@@ -140,9 +149,11 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[3].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
-        undir_button.disabled = false;
+        undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
 
@@ -154,9 +165,11 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[4].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
+        startPermaDisable = true;
         set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
-        undir_button.disabled = false;
+        undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
 
@@ -168,10 +181,12 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[5].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
+        startPermaDisable = true;
         set_end_button.disabled = true;
-        dir_button.disabled = false;
+        endPermaDisable = true;
+        dir_button.disabled = true;
         undir_button.disabled = false;
-        weighted_button.disabled = false;
+        weighted_button.disabled = true;
         unweighted_button.disabled = false;
 
         // Other //
@@ -182,7 +197,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[6].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
+        startPermaDisable = true;
         set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -196,7 +213,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[7].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -210,7 +229,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[8].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
+        startPermaDisable = true;
         set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = false;
         weighted_button.disabled = false;
@@ -224,7 +245,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[9].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
+        startPermaDisable = true;
         set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = true;
         undir_button.disabled = false;
         weighted_button.disabled = false;
@@ -238,7 +261,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[10].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -252,7 +277,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[11].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -266,7 +293,9 @@ window.addEventListener("load", () => {
     algo_options_buttons_arr[12].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
+        startPermaDisable = false;
         set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -469,8 +498,10 @@ window.addEventListener("load", () => {
         node_li = [];   // Clears the nodes
         line_li = [];   // Clears the edges
         cumulative_nodes = 0;   // Resets cumulative nodes
-        startId = 0;
-        endId = 0;
+        startId = null;
+        startPermaDisable = false;
+        endId = null;
+        endPermaDisable = false;
         for (let row=0;row<133;row++) { // Resets the adjacency matrix
             adjacency_matrix[row].fill(Infinity);
         }
@@ -517,7 +548,8 @@ window.addEventListener("load", () => {
             "../algorithms/breadthFirstSearch.js",
             "../algorithms/dijkstra.js",
             "../algorithms/bellmanFord.js",
-            "../algorithms/floydWarshall.js"
+            "../algorithms/floydWarshall.js",
+            "../algorithms/bridgeArticulationPoints.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
@@ -566,14 +598,18 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     if (node_li.length == 0) {
         set_start_button.disabled = true;
     } else {
-        set_start_button.disabled = false;
+        if (!startPermaDisable) {
+            set_start_button.disabled = false;    
+        }
     }
 
     // Set End Button //
     if (node_li.length == 0 || algo_options_bool_arr[0]) {
         set_end_button.disabled = true;
     } else {
-        set_end_button.disabled = false;
+        if (!endPermaDisable) {
+            set_end_button.disabled = false;    
+        }
     }
 
     // Add Edge Button //
@@ -619,12 +655,6 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     }
 
     // Weighted Button //
-    if (algo_options_bool_arr[1]) {
-        weighted_button.disabled = true;
-    } else {
-        weighted_button.disabled = false;
-    }
-
     if (unweighted_button.disabled) {   // If unweighted button is disabled
         // Enable weighted button
         weighted_bool = true;
