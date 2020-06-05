@@ -499,9 +499,7 @@ window.addEventListener("load", () => {
         line_li = [];   // Clears the edges
         cumulative_nodes = 0;   // Resets cumulative nodes
         startId = null;
-        startPermaDisable = false;
         endId = null;
-        endPermaDisable = false;
         for (let row=0;row<133;row++) { // Resets the adjacency matrix
             adjacency_matrix[row].fill(Infinity);
         }
