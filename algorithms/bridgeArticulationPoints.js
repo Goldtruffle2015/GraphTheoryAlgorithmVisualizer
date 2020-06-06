@@ -24,9 +24,12 @@ self.onmessage = (e) => {
     let neighbors = []; // Tracks the neighbors of the currently explored node
     let disc = [];  // Tracks the order in which the node is explored
     let low = [];   // Tracks the low-link value of the node
+    let lowDisc = [];   // Tracks the lowest disc value before backtracking
     let cumul = 0;  // Tracks the cumulative number of nodes explored
     let lowVal;    // Tracks the low-link values
-    let art = [];   // Stores the index's of the articulation points
+    let lowDiscVal; // Tracks the lowest disc value
+    let art = [];   // Stores the articulation points
+    let out;    // Gets the output from the find function
 
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
@@ -55,11 +58,12 @@ self.onmessage = (e) => {
 
     function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
-            return low[nodeIndex]; 
+            return [low[nodeIndex], nodeIndex, true]; 
         }    
         visited.push(nodeIndex);    // Tracks nodes that have been visited
         disc[nodeIndex] = cumul;    // Sets the disc => order node was explored
         low[nodeIndex] = cumul; // Sets the low link value to the disc value
+        lowDisc[nodeIndex] = cumul; // Sets the low disc value to the disc value
         cumul++;
         updateNode(nodeIndex, "#FFA849");  // Sets node color indicating exploring
         sleep(sleep_time);
@@ -67,20 +71,60 @@ self.onmessage = (e) => {
         neighbors.push([]); // Pushes an empty array
         for (let id=0;id<adjacency_matrix[nodeIndex].length;id++) {    // Searches through the adjacency matrix
             if ((adjacency_matrix[nodeIndex][id] != Infinity) && (idToIndex(id) != prevIndex)) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
-                neighbors[neighbors.length - 1].push(id);    // Adds the id if value is not infinity
+                function includes2D(array, element) {   // Checks whether an element is included in a 2d array
+                    for (let row=0;row<array.length;row++) {    // Searches through each array
+                        if (array[row].includes(element)) { // Checks if element is included
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                if (includes2D(id)) {   // If value is in the process of being searched by a parent node
+                    neighbors[neighbors.length - 1].push(id);    // Adds the id at the end. Low priority    
+                } else {    // No node is in the process of searching it
+                    neighbors[neighbors.length - 1].unshift(id);    // Adds the id at the beginning. High priority
+                }
+                
             }
         }
         let id_arr = [];  // Gets the last value for the variable
+        let rootChildCounter = 0;   // Counts the number of unvisited children at the root
+        let visitedBool;    // Stores whether neighbor was visited or not
         for (id of neighbors[neighbors.length - 1]) {    // For each of the current nodes neighbors
             id_arr.push(id);
-            lowVal = find(idToIndex(id_arr[id_arr.length - 1]), nodeIndex);   // Recursively do a depth first search. Returns the low-link value of the neighboring node
+            out = find(idToIndex(id_arr[id_arr.length - 1]), nodeIndex);   // Recursively do a depth first search. Returns the low-link value of the neighboring node
+            lowVal = out[0];
+            lowDiscVal = out[1];
+            visitedBool = out[2];
             if (lowVal < low[nodeIndex]) { // If search finds a new lowest-value node
                 low[nodeIndex] = lowVal;   // Update lowest value node
-            } 
+            }
 
+            if (lowDiscVal < lowDisc[nodeIndex]) {
+                lowDisc[nodeIndex] = lowDiscVal;
+            }
+
+            // Find Articulation Points //
+            let currentIndex = nodeIndex;    // Stores the index of the current node
+            let recentChildIndex = id_arr[id_arr.length - 1];   // Stores the index of the last child explored
+            if ((lowDisc[recentChildIndex] >= disc[currentIndex]) && (currentIndex != 0)) {  // Definition of articulation point
+                updateNode(currentIndex, "red");
+                art.push(currentIndex);
+            }
+
+            // Check if root is articulation point //
+            if (nodeIndex == 0) {   // Only for root node
+                if (!visitedBool) {  // If neighbor was not visited
+                    rootChildCounter++; // Add one to child counter
+                }
+                if (rootChildCounter >= 2) {    // If root has at least 2 unvisited children
+                    updateNode(0, "red");
+                    art.push(0);
+                }
+            }
+
+            // Find bridges //
             if (disc[nodeIndex] < low[idToIndex(id_arr[id_arr.length - 1])]) {  // Checks if edge connecting the two nodes is a bridge
-
-                // Find bridges //
                 for (let line_index=0;line_index<line_li.length;line_index++) { // Find the line(s) that match the above condition
                     let from = idToIndex(line_li[line_index].startNodeId);  // Stores the index position of the starting node
                     let to = idToIndex(line_li[line_index].endNodeId);  // stores the index position of the end node
@@ -94,18 +138,16 @@ self.onmessage = (e) => {
             id_arr.pop();   // Remove neighbor to check from stack
         }
         neighbors.pop();
-        updateNode(nodeIndex, "#397EC9");  // Resets the node color      
+        if (art.includes(nodeIndex)) {
+            updateNode(nodeIndex, "red");
+        } else {
+            updateNode(nodeIndex, "#397EC9");  // Resets the node color    
+        }
         sleep(sleep_time);
-        return low[nodeIndex];
+        return [low[nodeIndex], lowDisc[nodeIndex], false];
     }
 
     // -- Code Starts Here -- //
     find(0, null);
+    console.log(`${lowDisc}`);
 }
-
-// Notes //
-/*
-Conditions for articulation point(s):
-    a) A node is connected to a bridge and has at least 2 edges
-    b) The node is part of a cycle and has at least 3 neighbors
-*/
