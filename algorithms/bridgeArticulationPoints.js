@@ -64,16 +64,15 @@ self.onmessage = (e) => {
         if (visited.includes(nodeIndex)) {
             // Look for visited node's children according to DFS tree //
             // Note: Some connections may be parents! //
-            console.log(`disc number => ${disc[nodeIndex]}`);
-            console.log(`neighbors.length => ${neighbors.length}`);
-            console.log(`disc[nodeIndex] => ${disc[nodeIndex]}`);
-            console.log(`neighbors[disc[nodeIndex]] => ${neighbors[disc[nodeIndex]]}`);
             for (let childId of neighbors[disc[nodeIndex]]) {   // Loop through children of visited node
+                if (lowDisc[idToIndex(childId)] < lowDisc[nodeIndex]) { // If node has a child with a lower lowDisc value
+                    lowDisc[nodeIndex] = lowDisc[idToIndex(childId)];   // Update node's lowDisc value
+                }
                 if (lowDisc[idToIndex(childId)] < disc[nodeIndex]) {    // If child of visited node has a lower lowDisc value
                     return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
                 }
             }
-            return [low[nodeIndex], disc[nodeIndex], true]; 
+            return [low[nodeIndex], disc[nodeIndex], true]; // Returns is no children has a better lowDisc value
         }    
         visited.push(nodeIndex);    // Tracks nodes that have been visited
         disc[nodeIndex] = cumul;    // Sets the disc => order node was explored
@@ -102,6 +101,7 @@ self.onmessage = (e) => {
                 
             }
         }
+        console.log(neighbors[8]);
         processing.push(neighbors[disc[nodeIndex]]);   // Adds all current neighbors as being processed
         for (id of neighbors[disc[nodeIndex]]) {    // For each of the current nodes neighbors
             id_arr.push(id);
