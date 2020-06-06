@@ -53,16 +53,6 @@ self.onmessage = (e) => {
         self.postMessage([null, null, index, color]);
     }
 
-    function countNeighbors(par) {
-        let counter = 0; // Tracks the number of neighbors 
-        for (let y=0;y<adjacency_matrix[par].length;y++) {    // Searches through the adjacency matrix
-            if (adjacency_matrix[par][y] != Infinity) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
-                counter++;
-            }
-        }
-        return counter;
-    }
-
     function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
             return low[nodeIndex]; 
@@ -89,13 +79,6 @@ self.onmessage = (e) => {
             } 
 
             if (disc[nodeIndex] < low[idToIndex(id_arr[id_arr.length - 1])]) {  // Checks if edge connecting the two nodes is a bridge
-                // Finds articulation points //
-                neighbor_count = countNeighbors(nodeIndex);
-                if (neighbor_count >= 2) {  // If the node has at least 2 neighbors
-                    updateNode(nodeIndex, "red");   // Set node as articulation point
-                    art.push(nodeIndex);
-                    sleep(sleep_time);
-                }
 
                 // Find bridges //
                 for (let line_index=0;line_index<line_li.length;line_index++) { // Find the line(s) that match the above condition
@@ -111,15 +94,7 @@ self.onmessage = (e) => {
             id_arr.pop();   // Remove neighbor to check from stack
         }
         neighbors.pop();
-        if (art.includes(nodeIndex)) {
-            updateNode(nodeIndex, "red");
-        } else {
-            if ((disc[nodeIndex] == low[nodeIndex]) && (countNeighbors(nodeIndex) >= 3)) {    
-                updateNode(nodeIndex, "red");
-            } else {
-                updateNode(nodeIndex, "#397EC9");  // Resets the node color      
-            }
-        }
+        updateNode(nodeIndex, "#397EC9");  // Resets the node color      
         sleep(sleep_time);
         return low[nodeIndex];
     }
