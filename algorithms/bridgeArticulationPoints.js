@@ -58,7 +58,7 @@ self.onmessage = (e) => {
 
     function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
-            return [low[nodeIndex], nodeIndex, true]; 
+            return [low[nodeIndex], disc[nodeIndex], true]; 
         }    
         visited.push(nodeIndex);    // Tracks nodes that have been visited
         disc[nodeIndex] = cumul;    // Sets the disc => order node was explored
@@ -106,7 +106,9 @@ self.onmessage = (e) => {
 
             // Find Articulation Points //
             let currentIndex = nodeIndex;    // Stores the index of the current node
-            let recentChildIndex = id_arr[id_arr.length - 1];   // Stores the index of the last child explored
+            let recentChildIndex = idToIndex(id_arr[id_arr.length - 1]);   // Stores the index of the last child explored
+            console.log(`recentChildIndex => ${recentChildIndex}, currentIndex => ${currentIndex}`);
+            console.log(`${lowDisc[recentChildIndex]} >= ${disc[currentIndex]}`);
             if ((lowDisc[recentChildIndex] >= disc[currentIndex]) && (currentIndex != 0)) {  // Definition of articulation point
                 updateNode(currentIndex, "red");
                 art.push(currentIndex);
