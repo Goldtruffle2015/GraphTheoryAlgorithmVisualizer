@@ -30,6 +30,10 @@ self.onmessage = (e) => {
     let lowDiscVal; // Tracks the lowest disc value
     let art = [];   // Stores the articulation points
     let out;    // Gets the output from the find function
+    let id_arr = [];  // Gets the last value for the variable
+    let rootChildCounter = 0;   // Counts the number of unvisited children at the root
+    let visitedBool;    // Stores whether neighbor was visited or not
+    let processing = [];    // Tracks the nodes currently being processed
 
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
@@ -58,6 +62,17 @@ self.onmessage = (e) => {
 
     function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
+            // Look for visited node's children according to DFS tree //
+            // Note: Some connections may be parents! //
+            console.log(`disc number => ${disc[nodeIndex]}`);
+            console.log(`neighbors.length => ${neighbors.length}`);
+            console.log(`disc[nodeIndex] => ${disc[nodeIndex]}`);
+            console.log(`neighbors[disc[nodeIndex]] => ${neighbors[disc[nodeIndex]]}`);
+            for (let childId of neighbors[disc[nodeIndex]]) {   // Loop through children of visited node
+                if (lowDisc[idToIndex(childId)] < disc[nodeIndex]) {    // If child of visited node has a lower lowDisc value
+                    return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
+                }
+            }
             return [low[nodeIndex], disc[nodeIndex], true]; 
         }    
         visited.push(nodeIndex);    // Tracks nodes that have been visited
@@ -68,29 +83,27 @@ self.onmessage = (e) => {
         updateNode(nodeIndex, "#FFA849");  // Sets node color indicating exploring
         sleep(sleep_time);
         
-        neighbors.push([]); // Pushes an empty array
+        neighbors[disc[nodeIndex]] = []; // Pushes an empty array
         for (let id=0;id<adjacency_matrix[nodeIndex].length;id++) {    // Searches through the adjacency matrix
             if ((adjacency_matrix[nodeIndex][id] != Infinity) && (idToIndex(id) != prevIndex)) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
-                function includes2D(array, element) {   // Checks whether an element is included in a 2d array
-                    for (let row=0;row<array.length;row++) {    // Searches through each array
-                        if (array[row].includes(element)) { // Checks if element is included
+                function includes2D(someArr, element) {   // Checks whether an element is included in a 2d array
+                    for (let row=0;row<someArr.length;row++) {    // Searches through each array
+                        if (someArr[row].includes(element)) { // Checks if element is included
                             return true;
                         }
                     }
                     return false;
                 }
-                if (includes2D(id)) {   // If value is in the process of being searched by a parent node
-                    neighbors[neighbors.length - 1].push(id);    // Adds the id at the end. Low priority    
+                if (includes2D(processing, id)) {   // If value is in the process of being searched by a parent node
+                    neighbors[disc[nodeIndex]].push(id);    // Adds the id at the end. Low priority    
                 } else {    // No node is in the process of searching it
-                    neighbors[neighbors.length - 1].unshift(id);    // Adds the id at the beginning. High priority
+                    neighbors[disc[nodeIndex]].unshift(id);    // Adds the id at the beginning. High priority
                 }
                 
             }
         }
-        let id_arr = [];  // Gets the last value for the variable
-        let rootChildCounter = 0;   // Counts the number of unvisited children at the root
-        let visitedBool;    // Stores whether neighbor was visited or not
-        for (id of neighbors[neighbors.length - 1]) {    // For each of the current nodes neighbors
+        processing.push(neighbors[disc[nodeIndex]]);   // Adds all current neighbors as being processed
+        for (id of neighbors[disc[nodeIndex]]) {    // For each of the current nodes neighbors
             id_arr.push(id);
             out = find(idToIndex(id_arr[id_arr.length - 1]), nodeIndex);   // Recursively do a depth first search. Returns the low-link value of the neighboring node
             lowVal = out[0];
@@ -107,8 +120,6 @@ self.onmessage = (e) => {
             // Find Articulation Points //
             let currentIndex = nodeIndex;    // Stores the index of the current node
             let recentChildIndex = idToIndex(id_arr[id_arr.length - 1]);   // Stores the index of the last child explored
-            console.log(`recentChildIndex => ${recentChildIndex}, currentIndex => ${currentIndex}`);
-            console.log(`${lowDisc[recentChildIndex]} >= ${disc[currentIndex]}`);
             if ((lowDisc[recentChildIndex] >= disc[currentIndex]) && (currentIndex != 0)) {  // Definition of articulation point
                 updateNode(currentIndex, "red");
                 art.push(currentIndex);
@@ -139,7 +150,6 @@ self.onmessage = (e) => {
             }
             id_arr.pop();   // Remove neighbor to check from stack
         }
-        neighbors.pop();
         if (art.includes(nodeIndex)) {
             updateNode(nodeIndex, "red");
         } else {
