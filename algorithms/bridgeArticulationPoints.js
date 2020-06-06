@@ -65,12 +65,15 @@ self.onmessage = (e) => {
             // Look for visited node's children according to DFS tree //
             // Note: Some connections may be parents! //
             for (let childId of neighbors[disc[nodeIndex]]) {   // Loop through children of visited node
-                if (lowDisc[idToIndex(childId)] < lowDisc[nodeIndex]) { // If node has a child with a lower lowDisc value
-                    lowDisc[nodeIndex] = lowDisc[idToIndex(childId)];   // Update node's lowDisc value
+                if (disc[idToIndex(childId)] > disc[nodeIndex]) {   // Child must have a higher disc value
+                    if (lowDisc[idToIndex(childId)] < lowDisc[nodeIndex]) { // If node has a child with a lower lowDisc value
+                        lowDisc[nodeIndex] = lowDisc[idToIndex(childId)];   // Update node's lowDisc value
+                    }
+                    if (lowDisc[idToIndex(childId)] < disc[nodeIndex]) {    // If child of visited node has a lower lowDisc value
+                        return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
+                    }    
                 }
-                if (lowDisc[idToIndex(childId)] < disc[nodeIndex]) {    // If child of visited node has a lower lowDisc value
-                    return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
-                }
+                
             }
             return [low[nodeIndex], disc[nodeIndex], true]; // Returns is no children has a better lowDisc value
         }    
@@ -93,7 +96,7 @@ self.onmessage = (e) => {
                     }
                     return false;
                 }
-                if (includes2D(processing, id)) {   // If value is in the process of being searched by a parent node
+                if (includes2D(processing, id) || (visited.includes(idToIndex(id)))) {   // If value is in the process of being searched by a parent node or node was already visited
                     neighbors[disc[nodeIndex]].push(id);    // Adds the id at the end. Low priority    
                 } else {    // No node is in the process of searching it
                     neighbors[disc[nodeIndex]].unshift(id);    // Adds the id at the beginning. High priority
