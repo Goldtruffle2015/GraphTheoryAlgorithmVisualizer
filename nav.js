@@ -106,7 +106,7 @@ window.addEventListener("load", () => {
         endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = false;
-        weighted_button.disabled = false;
+        weighted_button.disabled = true;
         unweighted_button.disabled = false;
 
         // Other //
@@ -202,7 +202,7 @@ window.addEventListener("load", () => {
         endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = true;
-        weighted_button.disabled = false;
+        weighted_button.disabled = true;
         unweighted_button.disabled = false;
 
         // Other //
@@ -547,7 +547,8 @@ window.addEventListener("load", () => {
             "../algorithms/dijkstra.js",
             "../algorithms/bellmanFord.js",
             "../algorithms/floydWarshall.js",
-            "../algorithms/bridgeArticulationPoints.js"
+            "../algorithms/bridgeArticulationPoints.js",
+            "../algorithms/tarjan.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {

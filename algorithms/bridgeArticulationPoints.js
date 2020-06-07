@@ -1,4 +1,4 @@
-/**
+/*
 This file contains the algorithm to find bridges and articulation points.
 This file runs in a separate thread from the main thread.
  */
@@ -73,7 +73,6 @@ self.onmessage = (e) => {
                         return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
                     }    
                 }
-                
             }
             return [low[nodeIndex], disc[nodeIndex], true]; // Returns is no children has a better lowDisc value
         }    
@@ -86,7 +85,7 @@ self.onmessage = (e) => {
         sleep(sleep_time);
         
         neighbors[disc[nodeIndex]] = []; // Pushes an empty array
-        for (let id=0;id<adjacency_matrix[nodeIndex].length;id++) {    // Searches through the adjacency matrix
+        for (let id=0;id<=node_li[node_li.length - 1].id;id++) {    // Searches through the adjacency matrix
             if ((adjacency_matrix[nodeIndex][id] != Infinity) && (idToIndex(id) != prevIndex)) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
                 function includes2D(someArr, element) {   // Checks whether an element is included in a 2d array
                     for (let row=0;row<someArr.length;row++) {    // Searches through each array
@@ -104,7 +103,6 @@ self.onmessage = (e) => {
                 
             }
         }
-        console.log(neighbors[8]);
         processing.push(neighbors[disc[nodeIndex]]);   // Adds all current neighbors as being processed
         for (id of neighbors[disc[nodeIndex]]) {    // For each of the current nodes neighbors
             id_arr.push(id);
