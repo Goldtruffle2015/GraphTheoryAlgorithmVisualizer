@@ -25,6 +25,7 @@ self.onmessage = (e) => {
     let state;  // Gets the binary representation of the nodes excluding the "next" node
     let minDist;    // Gets the minimum distance
     let newDistance;    // Finds the new distance from state with next node included
+    let lastLineIndex;  // Tracks the index of the last line updated
 
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
@@ -47,8 +48,32 @@ self.onmessage = (e) => {
         self.postMessage([index, color, null, null]);
     };
 
+    function updateNodesByState(state, color) {
+        let binaryState = state.toString(2).split('').reverse().join('');   
+        /*
+        Takes the state parameter -> shallow copies it -> converts to binary string 
+        -> converts to string array -> reverse array -> rejoins array to string
+        */
+        for (let index = 0;index < binaryState.length;index++) {
+            if (binaryState[index] == "1") {
+                updateNode(index, color);
+            };
+        };
+    };
+
     function updateLine(index, color) {
         self.postMessage([null, null, index, color]);
+    };
+
+    function updateLineByStartEnd(startIndex, endIndex, color) {    // Updates a line given a start and end index
+        for (let lineIndex=0;lineIndex < line_li.length;lineIndex++) {
+            let from = idToIndex(line_li[lineIndex].startNodeId);
+            let to = idToIndex(line_li[lineIndex].endNodeId);
+            if ((from == startIndex) && (to == endIndex)) {
+                updateLine(lineIndex, color);
+                return lineIndex;
+            }
+        }
     };
 
     function notIn(i, subset) {
@@ -57,6 +82,7 @@ self.onmessage = (e) => {
         This function checks whether a certain digit is 0 or 1.
         */
     };
+
 
     function tsp(m, S) {
         function setup(m, memo, S, N) { /*
@@ -78,7 +104,11 @@ self.onmessage = (e) => {
 
                 m[S][i] represents the edge weight from node S to node i
                 */
-            }
+               updateNode(i, "#FFA849");
+               sleep(sleep_time);
+               updateNode(i, "#397EC9");
+               sleep(sleep_time);
+            };
         };
         function solve(m, memo, S, N) { // Solves the TSP
             const permutations = (r, n) => {
@@ -113,7 +143,6 @@ self.onmessage = (e) => {
                     }
                 }
             };
-
             for (let r=3;r<=N;r++) {    // "r" represents the number of nodes in the partial tour
                 for (subset of permutations(r, N)) {    // For each possible subset of visited nodes
                     if (notIn(S, subset)) continue; // Checks whether start node is included in subset
@@ -124,6 +153,8 @@ self.onmessage = (e) => {
                         */
                         state = subset ^ (1 << next);   // Gets the nodes without the next node
                         minDist = Infinity; // Set the minimum distance to positive infinity
+                        updateNodesByState(state, "#FFA849");   // Draws nodes in state as active
+                        sleep(sleep_time);
                         for (let e=0;e<N;e++) { // e represents the end node index
                             if ((e == S) || (e == next) || (notIn(e, subset))) continue;
                             /*
@@ -136,10 +167,16 @@ self.onmessage = (e) => {
 
                             m[e][next] = distance from end node to next
                             */
+                            updateNode(next, "magenta");    // Set next node as a temporary end node
+                            sleep(sleep_time);
                             if (newDistance < minDist) {
                                 minDist = newDistance
                             };
+                            updateNode(next, "#397EC9");    // Reset next node color
+                            sleep(sleep_time);
                         };
+                        updateNodesByState(state, "#397EC9");   // Resets nodes in state as active
+                        sleep(sleep_time);
                         memo[next][subset] = minDist;
                     };
                 };
@@ -165,7 +202,11 @@ self.onmessage = (e) => {
             let lastIndex = S;  // Stores the previous index algorithm was at
             state = (1 << N) - 1;   // End state. Bit mask with N nodes set to 1.
             let tour = [];  // Stores the optimal tour
-
+            updateNodesByState(state, "#FFA849");   // Sets all nodes to orange
+            updateNode(S, "cyan");  // Sets starting node to cyan
+            sleep(sleep_time);
+            tour[0] = S;    // Start node is S
+            tour[N] = S;    // End node is S
             for (let i=N-1;i>=1;i--) {    // Loop backwards through each index
                 let index = -1; // Tracks the index of the best node to go to
                 for (let j=0;j<N;j++) { // j represents all possible candidates for the next node
@@ -174,17 +215,23 @@ self.onmessage = (e) => {
                     Skips if candidate node (j) is the start node or if j has already been visited.
                     Visited nodes are removed from state.
                     */
+                    updateNode(j, "magenta");   // Set j as temporary end node
+                    sleep(sleep_time);
                     if (index == -1) index = j; // Once a valid candidate node is found store candidate node index
                     let prevDist = memo[index][state] + m[index][lastIndex];    // Gets the distance of last candidate node
                     let newDist = memo[j][state] + m[j][lastIndex]; // Finds the distance of new candidate node
                     if (newDist < prevDist) index = j;  // If new candidate node improves distance store j
+                    updateNode(j, "#397EC9");   // Resets node color
+                    sleep(sleep_time);
                 };
                 tour[i] = index;    // Store the best node in tour
                 state = state ^ (1 << index);   // Set candidate node in state to 0. Marks node as visited
                 lastIndex = index;  // Set last index as the candidate node j
+                updateLineByStartEnd(tour[i], tour[i + 1], "#2F7B1F");
+                sleep(sleep_time);
             };
-            tour[0] = S;    // Start node is S
-            tour[N] = S;    // End node is S
+            updateLineByStartEnd(tour[0], tour[1], "#2F7B1F");
+            sleep(sleep_time);
             return tour;    // Return the tour
         };
         const N = node_li.length; // Represents the number of nodes
@@ -201,7 +248,7 @@ self.onmessage = (e) => {
         let minCost = findMinCost(m, memo, S, N);
         let tour = findOptimalTour(m, memo, S, N);
         console.log(minCost);
-        console.log(`${tour}`)
+        console.log(`${tour}`);
     };
 
     // -- Code Starts Here -- //

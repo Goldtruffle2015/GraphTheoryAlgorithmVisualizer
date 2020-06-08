@@ -3,7 +3,6 @@ File handles all nav functionality
 TODO: fix dir/undir and weighted/unweighted button disabling
 */
 // -- Global Variables -- //
-
 algo_options_bool_arr = []; // Stores which algorithm option is selected
 speed_options_bool_arr = [];    // Stores which speed option is selected
 let sleep_time = 0;  // Number of ms for algorithm to wait before next iteration

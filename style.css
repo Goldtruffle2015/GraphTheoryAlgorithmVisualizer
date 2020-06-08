@@ -53,9 +53,9 @@
     border-radius: 50%;
     background-color: red;
     text-align: center;
-    font-size: 20pt;
-    width: 40px;
-    height: 40px;
+    font-size: 17px;
+    width: 30px;
+    height: 30px;
 }
 
 #speed-div, #algo-div {

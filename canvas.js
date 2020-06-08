@@ -39,8 +39,8 @@ window.addEventListener("load", () => {
         // -- Add node -- //
         if (add_node_bool) {
             // -- Add Node -- //
-            if (e.offsetX < 40 || e.offsetX > canvas.width - 40) return;  // Ensures node is not overflowing out of page
-            if (e.offsetY < 40 || e.offsetY > canvas.height - 40) return; // Ensures node is not overflowing out of page
+            if (e.offsetX < nodeRadius || e.offsetX > canvas.width - nodeRadius) return;  // Ensures node is not overflowing out of page
+            if (e.offsetY < nodeRadius || e.offsetY > canvas.height - nodeRadius) return; // Ensures node is not overflowing out of page
             for (c of node_li) {
                 if (distance(c.x, e.offsetX, c.y, e.offsetY) < 80) return;    // Prevents nodes from overlapping
             }
@@ -54,7 +54,7 @@ window.addEventListener("load", () => {
             node_id_of_removed_node = 0;    // Stores the node id of the node removed
             let click_detected = false; // Checks if user clicked on a node
             for (let i=0; i<node_li.length; i++) {// Finds the node user clicked on
-                if (distance(node_li[i].x, e.offsetX, node_li[i].y, e.offsetY) <= 40) {// Checks if distance is valid
+                if (distance(node_li[i].x, e.offsetX, node_li[i].y, e.offsetY) <= nodeRadius) {// Checks if distance is valid
                     click_detected = true;  // User has successfully clicked on a node
                     node_id_of_removed_node = node_li[i].id;    // Stores the id of node being removed
                     node_li.splice(i, 1);   // Remove node from list
@@ -88,7 +88,7 @@ window.addEventListener("load", () => {
         } else if (add_edge_bool) {
             if (!edge_draw_active) {    // If player has not selected a starting node
                 for (c of node_li) {    // Checks each node
-                    if (distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) { // Checks if user clicked on a node
+                    if (distance(c.x, e.offsetX, c.y, e.offsetY) <= nodeRadius) { // Checks if user clicked on a node
                         temp_line = new CustomLine(c.x, c.y, c.id); // Creates a new line object
                         temp_line.initialize(); // Initializes the line
                         edge_draw_active = true;    // Sets draw state to true
@@ -100,7 +100,7 @@ window.addEventListener("load", () => {
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
                     let weight_draw = true;
-                    if ((distance(c.x, e.offsetX, c.y, e.offsetY) <= 40) && (c.id != temp_line.startNodeId)) {   // Checks if user clicked on a node and node is not starting node
+                    if ((distance(c.x, e.offsetX, c.y, e.offsetY) <= nodeRadius) && (c.id != temp_line.startNodeId)) {   // Checks if user clicked on a node and node is not starting node
                         let weight_active = true;   // Bool determines whether weight input needs to be provided
 
                         temp_line.endx = c.x;
@@ -144,8 +144,8 @@ window.addEventListener("load", () => {
                             weight_form.style.display = "block";    // Show the weight input
                             const last_edge = line_li[line_li.length - 1];  // Get the most recently added edge
                             const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy); // Find the midpoint of the edge
-                            weight_form.style.left = `${mid_p[0] - 20}px`;  // Position the input
-                            weight_form.style.top = `${mid_p[1] - 20}px`;   // Position the input
+                            weight_form.style.left = `${mid_p[0] - 15}px`;  // Position the input
+                            weight_form.style.top = `${mid_p[1] - 15}px`;   // Position the input
                         }
 
                         break;
@@ -175,7 +175,7 @@ window.addEventListener("load", () => {
         // -- Set Start Node -- //
         } else if (set_start_bool) { 
             for (n of node_li) {
-                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= nodeRadius) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == startId) { // Find the previous starting node
                             n2.color = (n2.id == endId) ? "magenta" : "#397EC9"; // If the previous starting node is also an end node set the color to magenta otherwise reset to blue
@@ -190,7 +190,7 @@ window.addEventListener("load", () => {
         // -- Set End Node -- //
         } else if (set_end_bool) {
             for (n of node_li) {
-                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= 40) {   // Checks if user clicked on node
+                if (distance(n.x, e.offsetX, n.y, e.offsetY) <= nodeRadius) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == endId) { // Find the previous ending node
                             n2.color = (n2.id == startId) ? "cyan" : "#397EC9"; // If the previous ending node is also a starting node set the color to cyan otherwise reset to blue

@@ -8,6 +8,7 @@ let cumulative_nodes = 0;   // Tracks the number of nodes drawn, including the o
 let adjacency_matrix = [];   // Represents node relationships
 let startId = null; // Stores the starting node id. Node is colored "cyan"
 let endId = null;   // Stores the ending node id. Node is colored "magenta"
+const nodeRadius = 35;   // Global variable defines the radius of the nodes
 // If node is both a start and end colored "yellow"
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
@@ -55,7 +56,7 @@ class CustomNode {  // Builds nodes
 
     draw() {    // Draws the node
         ctx.beginPath();    // Starts a new starting point
-        ctx.arc(this.x, this.y, 40, 0, 2 * Math.PI);    // Draws a circle
+        ctx.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI);    // Draws a circle
         ctx.fillStyle = this.color;
         ctx.fill();
     }
@@ -73,6 +74,8 @@ class CustomLine {  // Builds lines
         this.drawweight = false; // Boolean specifies if the weight should be drawn
         this.color = "white";
         this.offsetBool = false;    // Tracks whether the 
+        this.circleFrameRadius = 15;    // Defines the radius of the circle enclosing the weight text
+        this.fontSize = 17;
     }
 
     initialize() {
@@ -94,12 +97,12 @@ class CustomLine {  // Builds lines
             const mid_p = midPoint(this.startx, this.endx, this.starty, this.endy);
             // Draw the circle //
             ctx.beginPath();    // Start the circle
-            ctx.arc(mid_p[0], mid_p[1], 20, 0, 2 * Math.PI);
+            ctx.arc(mid_p[0], mid_p[1], this.circleFrameRadius, 0, 2 * Math.PI);
             ctx.fillStyle = this.color;
             ctx.fill();
 
             // Draw the number //
-            ctx.font = "27px Arial";
+            ctx.font = `${this.fontSize}px Arial`;
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -108,13 +111,13 @@ class CustomLine {  // Builds lines
     }
 
     drawPointer() {
-        let pointerWidth = 40;
+        let pointerWidth = 30;
         // Find vector with same slope as edge //
         const edge_vec = [this.startx - this.endx, this.starty - this.endy];    // This vector is oriented reverse of actual direction
 
         // Scale vector to desired width. This is to offset the start position //
         const edge_vec_length = distance(edge_vec[0], 0, edge_vec[1], 0);
-        const edge_vec_scaled = [edge_vec[0] * pointerWidth / edge_vec_length, edge_vec[1] * pointerWidth / edge_vec_length];
+        const edge_vec_scaled = [edge_vec[0] * nodeRadius / edge_vec_length, edge_vec[1] * nodeRadius / edge_vec_length];
 
         // Find start position of pointer //
         const pointerx = this.endx + edge_vec_scaled[0];
