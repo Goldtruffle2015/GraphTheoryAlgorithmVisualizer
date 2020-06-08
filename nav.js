@@ -3,6 +3,7 @@ File handles all nav functionality
 TODO: fix dir/undir and weighted/unweighted button disabling
 */
 // -- Global Variables -- //
+
 algo_options_bool_arr = []; // Stores which algorithm option is selected
 speed_options_bool_arr = [];    // Stores which speed option is selected
 let sleep_time = 0;  // Number of ms for algorithm to wait before next iteration
@@ -209,13 +210,13 @@ window.addEventListener("load", () => {
         weight_input.min = -99;
     })
 
-    // TSP (Dynamic Programming)
+    // Bellman-Ford-Karp //
     algo_options_buttons_arr[7].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
         startPermaDisable = false;
-        set_end_button.disabled = false;
-        endPermaDisable = false;
+        set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -548,7 +549,8 @@ window.addEventListener("load", () => {
             "../algorithms/bellmanFord.js",
             "../algorithms/floydWarshall.js",
             "../algorithms/bridgeArticulationPoints.js",
-            "../algorithms/tarjan.js"
+            "../algorithms/tarjan.js",
+            "../algorithms/bellmanHeldKarp.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {

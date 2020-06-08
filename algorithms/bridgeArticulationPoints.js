@@ -1,6 +1,21 @@
 /*
 This file contains the algorithm to find bridges and articulation points.
 This file runs in a separate thread from the main thread.
+
+This algorithm does a depth first search of the graph and records the discovery time
+and the low-link value of the current node as it goes. It the algorithm visits an
+already visited node it checks its low-link value and propagates that low-link value 
+along the parent nodes if the low-link value is better. Bridges occur when the current
+node's discovery time is less than it's chid's low-link value. Articulation points are
+trickier but the algorithm is done in the same depth first search as the bridges 
+algorithm. The difference with the articulation points algorithm is that if it visits
+an already visited node it returns the discovery time of that node, not the low-link value.
+It will propagate that discovery time along the parents via backtracking assuming the
+disc value is less than the current nodes disc value. One more thing. When the 
+algorithm visits an already visited node it also looks at that nodes children (children
+is defined as having a higher disc value than the previous node) and checks their lowest
+disc value. If a child is found to have a lower lowest disc value it will return that 
+child's lowest disc value.
  */
 self.onmessage = (e) => {
     // -- Initialize variables -- //

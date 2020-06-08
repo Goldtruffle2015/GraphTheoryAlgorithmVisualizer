@@ -134,5 +134,4 @@ self.onmessage = (e) => {
 
     // -- Code Starts Here -- //
     tarjan();   // Start Tarjan's algorithm
-    console.log(`${low}`);
 }
