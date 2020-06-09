@@ -164,10 +164,10 @@ window.addEventListener("load", () => {
     // Floyd-Warshall //
     algo_options_buttons_arr[4].addEventListener("click", () => {
         // enable/disable options //
-        set_start_button.disabled = true;
-        startPermaDisable = true;
-        set_end_button.disabled = true;
-        endPermaDisable = true;
+        set_start_button.disabled = false;
+        startPermaDisable = false;
+        set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = false;
@@ -228,13 +228,13 @@ window.addEventListener("load", () => {
     // Eulerian Path //
     algo_options_buttons_arr[8].addEventListener("click", () => {
         // enable/disable options //
-        set_start_button.disabled = true;
-        startPermaDisable = true;
-        set_end_button.disabled = true;
-        endPermaDisable = true;
+        set_start_button.disabled = false;
+        startPermaDisable = false;
+        set_end_button.disabled = false;
+        endPermaDisable = false;
         dir_button.disabled = false;
-        undir_button.disabled = false;
-        weighted_button.disabled = false;
+        undir_button.disabled = true;
+        weighted_button.disabled = true;
         unweighted_button.disabled = false;
 
         // Other //
@@ -539,6 +539,10 @@ window.addEventListener("load", () => {
         sleep_time = 50;
     })
 
+    speed_options_buttons_arr[3].addEventListener("click", () => {
+        sleep_time = null;
+    })
+
     // -- Start Button -- //
     start_button.addEventListener("click", () => {
         const dict = [
@@ -549,7 +553,8 @@ window.addEventListener("load", () => {
             "../algorithms/floydWarshall.js",
             "../algorithms/bridgeArticulationPoints.js",
             "../algorithms/tarjan.js",
-            "../algorithms/bellmanHeldKarp.js"
+            "../algorithms/bellmanHeldKarp.js",
+            "../algorithms/hierholzer.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {

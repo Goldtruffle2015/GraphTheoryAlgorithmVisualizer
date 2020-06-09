@@ -28,10 +28,18 @@ self.onmessage = (e) => {
         for (let col=0;col<adjacency_matrix[row].length;col++) {
             if (adjacency_matrix[row][col] != Infinity) {
                 adjacency_matrix[row][col] = Number(adjacency_matrix[row][col]);    // This is done because the non-infinity values of the adjacency matrix are strings so they need to be converted back to numbers
-            }
-        }
-    }
-    const sleep_time = e.data[5];
+            };
+        };
+    };
+    let sleep_time;
+    let display;
+    if (e.data[5] == null) {
+        sleep_time = 50;    
+        display = false;  // Specifies whether algorithm process is displayed
+    } else {
+        sleep_time = e.data[5];
+        display = true;   // Specifies whether algorithm process is displayed
+    };
     const dir_bool = e.data[6];
     const undir_bool = e.data[7];
 
@@ -57,23 +65,23 @@ self.onmessage = (e) => {
         do {
         currentDate = Date.now();
         } while (currentDate - date < milliseconds);
-    }
+    };
 
     function idToIndex(id) {  // Find the index position of node with specified id
         return node_li.findIndex((element) => element.id == id);
-    }
+    };
 
     function indexToId(index) { // Finds the id of the node given index
         return node_li[index].id;
-    }
+    };
 
     function updateNode(index, color) {
         self.postMessage([index, color, null, null]);
-    }
+    };
 
     function updateLine(index, color) {
         self.postMessage([null, null, index, color]);
-    }
+    };
 
     function find(nodeIndex, prevIndex) {    // NodeIndex and prevIndex are the index's relative to node_li
         if (visited.includes(nodeIndex)) {
@@ -83,14 +91,14 @@ self.onmessage = (e) => {
                 if (disc[idToIndex(childId)] > disc[nodeIndex]) {   // Child must have a higher disc value
                     if (lowDisc[idToIndex(childId)] < lowDisc[nodeIndex]) { // If node has a child with a lower lowDisc value
                         lowDisc[nodeIndex] = lowDisc[idToIndex(childId)];   // Update node's lowDisc value
-                    }
+                    };
                     if (lowDisc[idToIndex(childId)] < disc[nodeIndex]) {    // If child of visited node has a lower lowDisc value
                         return [low[nodeIndex], lowDisc[idToIndex(childId)], true];  // Return that child's lowDisc value
-                    }    
-                }
-            }
+                    }; 
+                };
+            };
             return [low[nodeIndex], disc[nodeIndex], true]; // Returns is no children has a better lowDisc value
-        }    
+        };
         visited.push(nodeIndex);    // Tracks nodes that have been visited
         disc[nodeIndex] = cumul;    // Sets the disc => order node was explored
         low[nodeIndex] = cumul; // Sets the low link value to the disc value
@@ -106,18 +114,18 @@ self.onmessage = (e) => {
                     for (let row=0;row<someArr.length;row++) {    // Searches through each array
                         if (someArr[row].includes(element)) { // Checks if element is included
                             return true;
-                        }
-                    }
+                        };
+                    };
                     return false;
-                }
+                };
                 if (includes2D(processing, id) || (visited.includes(idToIndex(id)))) {   // If value is in the process of being searched by a parent node or node was already visited
                     neighbors[disc[nodeIndex]].push(id);    // Adds the id at the end. Low priority    
                 } else {    // No node is in the process of searching it
                     neighbors[disc[nodeIndex]].unshift(id);    // Adds the id at the beginning. High priority
-                }
+                };
                 
-            }
-        }
+            };
+        };
         processing.push(neighbors[disc[nodeIndex]]);   // Adds all current neighbors as being processed
         for (id of neighbors[disc[nodeIndex]]) {    // For each of the current nodes neighbors
             id_arr.push(id);
@@ -127,11 +135,11 @@ self.onmessage = (e) => {
             visitedBool = out[2];
             if (lowVal < low[nodeIndex]) { // If search finds a new lowest-value node
                 low[nodeIndex] = lowVal;   // Update lowest value node
-            }
+            };
 
             if (lowDiscVal < lowDisc[nodeIndex]) {
                 lowDisc[nodeIndex] = lowDiscVal;
-            }
+            };
 
             // Find Articulation Points //
             let currentIndex = nodeIndex;    // Stores the index of the current node
@@ -139,18 +147,18 @@ self.onmessage = (e) => {
             if ((lowDisc[recentChildIndex] >= disc[currentIndex]) && (currentIndex != 0)) {  // Definition of articulation point
                 updateNode(currentIndex, "red");
                 art.push(currentIndex);
-            }
+            };
 
             // Check if root is articulation point //
             if (nodeIndex == 0) {   // Only for root node
                 if (!visitedBool) {  // If neighbor was not visited
                     rootChildCounter++; // Add one to child counter
-                }
+                };
                 if (rootChildCounter >= 2) {    // If root has at least 2 unvisited children
                     updateNode(0, "red");
                     art.push(0);
-                }
-            }
+                };
+            };
 
             // Find bridges //
             if (disc[nodeIndex] < low[idToIndex(id_arr[id_arr.length - 1])]) {  // Checks if edge connecting the two nodes is a bridge
@@ -160,22 +168,22 @@ self.onmessage = (e) => {
                     if (((from == nodeIndex) && (to == idToIndex(id_arr[id_arr.length - 1]))) ||
                     ((from == idToIndex(id_arr[id_arr.length - 1])) && (to == nodeIndex))) {    // If a line connects the start and end node
                         updateLine(line_index, "red");  // Draw line red
-                    }
-                }
+                    };
+                };
                 sleep(sleep_time);
-            }
+            };
             id_arr.pop();   // Remove neighbor to check from stack
-        }
+        };
         if (art.includes(nodeIndex)) {
             updateNode(nodeIndex, "red");
         } else {
             updateNode(nodeIndex, "#397EC9");  // Resets the node color    
-        }
+        };
         sleep(sleep_time);
         return [low[nodeIndex], lowDisc[nodeIndex], false];
-    }
+    };
 
     // -- Code Starts Here -- //
     find(0, null);
-    console.log(`${lowDisc}`);
-}
+    self.postMessage("terminate");  // Tells main thread to terminate web worker
+};

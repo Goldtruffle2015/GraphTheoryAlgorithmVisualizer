@@ -159,8 +159,8 @@ class CustomLine {  // Builds lines
         ctx.fill();
     }
 
-    offsetLine(arg0) {  // Offsets the line
-        const offsetDistance = arg0;
+    offsetLine() {  // Offsets the line
+        const offsetDistance = this.circleFrameRadius;
         const edge_vec = [this.endx - this.startx, this.endy - this.starty];
         const x = edge_vec[0];
         const y = edge_vec[1];

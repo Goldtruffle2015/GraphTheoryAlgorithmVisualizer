@@ -3,6 +3,9 @@ This file contains the Bellman-Held-Karp algorithm.
 This algorithm is a dynamic programming solution to the travelling salesman problem.
 Bellman-Held-Karp runs with a time complexity of O(n^2*2^n) which is significantly better than 
     brute force with has a time complexity of O(n!).
+I did not write the code for this algorithm. 
+I referenced William Fiset's graph theory course.
+This file runs in a separate thread from the main thread.
 */
 self.onmessage = (e) => {
     // -- Initialize variables -- //
@@ -15,14 +18,23 @@ self.onmessage = (e) => {
         for (let col=0;col<adjacency_matrix[row].length;col++) {
             if (adjacency_matrix[row][col] != Infinity) {
                 adjacency_matrix[row][col] = Number(adjacency_matrix[row][col]);    // This is done because the non-infinity values of the adjacency matrix are strings so they need to be converted back to numbers
-            }
-        }
-    }
-    const sleep_time = e.data[5];
+            };
+        };
+    };
+    let sleep_time;
+    let display;
+    if (e.data[5] == null) {
+        sleep_time = 50;    
+        display = false;  // Specifies whether algorithm process is displayed
+    } else {
+        sleep_time = e.data[5];
+        display = true;   // Specifies whether algorithm process is displayed
+    };
     const dir_bool = e.data[6];
     const undir_bool = e.data[7];
 
     let state;  // Gets the binary representation of the nodes excluding the "next" node
+    let state2; // Gets the state excluding the start node
     let minDist;    // Gets the minimum distance
     let newDistance;    // Finds the new distance from state with next node included
     let lastLineIndex;  // Tracks the index of the last line updated
@@ -72,8 +84,8 @@ self.onmessage = (e) => {
             if ((from == startIndex) && (to == endIndex)) {
                 updateLine(lineIndex, color);
                 return lineIndex;
-            }
-        }
+            };
+        };
     };
 
     function notIn(i, subset) {
@@ -104,10 +116,12 @@ self.onmessage = (e) => {
 
                 m[S][i] represents the edge weight from node S to node i
                 */
-               updateNode(i, "#FFA849");
-               sleep(sleep_time);
-               updateNode(i, "#397EC9");
-               sleep(sleep_time);
+                if (display) {
+                    updateNode(i, "#FFA849");
+                    sleep(sleep_time);
+                    updateNode(i, "#397EC9");
+                    sleep(sleep_time);    
+                };
             };
         };
         function solve(m, memo, S, N) { // Solves the TSP
@@ -139,9 +153,9 @@ self.onmessage = (e) => {
                             permutationsRecursive(set, i + 1, r - 1, n, subsets);
 
                             set = set & ~(1 << i);  // Backtrack and set ith bit to 0
-                        }
-                    }
-                }
+                        };
+                    };
+                };
             };
             for (let r=3;r<=N;r++) {    // "r" represents the number of nodes in the partial tour
                 for (subset of permutations(r, N)) {    // For each possible subset of visited nodes
@@ -152,9 +166,13 @@ self.onmessage = (e) => {
                         Skips next if next is the start node or if next is not part of the subset
                         */
                         state = subset ^ (1 << next);   // Gets the nodes without the next node
+                        state2 = state ^ (1 << S);  // Removes the start node from state
                         minDist = Infinity; // Set the minimum distance to positive infinity
-                        updateNodesByState(state, "#FFA849");   // Draws nodes in state as active
-                        sleep(sleep_time);
+                        if (display) {
+                            updateNodesByState(state2, "#858891");   // Draws nodes in state as already visited
+                            updateNode(next, "#FFA849");    // Set next node as a temporary end node
+                            sleep(sleep_time);    
+                        };
                         for (let e=0;e<N;e++) { // e represents the end node index
                             if ((e == S) || (e == next) || (notIn(e, subset))) continue;
                             /*
@@ -167,42 +185,23 @@ self.onmessage = (e) => {
 
                             m[e][next] = distance from end node to next
                             */
-                            updateNode(next, "magenta");    // Set next node as a temporary end node
-                            sleep(sleep_time);
                             if (newDistance < minDist) {
                                 minDist = newDistance
                             };
-                            updateNode(next, "#397EC9");    // Reset next node color
-                            sleep(sleep_time);
                         };
-                        updateNodesByState(state, "#397EC9");   // Resets nodes in state as active
-                        sleep(sleep_time);
+                        if (display) {
+                            updateNodesByState(state2, "#397EC9");   // Draws nodes in state as active
+                            updateNode(next, "#397EC9");    // Reset next node color    
+                        };
                         memo[next][subset] = minDist;
                     };
                 };
             };
         };
-        function findMinCost(m, memo, S, N) {   // Finds the minimum tour cost
-            let endState = (1 << N) - 1;    
-            /*
-            The end state is the bit mask with N bits set to 1
-            */
-            let minTourCost = Infinity; // Tracks the minimum tour cost
-            let tourCost;   // Initializes the tour cost variable. Stores the tour cost of a tour
-            for (let e=0;e<N;e++) { // For each possible last node (node right before heading back to start node)
-                if (e == S) continue;   // Skip if node is startnode
-                tourCost = memo[e][endState] + m[e][S]; // Tour cost + distance back to start node
-                if (tourCost < minTourCost) {   // If better tour cost is found
-                    minTourCost = tourCost; // Set minimum tour cost
-                }
-            }
-            return minTourCost;
-        };
         function findOptimalTour(m, memo, S, N) {
             let lastIndex = S;  // Stores the previous index algorithm was at
             state = (1 << N) - 1;   // End state. Bit mask with N nodes set to 1.
             let tour = [];  // Stores the optimal tour
-            updateNodesByState(state, "#FFA849");   // Sets all nodes to orange
             updateNode(S, "cyan");  // Sets starting node to cyan
             sleep(sleep_time);
             tour[0] = S;    // Start node is S
@@ -215,7 +214,7 @@ self.onmessage = (e) => {
                     Skips if candidate node (j) is the start node or if j has already been visited.
                     Visited nodes are removed from state.
                     */
-                    updateNode(j, "magenta");   // Set j as temporary end node
+                    updateNode(j, "#FFA849");   // Set j as temporary end node
                     sleep(sleep_time);
                     if (index == -1) index = j; // Once a valid candidate node is found store candidate node index
                     let prevDist = memo[index][state] + m[index][lastIndex];    // Gets the distance of last candidate node
@@ -232,7 +231,6 @@ self.onmessage = (e) => {
             };
             updateLineByStartEnd(tour[0], tour[1], "#2F7B1F");
             sleep(sleep_time);
-            return tour;    // Return the tour
         };
         const N = node_li.length; // Represents the number of nodes
         let memo = [];  // This is a 2D table of size N by 2^N
@@ -245,12 +243,10 @@ self.onmessage = (e) => {
         };
         setup(m, memo, S, N);
         solve(m, memo, S, N);
-        let minCost = findMinCost(m, memo, S, N);
-        let tour = findOptimalTour(m, memo, S, N);
-        console.log(minCost);
-        console.log(`${tour}`);
+        findOptimalTour(m, memo, S, N);
     };
 
     // -- Code Starts Here -- //
     tsp(adjacency_matrix, idToIndex(startId));
+    self.postMessage("terminate");  // Tells main thread to terminate web worker
 };

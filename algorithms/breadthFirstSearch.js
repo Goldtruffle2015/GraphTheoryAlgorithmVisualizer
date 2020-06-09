@@ -10,7 +10,23 @@ self.onmessage = (e) => {
     const node_li = e.data[2];
     const line_li = e.data[3];
     const adjacency_matrix = e.data[4];
-    const sleep_time = e.data[5];
+    for (let row=0;row<adjacency_matrix.length;row++) {
+        for (let col=0;col<adjacency_matrix[row].length;col++) {
+            if (adjacency_matrix[row][col] != Infinity) {
+                adjacency_matrix[row][col] = Number(adjacency_matrix[row][col]);    // This is done because the non-infinity values of the adjacency matrix are strings so they need to be converted back to numbers
+            };
+        };
+    };
+    let sleep_time;
+    let display;
+    if (e.data[5] == null) {
+        sleep_time = 50;    
+        display = false;  // Specifies whether algorithm process is displayed
+    } else {
+        sleep_time = e.data[5];
+        display = true;   // Specifies whether algorithm process is displayed
+    };
+    
     const dir_bool = e.data[6];
     const undir_bool = e.data[7];
 
@@ -23,7 +39,7 @@ self.onmessage = (e) => {
     for (let i=0;i<node_li.length;i++) {
         visited[i] = false; // Sets all nodes to unvisited
         prev[i] = null;
-    }
+    };
     visited[idToIndex(startId)] = true; // Sets starting node as visited
 
     let neighbors = []; // Stores the neighbors
@@ -35,24 +51,24 @@ self.onmessage = (e) => {
         do {
         currentDate = Date.now();
         } while (currentDate - date < milliseconds);
-    }
+    };
 
     function idToIndex(id) {  // Find the index position of node with specified id
         return node_li.findIndex((element) => element.id == id);
-    }
+    };
 
     function indexToId(index) { // Finds the id of the node given index
         return node_li[index].id;
-    }
+    };
 
     function updateNode(index, color) {    // Sends data for main thread to update
         self.postMessage([index, color, null, null]);
         sleep(sleep_time);
-    }
+    };
 
     function updateLine(index, color) {
         self.postMessage([null, null, index, color]);
-    }
+    };
 
     function breadthFirstSearch(i) {
         // -- Breadth First Search the graph -- //
@@ -60,15 +76,15 @@ self.onmessage = (e) => {
             nodeToCheck = q[0]; // Gets the index position of node to check
             q.shift();  // Removes first index
 
-            updateNode(nodeToCheck, "#858891"); // Draws root node as visited
+            if (display) updateNode(nodeToCheck, "#397EC9"); // Draws root node as visited
 
             neighbors = [];
             // Get Neighbors //
             for (let id = 0; id < adjacency_matrix[indexToId(nodeToCheck)].length; id++) {  // Searches through the adjacency matrix
                 if (adjacency_matrix[indexToId(nodeToCheck)][id] != Infinity) { // If value is not infinity
                     neighbors.push(idToIndex(id));    // Gets the index position of neighbors
-                }
-            }
+                };
+            };
 
             // Visit Neighbors //
             for (next of neighbors) {   // For each of the neighbors
@@ -76,10 +92,10 @@ self.onmessage = (e) => {
                     q.push(next);   // Adds node index to queue
                     visited[next] = true;   // Marks node index as visited
                     prev[next] = nodeToCheck;   // Sets previous node of current node
-                    updateNode(next, "#FFA849");    // Draws node as currently visiting
-                }
-            } 
-        }
+                    if (display) updateNode(next, "#FFA849");    // Draws node as currently visiting
+                };
+            };
+        };
 
         // Display shortest path between end node and start node //
         currentNode = idToIndex(endId); // Get the index of the current node
@@ -90,19 +106,19 @@ self.onmessage = (e) => {
                 (idToIndex(line_li[line_index].startNodeId) == previousNode) && dir_bool) {    // If an edge connects the current node and the previous node
                     updateLine(line_index, "#2F7B1F");   // Updates the line
                     sleep(sleep_time);
-                }
+                };
                 if (((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
                 (idToIndex(line_li[line_index].endNodeId) == previousNode)) || 
                 ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
                 (idToIndex(line_li[line_index].startNodeId) == previousNode)) && undir_bool) {    // If an edge connects the current node and the previous node
                     updateLine(line_index, "#2F7B1F");   // Updates the line
-                }
-            }
+                };
+            };
             sleep(sleep_time);  // Sleep
             currentNode = previousNode; // Sets current node to its previous node
             previousNode = prev[previousNode];  // Sets previous node to its corresponding previous node
-        }
-    }
+        };
+    };
 
     // -- Code Starts Here -- //
     breadthFirstSearch(startId);

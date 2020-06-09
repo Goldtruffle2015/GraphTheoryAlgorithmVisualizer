@@ -128,12 +128,12 @@ window.addEventListener("load", () => {
                                 for (let li=0;li<line_li.length;li++) { // Loop through line list
                                     if ((line_li[li].startNodeId == temp_line.endNodeId) &&
                                         (line_li[li].endNodeId == temp_line.startNodeId)) {   // If line goes opposite of recently drawn line
-                                            line_li[li].offsetLine(20);   // Offset line
+                                            line_li[li].offsetLine();   // Offset line
                                             line_li[li].offsetBool = true;  // Line is offsetted
                                             break;
                                     }
                                 }
-                                line_li[line_li.length - 1].offsetLine(20);   // Offset last drawn line
+                                line_li[line_li.length - 1].offsetLine();   // Offset last drawn line
                                 line_li[line_li.length - 1].offsetBool = true;  // Line is offsetted
                             }
                         }
