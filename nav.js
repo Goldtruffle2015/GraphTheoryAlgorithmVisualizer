@@ -228,10 +228,10 @@ window.addEventListener("load", () => {
     // Eulerian Path //
     algo_options_buttons_arr[8].addEventListener("click", () => {
         // enable/disable options //
-        set_start_button.disabled = false;
-        startPermaDisable = false;
-        set_end_button.disabled = false;
-        endPermaDisable = false;
+        set_start_button.disabled = true;
+        startPermaDisable = true;
+        set_end_button.disabled = true;
+        endPermaDisable = true;
         dir_button.disabled = false;
         undir_button.disabled = true;
         weighted_button.disabled = true;
