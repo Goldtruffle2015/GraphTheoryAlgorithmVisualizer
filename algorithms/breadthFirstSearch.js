@@ -32,14 +32,10 @@ self.onmessage = (e) => {
 
     let q = []; // This is a queue data structure. Stores the index position of nodes.
     q.push(idToIndex(startId));
-    let visited = [];   // Array tracks which nodes have been visited. The index of element corresponds to index in node_li.
+    let visited = new Array(node_li.length).fill(false);   // Array tracks which nodes have been visited. The index of element corresponds to index in node_li.
 
-    let prev = [];  // Stores the index position of previous node
+    let prev = new Array(node_li.length).fill(null);  // Stores the index position of previous node
 
-    for (let i=0;i<node_li.length;i++) {
-        visited[i] = false; // Sets all nodes to unvisited
-        prev[i] = null;
-    };
     visited[idToIndex(startId)] = true; // Sets starting node as visited
 
     let neighbors = []; // Stores the neighbors
@@ -49,7 +45,7 @@ self.onmessage = (e) => {
         const date = Date.now();
         let currentDate = null;
         do {
-        currentDate = Date.now();
+            currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     };
 

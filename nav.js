@@ -554,7 +554,8 @@ window.addEventListener("load", () => {
             "../algorithms/bridgeArticulationPoints.js",
             "../algorithms/tarjan.js",
             "../algorithms/bellmanHeldKarp.js",
-            "../algorithms/hierholzer.js"
+            "../algorithms/hierholzer.js",
+            "../algorithms/prim.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {

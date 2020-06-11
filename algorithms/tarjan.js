@@ -29,7 +29,7 @@ self.onmessage = (e) => {
     const dir_bool = e.data[6];
     const undir_bool = e.data[7];
 
-    let unvisited = []; // A bool array tracking if a node was unvisited or not
+    let unvisited = new Array(node_li.length).fill(true); // A bool array tracking if a node was unvisited or not
     let stack = []; // Represents a stack
     let disc = [];
     let low = [];   // Tracks the low-link values
@@ -41,16 +41,12 @@ self.onmessage = (e) => {
     let strongLine = [];    // Tracks the lines that are part of a strongly connected component
     let id_arr = [];    // Stores the neighbor id values
 
-    for (let i=0;i<node_li.length;i++) {    // For each node
-        unvisited[i] = true;    // Set each node to unvisited
-    };
-
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
         const date = Date.now();
         let currentDate = null;
         do {
-        currentDate = Date.now();
+            currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     };
 

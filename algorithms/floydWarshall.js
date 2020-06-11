@@ -54,7 +54,7 @@ self.onmessage = (e) => {
         const date = Date.now();
         let currentDate = null;
         do {
-        currentDate = Date.now();
+            currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     };
 

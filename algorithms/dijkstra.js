@@ -37,9 +37,9 @@ self.onmessage = (e) => {
     for (let index=0;index<node_li.length;index++) {
         unvisited[index] = true;   // Marks each node as unvisited
     };
-    let shortestDistance = [];  // Stores the shortest distance from starting node
+    let shortestDistance = new Array(node_li.length).fill(Infinity);  // Stores the shortest distance from starting node
     let unvisitedDistance = [];  // Holds the distances of unvisited nodes
-    let prev = [];  // Tracks the index of the previous node
+    let prev = new Array(node_li.length).fill(null);  // Tracks the index of the previous node
     let distance;   // Tracks the distance of neighbor
     let bestDistance;   // Stores the best distance among unvisited nodes
     let currentIndex = startIndex;  // Tracks the index of the current node
@@ -49,10 +49,6 @@ self.onmessage = (e) => {
     };
     
     let neighbors = []; // Tracks the neighbors of the current node
-    for (let i=0;i<node_li.length;i++) {
-        shortestDistance[i] = Infinity;
-        prev[i] = null;
-    };
     shortestDistance[currentIndex] = 0;   // Starting index is 0 units away from itself
 
     // -- Functions -- //
@@ -60,7 +56,7 @@ self.onmessage = (e) => {
         const date = Date.now();
         let currentDate = null;
         do {
-        currentDate = Date.now();
+            currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     };
 

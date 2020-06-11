@@ -34,19 +34,15 @@ self.onmessage = (e) => {
     startIndex = idToIndex(startId);
     endIndex = idToIndex(endId);
 
-    let shortestDistance = [];  // Stores the shortest distance from starting node
-    let prev = [];  // Tracks the index of the previous node
-    for (let i=0;i<node_li.length;i++) {
-        shortestDistance[i] = Infinity;
-        prev[i] = null;
-    };
+    let shortestDistance = new Array(node_li.length).fill(Infinity);  // Stores the shortest distance from starting node
+    let prev = new Array(node_li.length).fill(null);  // Tracks the index of the previous node
 
     // -- Functions -- //
     function sleep(milliseconds) {  // Pauses the program
         const date = Date.now();
         let currentDate = null;
         do {
-        currentDate = Date.now();
+            currentDate = Date.now();
         } while (currentDate - date < milliseconds);
     };
 
