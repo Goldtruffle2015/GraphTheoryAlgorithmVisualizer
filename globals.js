@@ -9,6 +9,7 @@ let adjacency_matrix = [];   // Represents node relationships
 let startId = null; // Stores the starting node id. Node is colored "cyan"
 let endId = null;   // Stores the ending node id. Node is colored "magenta"
 const nodeRadius = 35;   // Global variable defines the radius of the nodes
+const circleFrameRadius = 18;
 // If node is both a start and end colored "yellow"
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
@@ -20,17 +21,17 @@ for (let row=0;row<133;row++) {   // For simplicity the program will only handle
     adjacency_matrix[row] = [];    // Creates an empty row in adjacency matrix
     for (let col=0;col<133;col++) {
         adjacency_matrix[row][col] = Infinity;  // Infinity means there is no edge linking the two nodes
-    }
-}
+    };
+};
 
 // -- Functions -- //
 function distance(x1, x2, y1, y2) { // Calculates distance between mouse click and node center
     return Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));    // Pythagoras Theorem
-}
+};
 
 function midPoint(x1, x2, y1, y2) { // Calculates the midpoint 
     return [(x1 + x2) / 2, (y1 + y2) / 2];
-}
+};
 
 function render() { // Draws the entire canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
@@ -38,12 +39,12 @@ function render() { // Draws the entire canvas
     for (l of line_li) {
         l.initialize(); // Initializes the line
         l.draw(); // Draws the line
-    }
+    };
 
     for (c of node_li) {    // Redraws remaining nodes
         c.draw();
-    }
-}
+    };
+};
 
 // -- Classes -- //
 class CustomNode {  // Builds nodes
@@ -52,15 +53,15 @@ class CustomNode {  // Builds nodes
         this.y = y; // Stores the y-coordinate of node in pixels
         this.id = id;   // Tracks the id of the node
         this.color = "#397EC9"; // Defines the color of the node
-    }
+    };
 
     draw() {    // Draws the node
         ctx.beginPath();    // Starts a new starting point
         ctx.arc(this.x, this.y, nodeRadius, 0, 2 * Math.PI);    // Draws a circle
         ctx.fillStyle = this.color;
         ctx.fill();
-    }
-}
+    };
+};
 
 class CustomLine {  // Builds lines
     constructor(x1, y1, startNodeId) {
@@ -71,17 +72,19 @@ class CustomLine {  // Builds lines
         this.startNodeId = startNodeId; // Stores the id of the starting node
         this.endNodeId = null;  // Stores the id of the ending node
         this.weight = 99;   // 99 is the default weight
+        this.flowIn = 0;    // Sets the default flow input
+        this.flowOut = 99;  // Sets the default flow output
         this.drawweight = false; // Boolean specifies if the weight should be drawn
         this.color = "white";
         this.offsetBool = false;    // Tracks whether the 
-        this.circleFrameRadius = 15;    // Defines the radius of the circle enclosing the weight text
+        this.circleFrameRadius = circleFrameRadius;    // Defines the radius of the circle enclosing the weight text
         this.fontSize = 17;
-    }
+    };
 
     initialize() {
         ctx.beginPath();    // Initializes the line
         ctx.moveTo(this.startx, this.starty);   // Starts the line at the selected node
-    }
+    };
 
     draw() {
         ctx.lineTo(this.endx, this.endy); // Draws line at end node
@@ -91,7 +94,7 @@ class CustomLine {  // Builds lines
 
         if (dir_bool) { // If the line is a directed line
             this.drawPointer();
-        }
+        };
 
         if (this.drawweight) {
             const mid_p = midPoint(this.startx, this.endx, this.starty, this.endy);
@@ -106,9 +109,13 @@ class CustomLine {  // Builds lines
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText(String(this.weight), mid_p[0], mid_p[1]);
-        }
-    }
+            if (flowBool) { // If graph is a flow graph
+                ctx.fillText(`${this.flowIn}/${this.flowOut}`, mid_p[0], mid_p[1]);
+            } else {
+                ctx.fillText(String(this.weight), mid_p[0], mid_p[1]);    
+            };
+        };
+    };
 
     drawPointer() {
         let pointerWidth = 30;
@@ -157,7 +164,7 @@ class CustomLine {  // Builds lines
         ctx.closePath();
         ctx.fillStyle = this.color;
         ctx.fill();
-    }
+    };
 
     offsetLine() {  // Offsets the line
         const offsetDistance = this.circleFrameRadius;
@@ -173,12 +180,12 @@ class CustomLine {  // Builds lines
         this.endx += offsetDistance * edge_vec_perp_unit[0];
         this.starty += offsetDistance * edge_vec_perp_unit[1];
         this.endy += offsetDistance * edge_vec_perp_unit[1];
-    }
-}
+    };
+};
 
 function animate() {    // Animated the canvas
     render();   // Renders the canvas
     requestAnimationFrame(animate);
-}
+};
 
 animate();

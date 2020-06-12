@@ -42,6 +42,7 @@ const undir_button = document.getElementById("undir-but");
 
 undir_button.classList.add("button-active-background-color");   // undir_bool is set to true as default
 const weighted_button = document.getElementById("weighted-but");
+let flowBool = false;   // Checks whether a flow graph is required
 const unweighted_button = document.getElementById("unweighted-but");
 unweighted_button.classList.add("button-active-background-color");
 
@@ -58,7 +59,7 @@ window.addEventListener("load", () => {
     algo_options_bool_arr[0] = true;    // Sets Depth First Search bool to be true
     for (let i=1;i<algo_options_buttons_arr.length;i++) {   // Sets all other algorithm options to false
         algo_options_bool_arr[i] = false;
-    }
+    };
 
     const reset_button = document.getElementById("reset-but");
     const clear_button = document.getElementById("clear-but");
@@ -73,14 +74,14 @@ window.addEventListener("load", () => {
     sleep_time = 50;  // Sets the sleep time of the algorithm
     for (let i=1;i<speed_options_buttons_arr.length;i++) {
         speed_options_bool_arr[i] = false;
-    }
+    };
 
     // -- Code Starts Here -- //
     // -- Algorithm Dropdown -- //
     algo_button.addEventListener("click", () => {
         algo_button.classList.toggle("button-active-background-color");
         algo_ul.classList.toggle("toggleDisplayFlex");
-    })
+    });
 
     // -- Dropdown options -- //
     // Common Event Commands //
@@ -90,12 +91,12 @@ window.addEventListener("load", () => {
             for (let j=0;j<algo_options_buttons_arr.length;j++) {   // Loops through each algorithm button
                 algo_options_bool_arr[j] = false;   // Sets all buttons to false
                 algo_options_buttons_arr[j].classList.remove("button-active-background-color"); // Sets all button background to deactive state
-            }
+            };
             algo_options_bool_arr[i] = true;    // Sets button user clicked on to true
             algo_options_buttons_arr[i].classList.toggle("button-active-background-color"); // Sets button background to active
             clear_button.click();   // Simulates a click on the clear button.
-        })
-    }
+        });
+    };
 
     // Depth First Search //
     algo_options_buttons_arr[0].addEventListener("click", () => {
@@ -108,10 +109,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = false;
         weighted_button.disabled = true;
         unweighted_button.disabled = false;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Breadth First Search //
     algo_options_buttons_arr[1].addEventListener("click", () => {
@@ -124,10 +126,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = false;
         weighted_button.disabled = true;
         unweighted_button.disabled = false;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Dijkstra's Shortest Path //
     algo_options_buttons_arr[2].addEventListener("click", () => {
@@ -140,10 +143,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = false;
 
         // Other //
         weight_input.min = 0;
-    })
+    });
 
     // Bellman-Ford //
     algo_options_buttons_arr[3].addEventListener("click", () => {
@@ -156,10 +160,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Floyd-Warshall //
     algo_options_buttons_arr[4].addEventListener("click", () => {
@@ -172,10 +177,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Bridge and Articulation Points //
     algo_options_buttons_arr[5].addEventListener("click", () => {
@@ -188,10 +194,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = false;
         weighted_button.disabled = true;
         unweighted_button.disabled = false;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Tarjans //
     algo_options_buttons_arr[6].addEventListener("click", () => {
@@ -204,10 +211,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = true;
         unweighted_button.disabled = false;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Bellman-Ford-Karp //
     algo_options_buttons_arr[7].addEventListener("click", () => {
@@ -220,10 +228,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Eulerian Path //
     algo_options_buttons_arr[8].addEventListener("click", () => {
@@ -236,10 +245,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = true;
         unweighted_button.disabled = false;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Prim's //
     algo_options_buttons_arr[9].addEventListener("click", () => {
@@ -252,10 +262,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = false;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = false;
 
         // Other //
         weight_input.min = -99;
-    })
+    });
 
     // Ford-Fulkerson //
     algo_options_buttons_arr[10].addEventListener("click", () => {
@@ -268,10 +279,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = true;
 
         // Other //
-        weight_input.min = -99;
-    })
+        weight_input.min = 0;
+    });
 
     // Edmonds-Karp //
     algo_options_buttons_arr[11].addEventListener("click", () => {
@@ -284,10 +296,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = true;
 
         // Other //
-        weight_input.min = -99;
-    })
+        weight_input.min = 0;
+    });
 
     // Dinic's //
     algo_options_buttons_arr[12].addEventListener("click", () => {
@@ -300,10 +313,11 @@ window.addEventListener("load", () => {
         undir_button.disabled = true;
         weighted_button.disabled = false;
         unweighted_button.disabled = true;
+        flowBool = true;
 
         // Other //
-        weight_input.min = -99;
-    })
+        weight_input.min = 0;
+    });
 
     // -- Add Node Button -- //
     add_node_button.addEventListener("click", () => {
@@ -324,7 +338,7 @@ window.addEventListener("load", () => {
         rem_edge_bool = false;
         set_start_bool = false;
         set_end_bool = false;
-    })
+    });
 
     // -- Remove Node Button -- //
     rem_node_button.addEventListener("click", () => {
@@ -345,7 +359,7 @@ window.addEventListener("load", () => {
         rem_edge_bool = false;
         set_start_bool = false;
         set_end_bool = false;
-    })
+    });
 
     // -- Set Start Button -- //
     set_start_button.addEventListener("click", () => {
@@ -364,7 +378,7 @@ window.addEventListener("load", () => {
 
         set_end_button.classList.remove("button-active-background-color");
         set_end_bool = false;
-    })
+    });
 
     // -- Set End Button -- //
     set_end_button.addEventListener("click", () => {
@@ -383,7 +397,7 @@ window.addEventListener("load", () => {
 
         set_start_button.classList.remove("button-active-background-color");
         set_start_bool = false;
-    })
+    });
 
     // -- Add Edge Button -- //
     add_edge_button.addEventListener("click", () => {
@@ -404,7 +418,7 @@ window.addEventListener("load", () => {
         rem_edge_bool = false;
         set_start_bool = false;
         set_end_bool = false;
-    })
+    });
 
     // -- Remove Edge Button -- //
     rem_edge_button.addEventListener("click", () => {
@@ -425,7 +439,7 @@ window.addEventListener("load", () => {
         add_edge_bool = false;
         set_start_bool = false;
         set_end_bool = false;
-    })
+    });
 
     // -- Directed Button -- //
     dir_button.addEventListener("click", () => {
@@ -449,7 +463,7 @@ window.addEventListener("load", () => {
         dir_bool = undir_bool ? false : true;   // Sets dir_bool boolean opposite of undir_bool boolean
 
         render();
-    })
+    });
 
     // -- Weighted Button -- //
     weighted_button.addEventListener("click", () => {
@@ -462,10 +476,10 @@ window.addEventListener("load", () => {
 
         for (x of line_li) {
             x.drawweight = true;    // Enables displaying the weight of the node
-        }
+        };
 
         render();
-    })
+    });
 
     // -- Unweighted Button -- //
     unweighted_button.addEventListener("click", () => {
@@ -478,20 +492,20 @@ window.addEventListener("load", () => {
 
         for (x of line_li) {
             x.drawweight = false;   // Disables displaying the weight of the node
-        }
+        };
         
         render();
-    })
+    });
 
     // -- Reset Button -- //
     reset_button.addEventListener("click", () => {
         for (node of node_li) {
             node.color = "#397EC9";   // Resets the node color
-        }
+        };
         for (edge of line_li) {
             edge.color = "white";   // Resets the line color
-        }
-    })
+        };
+    });
 
     // -- Clear Button -- //
     clear_button.addEventListener("click", () => {
@@ -502,15 +516,15 @@ window.addEventListener("load", () => {
         endId = null;
         for (let row=0;row<133;row++) { // Resets the adjacency matrix
             adjacency_matrix[row].fill(Infinity);
-        }
+        };
         ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
-    })
+    });
 
     // -- Speed Button -- //
     speed_button.addEventListener("click", () => {
         speed_button.classList.toggle("button-active-background-color");
         speed_ul.classList.toggle("toggleDisplayFlex");
-    })
+    });
         // Common Code //
     for (let i=0;i<speed_options_buttons_arr.length;i++) {
         speed_options_buttons_arr[i].addEventListener("click", () => {
@@ -518,30 +532,30 @@ window.addEventListener("load", () => {
             for (let j=0;j<speed_options_buttons_arr.length;j++) {
                 speed_options_bool_arr[j] = false;
                 speed_options_buttons_arr[j].classList.remove("button-active-background-color");
-            }
+            };
             speed_options_bool_arr[i] = true;
             speed_options_buttons_arr[i].classList.toggle("button-active-background-color");
-        })
-    }
+        });
+    };
         // Code specific to button //
             // Slow //
     speed_options_buttons_arr[0].addEventListener("click", () => {
         sleep_time = 450;
-    })
+    });
 
             // Medium //
     speed_options_buttons_arr[1].addEventListener("click", () => {
         sleep_time = 250;
-    })
+    });
 
             // Fast //
     speed_options_buttons_arr[2].addEventListener("click", () => {
         sleep_time = 50;
-    })
+    });
 
     speed_options_buttons_arr[3].addEventListener("click", () => {
         sleep_time = null;
-    })
+    });
 
     // -- Start Button -- //
     start_button.addEventListener("click", () => {
@@ -555,7 +569,8 @@ window.addEventListener("load", () => {
             "../algorithms/tarjan.js",
             "../algorithms/bellmanHeldKarp.js",
             "../algorithms/hierholzer.js",
-            "../algorithms/prim.js"
+            "../algorithms/prim.js",
+            "../algorithms/fordFulkerson.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
@@ -566,24 +581,24 @@ window.addEventListener("load", () => {
                         worker.terminate(); // Ends the web worker
                         worker = undefined;
                         return;
-                    }
+                    };
                     if (event.data[0] != null) {
                         node_li[event.data[0]].color = event.data[1];   // Update the node    
-                    }
+                    };
                     
                     if (event.data[2] != null) {
                         line_li[event.data[2]].color = event.data[3];   // Update the line    
-                    }
+                    };
                     
-                }
+                };
                 worker.onerror = (event) => {
                     console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);
-                }
+                };
                 worker.postMessage([startId, endId, node_li, line_li, adjacency_matrix, sleep_time, dir_bool, undir_bool]);  // Sends information to web worker
-            }
-        }
-    })
-})
+            };
+        };
+    });
+});
 
 window.addEventListener("click", () => {    // Handles button disabling/activation
     // Add Node Button //
@@ -591,14 +606,14 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
         add_node_button.disabled = true;
     } else {
         add_node_button.disabled = false;
-    }
+    };
 
     // Remove Node Button //
     if (node_li.length == 0) {
         rem_node_button.disabled = true;
     } else {
         rem_node_button.disabled = false;
-    }
+    };
 
     // Set Start Button //
     if (node_li.length == 0) {
@@ -606,8 +621,8 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     } else {
         if (!startPermaDisable) {
             set_start_button.disabled = false;    
-        }
-    }
+        };
+    };
 
     // Set End Button //
     if (node_li.length == 0 || algo_options_bool_arr[0]) {
@@ -615,22 +630,22 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     } else {
         if (!endPermaDisable) {
             set_end_button.disabled = false;    
-        }
-    }
+        };
+    };
 
     // Add Edge Button //
     if (node_li.length < 2) {
         add_edge_button.disabled = true;
     } else {
         add_edge_button.disabled = false;
-    }
+    };
 
     // Remove Edge Button //
     if (line_li.length < 1) {
         rem_edge_button.disabled = true;
     } else {
         rem_edge_button.disabled = false;
-    }
+    };
 
     // Dir Button //
     if (undir_button.disabled) {    // If undir button is disabled
@@ -640,11 +655,11 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         dir_button.classList.add("button-active-background-color");
         undir_button.classList.remove("button-active-background-color");
-    }
+    };
 
     if (undir_bool && (line_li.length > 0)) {   // If undir button is selected and a line has been drawn
         dir_button.disabled = true; // Disable dir button
-    }
+    };
 
     // Undir button //
     if (dir_button.disabled) {  // If dir button is disabled
@@ -654,11 +669,11 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         dir_button.classList.remove("button-active-background-color");
         undir_button.classList.add("button-active-background-color");
-    }
+    };
 
     if (dir_bool && (line_li.length > 0)) {
         undir_button.disabled = true;
-    }
+    };
 
     // Weighted Button //
     if (unweighted_button.disabled) {   // If unweighted button is disabled
@@ -668,11 +683,11 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         weighted_button.classList.add("button-active-background-color");
         unweighted_button.classList.remove("button-active-background-color");
-    }
+    };
 
     if (unweighted_bool && (line_li.length > 0)) {
         weighted_button.disabled = true;
-    }
+    };
 
     // Unweighted Button //
     if (weighted_button.disabled) { // If weighted button is disabled
@@ -682,25 +697,25 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
 
         weighted_button.classList.remove("button-active-background-color");
         unweighted_button.classList.add("button-active-background-color");
-    }
+    };
 
     if (weighted_bool && (line_li.length > 0)) {
         unweighted_button.disabled = true;
-    }
+    };
 
     // Start Node //
     for (n of node_li) {
         if (n.id == startId) {
             n.color = (n.id == endId) ? "yellow" : "cyan";
             break;
-        }
-    }
+        };
+    };
 
     // End Node //
     for (n of node_li) {
         if (n.id == endId) {
             n.color = (n.id == startId) ? "yellow" : "magenta";
             break;
-        }
-    }
-})
+        };
+    };
+});
