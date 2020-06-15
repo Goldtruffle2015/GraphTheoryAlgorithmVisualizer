@@ -504,6 +504,7 @@ window.addEventListener("load", () => {
         };
         for (edge of line_li) {
             edge.color = "white";   // Resets the line color
+            edge.flow = 0;  // Resets the flow value
         };
     });
 
@@ -582,14 +583,14 @@ window.addEventListener("load", () => {
                         worker = undefined;
                         return;
                     };
-                    if (event.data[0] != null) {
+                    if (event.data[0] != null) {    // Node Data. Checks if a node index is provided
                         node_li[event.data[0]].color = event.data[1];   // Update the node    
-                    };
-                    
-                    if (event.data[2] != null) {
+                    } else if (event.data[3] != null) {    // Line Data. Checks if a color was provided
                         line_li[event.data[2]].color = event.data[3];   // Update the line    
+                    } else if (event.data[4] != null) {    // Flow-Capacity Data. Checks if a flow value was provided
+                        console.log(`flow => ${event.data[4]}`);
+                        line_li[event.data[2]].flow += event.data[4];    // Update the flow
                     };
-                    
                 };
                 worker.onerror = (event) => {
                     console.log(`ERROR: Line ${event.lineno} in ${event.filename}: ${event.message}`);

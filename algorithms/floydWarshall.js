@@ -67,11 +67,11 @@ self.onmessage = (e) => {
     };
 
     function updateNode(index, color) {
-        self.postMessage([index, color, null, null]);
+        self.postMessage([index, color, null, null, null, null]);
     };
 
     function updateLine(index, color) {
-        self.postMessage([null, null, index, color]);
+        self.postMessage([null, null, index, color, null, null]);
     };
 
     // -- Code Starts Here -- //

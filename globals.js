@@ -9,7 +9,7 @@ let adjacency_matrix = [];   // Represents node relationships
 let startId = null; // Stores the starting node id. Node is colored "cyan"
 let endId = null;   // Stores the ending node id. Node is colored "magenta"
 const nodeRadius = 35;   // Global variable defines the radius of the nodes
-const circleFrameRadius = 18;
+const circleFrameRadius = 19;
 // If node is both a start and end colored "yellow"
 const weight_form = document.getElementById("weight-form"); // Gets the form containg the input field
 const weight_input = document.getElementById("weight-input");   // Gets the input field
@@ -72,13 +72,13 @@ class CustomLine {  // Builds lines
         this.startNodeId = startNodeId; // Stores the id of the starting node
         this.endNodeId = null;  // Stores the id of the ending node
         this.weight = 99;   // 99 is the default weight
-        this.flowIn = 0;    // Sets the default flow input
-        this.flowOut = 99;  // Sets the default flow output
+        this.flow = 0;    // Sets the default flow input
+        this.capacityt = 99;  // Sets the default flow output
         this.drawweight = false; // Boolean specifies if the weight should be drawn
         this.color = "white";
         this.offsetBool = false;    // Tracks whether the 
         this.circleFrameRadius = circleFrameRadius;    // Defines the radius of the circle enclosing the weight text
-        this.fontSize = 17;
+        this.fontSize = 13;
     };
 
     initialize() {
@@ -110,7 +110,7 @@ class CustomLine {  // Builds lines
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             if (flowBool) { // If graph is a flow graph
-                ctx.fillText(`${this.flowIn}/${this.flowOut}`, mid_p[0], mid_p[1]);
+                ctx.fillText(`${this.flow}/${this.capacity}`, mid_p[0], mid_p[1]);
             } else {
                 ctx.fillText(String(this.weight), mid_p[0], mid_p[1]);    
             };

@@ -46,10 +46,10 @@ self.onmessage = (e) => {
         function updateNode(color) {    // Sends data for main thread to update
             for (let n=0;n<node_li.length;n++) {
                 if (node_li[n].id == nodeId) {
-                    self.postMessage([n, color, null, null]);
+                    self.postMessage([n, color, null, null, null, null]);
                     break;
-                }
-            }
+                };
+            };
             sleep(sleep_time);
         };
 
@@ -62,7 +62,7 @@ self.onmessage = (e) => {
         for (let index=0;index<adjacency_matrix[nodeId].length;index++) {   // Searches through the adjacency matrix
             if (adjacency_matrix[nodeId][index] != Infinity) {  // Finds any values that are not infinity
                 neighbors[neighbors.length - 1].push(index);    // Adds the index position if value is not infinity
-            }
+            };
         };
 
         for (i of neighbors[neighbors.length - 1]) {    // For each of the current nodes neighbors

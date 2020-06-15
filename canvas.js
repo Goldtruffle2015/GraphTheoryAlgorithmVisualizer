@@ -208,7 +208,7 @@ window.addEventListener("load", () => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
         if (undir_bool) {   // If edge is undirected
             if (flowBool) {
-                line_li[line_li.length - 1].flowOut = weight_input.value;   // Sets the flow output
+                line_li[line_li.length - 1].capacity = weight_input.value;   // Sets the flow output
             } else {
                 line_li[line_li.length - 1].weight = weight_input.value;    // Update the value of the edge    
             }
@@ -216,14 +216,14 @@ window.addEventListener("load", () => {
 
             // Note: Updates 2 lines since creating an unweighted edge creates two lines going both directions
             if (flowBool) {
-                line_li[line_li.length - 2].flowOut = weight_input.value;   // Sets the flow output
+                line_li[line_li.length - 2].capacity = weight_input.value;   // Sets the flow output
             } else {
                 line_li[line_li.length - 2].weight = weight_input.value;    // Updates the value of the edge    
             };
             line_li[line_li.length - 2].drawweight = true;  // Show the value
         } else {    // If edge is not undirected
             if (flowBool) {
-                line_li[line_li.length - 1].flowOut = weight_input.value;   // Sets the flow output
+                line_li[line_li.length - 1].capacity = weight_input.value;   // Sets the flow output
             } else {
                 line_li[line_li.length - 1].weight = weight_input.value;   // Sets the weight of the edge to user input
             };

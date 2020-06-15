@@ -58,12 +58,12 @@ self.onmessage = (e) => {
     };
 
     function updateNode(index, color) {    // Sends data for main thread to update
-        self.postMessage([index, color, null, null]);
+        self.postMessage([index, color, null, null, null, null]);
         sleep(sleep_time);
     };
 
     function updateLine(index, color) {
-        self.postMessage([null, null, index, color]);
+        self.postMessage([null, null, index, color, null, null]);
     };
 
     function breadthFirstSearch(i) {
