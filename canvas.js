@@ -143,7 +143,7 @@ window.addEventListener("load", () => {
                         if (weighted_bool && weight_draw) {
                             weight_form.style.display = "block";    // Show the weight input
                             const last_edge = line_li[line_li.length - 1];  // Get the most recently added edge
-                            const mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy); // Find the midpoint of the edge
+                            const mid_p = midPoint(last_edge.endx + (last_edge.startx - last_edge.endx) * 3 / 4, last_edge.endx, last_edge.endy + (last_edge.starty - last_edge.endy) * 3 / 4, last_edge.endy); // Find the midpoint of the edge
                             weight_form.style.left = `${mid_p[0] - circleFrameRadius}px`;  // Position the input
                             weight_form.style.top = `${mid_p[1] - circleFrameRadius}px`;   // Position the input
                         }

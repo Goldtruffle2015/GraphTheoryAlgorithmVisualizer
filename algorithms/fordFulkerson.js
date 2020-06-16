@@ -4,7 +4,6 @@ This file runs in a separate thread from the main thread.
 */
 self.onmessage = (e) => {
     // -- Initalize Variables -- //
-    let flowMatrix = []
     const startId = e.data[0];
     const endId = e.data[1];
     const node_li = e.data[2];
@@ -15,10 +14,8 @@ self.onmessage = (e) => {
         for (let col=0;col<adjacency_matrix[row].length;col++) {
             if (adjacency_matrix[row][col] != Infinity) {
                 adjacency_matrix[row][col] = Number(adjacency_matrix[row][col]);    // This is done because the non-infinity values of the adjacency matrix are strings so they need to be converted back to numbers
-                flowMatrix[row][col] = 0;   // Set the flow at edge to 0 by default.
                 continue;
             };
-            flowMatrix[row][col] = Infinity;    // Set the flow to infinity to indicate no connection
         };
     };
     let sleep_time;
@@ -38,7 +35,6 @@ self.onmessage = (e) => {
     let neighbors = []; // Tracks the neighbors
     let augmentNodes = [];   // Stores the nodes in augmenting path
     let bottleneckValue;    // Tracks the bottleneck value
-    let pairs = []; // Stores the start-end pairs
     let augmentPathFound;   // Stores whether the end node was found in depth first search
     let neighborIndex = []; // Tracks the neighbor index history with each recursion
 
@@ -82,7 +78,7 @@ self.onmessage = (e) => {
 
     function updateFlowAndCapacity(index, flow) {
         self.postMessage([null, null, index, null, flow, null]);
-    }
+    };
 
     function computeBottleNeckValue(startNodeId, endNodeId) {
         for (let lineIndex=0;lineIndex<line_li.length;lineIndex++) {

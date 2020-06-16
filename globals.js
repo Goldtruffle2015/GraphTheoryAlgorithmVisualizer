@@ -97,7 +97,7 @@ class CustomLine {  // Builds lines
         };
 
         if (this.drawweight) {
-            const mid_p = midPoint(this.startx, this.endx, this.starty, this.endy);
+            const mid_p = midPoint(this.endx + (this.startx - this.endx) * 3 / 4, this.endx, this.endy + (this.starty - this.endy) * 3 / 4, this.endy);
             // Draw the circle //
             ctx.beginPath();    // Start the circle
             ctx.arc(mid_p[0], mid_p[1], this.circleFrameRadius, 0, 2 * Math.PI);

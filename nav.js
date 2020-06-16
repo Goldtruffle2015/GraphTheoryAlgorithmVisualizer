@@ -571,7 +571,8 @@ window.addEventListener("load", () => {
             "../algorithms/bellmanHeldKarp.js",
             "../algorithms/hierholzer.js",
             "../algorithms/prim.js",
-            "../algorithms/fordFulkerson.js"
+            "../algorithms/fordFulkerson.js",
+            "../algorithms/edmondsKarp.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
@@ -588,7 +589,6 @@ window.addEventListener("load", () => {
                     } else if (event.data[3] != null) {    // Line Data. Checks if a color was provided
                         line_li[event.data[2]].color = event.data[3];   // Update the line    
                     } else if (event.data[4] != null) {    // Flow-Capacity Data. Checks if a flow value was provided
-                        console.log(`flow => ${event.data[4]}`);
                         line_li[event.data[2]].flow += event.data[4];    // Update the flow
                     };
                 };

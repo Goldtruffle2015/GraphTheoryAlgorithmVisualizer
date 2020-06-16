@@ -66,7 +66,7 @@ self.onmessage = (e) => {
         self.postMessage([null, null, index, color, null, null]);
     };
 
-    function breadthFirstSearch(i) {
+    function breadthFirstSearch() {
         // -- Breadth First Search the graph -- //
         while (q.length > 0) {  // While the queue is not empty
             nodeToCheck = q[0]; // Gets the index position of node to check
@@ -117,6 +117,6 @@ self.onmessage = (e) => {
     };
 
     // -- Code Starts Here -- //
-    breadthFirstSearch(startId);
+    breadthFirstSearch();
     self.postMessage("terminate");
 };
