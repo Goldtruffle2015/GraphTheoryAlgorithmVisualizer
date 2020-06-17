@@ -28,6 +28,7 @@ self.onmessage = (e) => {
     };
     
     const dir_bool = e.data[6];
+    const undir_bool = e.data[7];
 
     let q = []; // This is a queue data structure. Stores the index position of nodes.
     q.push(idToIndex(startId));
@@ -159,7 +160,7 @@ self.onmessage = (e) => {
 
             // -- Get neighbors -- //
             for (let id=0;id<adjacency_matrix[indexToId(currentNodeIndex)].length;id++) {   // Searches through the adjacency matrix
-                if (!visited[idToIndex(id)]) {  // If node is not visited
+                if (!visited[idToIndex(id)] && (!q.includes(idToIndex(id)))) {  // If node is not visited and not in queue
                     if (adjacency_matrix[indexToId(currentNodeIndex)][id] != Infinity) {  // Finds any forward edges
                         let temp = getFlowandCapacity(indexToId(currentNodeIndex), id);
                         lineFlow = temp[0];

@@ -10,7 +10,6 @@ self.onmessage = (e) => {
     let line_li = e.data[3];
     const adjacency_matrix = e.data[4];
     for (let row=0;row<adjacency_matrix.length;row++) {
-        flowMatrix.push([]);
         for (let col=0;col<adjacency_matrix[row].length;col++) {
             if (adjacency_matrix[row][col] != Infinity) {
                 adjacency_matrix[row][col] = Number(adjacency_matrix[row][col]);    // This is done because the non-infinity values of the adjacency matrix are strings so they need to be converted back to numbers

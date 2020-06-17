@@ -572,7 +572,8 @@ window.addEventListener("load", () => {
             "../algorithms/hierholzer.js",
             "../algorithms/prim.js",
             "../algorithms/fordFulkerson.js",
-            "../algorithms/edmondsKarp.js"
+            "../algorithms/edmondsKarp.js",
+            "../algorithms/dinic.js"
         ];
         // Handle algorithms 
         for (let algo_option = 0;algo_option < algo_options_buttons_arr.length;algo_option++) {
