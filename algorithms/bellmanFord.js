@@ -62,6 +62,17 @@ self.onmessage = (e) => {
         self.postMessage([null, null, index, color, null, null]);
     };
 
+    function updateLineByStartEnd(startIndex, endIndex, color) {    // Updates a line given a start and end index
+        for (let lineIndex=0;lineIndex < line_li.length;lineIndex++) {
+            let from = idToIndex(line_li[lineIndex].startNodeId);
+            let to = idToIndex(line_li[lineIndex].endNodeId);
+            if ((from == startIndex) && (to == endIndex)) {
+                updateLine(lineIndex, color);
+                return;
+            };
+        };
+    };
+
     // -- Code Starts Here -- //
     shortestDistance[startIndex] = 0;   // Sets the shortest distance of the start index
 
@@ -81,40 +92,17 @@ self.onmessage = (e) => {
                 if (adjacency_matrix[indexToId(currentIndex)][id] != Infinity) {    // If node has been visited
                     if (shortestDistance[currentIndex] + adjacency_matrix[indexToId(currentIndex)][id] < shortestDistance[idToIndex(id)]) { // If edge can be relaxed
                         shortestDistance[idToIndex(id)] = shortestDistance[currentIndex] + adjacency_matrix[indexToId(currentIndex)][id];   // Relax edge
-                        prev[indexToId(id)] = currentIndex;
+                        prev[idToIndex(id)] = currentIndex; // Set the previous node of neighbor
                     };
                     // Draw line and node being explored //
                     if (display) {
                         updateNode(idToIndex(id), "#FFA849");
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if ((idToIndex(line_li[line_index].endNodeId) == id) && 
-                                (idToIndex(line_li[line_index].startNodeId) == currentIndex) && dir_bool) {    // If an edge connects the current node and the previous node and the edge is directed
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                                sleep(sleep_time);
-                            };
-                            if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (line_li[line_index].endNodeId == id)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (line_li[line_index].startNodeId == id)) && undir_bool) {    // If an edge connects the current node and the previous node and the edge is undirected
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                            };
-                        };
+                        updateLineByStartEnd(currentIndex, idToIndex(id), "#FFA849");
                         sleep(sleep_time);
+
                         // Reset line and node color //
                         updateNode(idToIndex(id), "#397EC9");
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if ((idToIndex(line_li[line_index].endNodeId) == id) && 
-                                (idToIndex(line_li[line_index].startNodeId) == currentIndex) && dir_bool) {    // If an edge connects the current node and the previous node and the edge is directed
-                                updateLine(line_index, "white");   // Updates the line
-                                sleep(sleep_time);
-                            };
-                            if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (line_li[line_index].endNodeId == id)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (line_li[line_index].startNodeId == id)) && undir_bool) {    // If an edge connects the current node and the previous node and the edge is undirected
-                                updateLine(line_index, "white");   // Updates the line
-                            };
-                        };
+                        updateLineByStartEnd(currentIndex, idToIndex(id), "white");
                         sleep(sleep_time);    
                     };
                 };
@@ -142,40 +130,16 @@ self.onmessage = (e) => {
                 if (adjacency_matrix[indexToId(currentIndex)][id] != Infinity) {        // Checks if node has been visited
                     if (shortestDistance[currentIndex] + adjacency_matrix[indexToId(currentIndex)][id] < shortestDistance[idToIndex(id)]) { // If node can be relaxed
                         shortestDistance[idToIndex(id)] = Number.NEGATIVE_INFINITY; // Set to negative infinity. Indicates node is part of a negative loop
-                        prev[indexToId(id)] = null; // Node has no shortest path
+                        prev[idToIndex(id)] = null; // Node has no shortest path
                     };
                     // Draw line and node being explored //
                     if (display) {
                         updateNode(idToIndex(id), "#FFA849");
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if ((idToIndex(line_li[line_index].endNodeId) == id) && 
-                                (idToIndex(line_li[line_index].startNodeId) == currentIndex) && dir_bool) {    // If an edge connects the current node and the previous node and the edge is directed
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                                sleep(sleep_time);
-                            };
-                            if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (line_li[line_index].endNodeId == id)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (line_li[line_index].startNodeId == id)) && undir_bool) {    // If an edge connects the current node and the previous node and the edge is undirected
-                                updateLine(line_index, "#FFA849");   // Updates the line
-                            };
-                        };
+                        updateLineByStartEnd(currentIndex, idToIndex(id), "#FFA849");
                         sleep(sleep_time);
                         // Reset line and node color //
                         updateNode(idToIndex(id), "#397EC9");
-                        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-                            if ((idToIndex(line_li[line_index].endNodeId) == id) && 
-                                (idToIndex(line_li[line_index].startNodeId) == currentIndex) && dir_bool) {    // If an edge connects the current node and the previous node and the edge is directed
-                                updateLine(line_index, "white");   // Updates the line
-                                sleep(sleep_time);
-                            };
-                            if (((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-                            (line_li[line_index].endNodeId == id)) || 
-                            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-                            (line_li[line_index].startNodeId == id)) && undir_bool) {    // If an edge connects the current node and the previous node and the edge is undirected
-                                updateLine(line_index, "white");   // Updates the line
-                            };
-                        };
+                        updateLineByStartEnd(currentIndex, idToIndex(id), "white");
                         sleep(sleep_time);
                     };
                 };
@@ -188,22 +152,10 @@ self.onmessage = (e) => {
     };
 
     // Reconstruct shortest path //
-    currentNode = endIndex;
-    previousNode = prev[currentNode];
+    currentNode = endIndex; // Stores the index position of the end node
+    previousNode = prev[currentNode];   // Stores the index position of the previous node
     while (previousNode != null) {   // While a previous node exists
-        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-            if ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
-            (idToIndex(line_li[line_index].startNodeId) == previousNode) && dir_bool) {    // If an edge connects the current node and the previous node and the edge is directed
-                updateLine(line_index, "#2F7B1F");   // Updates the line
-                sleep(sleep_time);
-            };
-            if (((idToIndex(line_li[line_index].startNodeId) == currentNode) && 
-            (idToIndex(line_li[line_index].endNodeId) == previousNode)) || 
-            ((idToIndex(line_li[line_index].endNodeId) == currentNode) && 
-            (idToIndex(line_li[line_index].startNodeId) == previousNode)) && undir_bool) {    // If an edge connects the current node and the previous node and the edge is undirected
-                updateLine(line_index, "#2F7B1F");   // Updates the line
-            };
-        };
+        updateLineByStartEnd(previousNode, currentNode, "#2F7B1F");
         sleep(sleep_time);  // Sleep
         currentNode = previousNode; // Sets current node to its previous node
         previousNode = prev[previousNode];  // Sets previous node to its corresponding previous node
