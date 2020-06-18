@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
     temp_line = null;  // Creates a temporary line object
 
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.75;  // Canvas is 3/4 of virtual height
+    canvas.height = window.innerHeight;
 
     // -- Functions -- //
     function point2LineDist(px, py, x1, y1, x2, y2) {   // Calculates the shortest distance from a line segment to a point
@@ -22,7 +22,7 @@ window.addEventListener("load", () => {
         for (let i=0;i<2;i++) {
             unit_vector_p[i] = vector_p[i] / line_length;
             unit_vector_l[i] = vector_l[i] / line_length;
-        }
+        };
 
         // Calculate dot product
         dot_product = unit_vector_p[0]*unit_vector_l[0] + unit_vector_p[1]*unit_vector_l[1];
@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 
         // Calculate distance between point and nearest point
         return distance(px, nearest_p[0], py, nearest_p[1]);
-    }
+    };
 
     // -- Event Listeners -- //
     canvas.addEventListener("click", (e) => {
@@ -59,8 +59,8 @@ window.addEventListener("load", () => {
                     node_id_of_removed_node = node_li[i].id;    // Stores the id of node being removed
                     node_li.splice(i, 1);   // Remove node from list
                     break;
-                }
-            }
+                };
+            };
 
             if (!click_detected) return;    // If user did not click on a node exit out of event
 
@@ -68,21 +68,21 @@ window.addEventListener("load", () => {
             for (let l=0;l<line_li.length;l++) {
                 if (line_li[l].startNodeId == node_id_of_removed_node || line_li[l].endNodeId == node_id_of_removed_node) { // Finds the lines that are connected to the node that got removed
                     indices_to_remove.unshift(l);   // Adds index at beginning of array so that array is in decending order
-                }
-            }
+                };
+            };
 
             for (index of indices_to_remove) {
                 line_li.splice(index, 1);   // Removes the line from the line list
-            }
+            };
 
             // Update adjacency matrix //
             for (let col=0;col<adjacency_matrix[node_id_of_removed_node].length;col++) {
                 adjacency_matrix[node_id_of_removed_node][col] = Infinity;        // Sets the row of removed node to infinity
-            }
+            };
 
             for (let row=0;row<adjacency_matrix.length;row++) {
                 adjacency_matrix[row][node_id_of_removed_node] = Infinity;  // Sets the column of removed node to infinity
-            }
+            };
         
         // -- Add edge -- //
         } else if (add_edge_bool) {
@@ -93,10 +93,10 @@ window.addEventListener("load", () => {
                         temp_line.initialize(); // Initializes the line
                         edge_draw_active = true;    // Sets draw state to true
                         break;
-                    }
-                }   
+                    };
+                };
                 return; // Breaks out of event. Player must click a second time to select an end nodes
-            }
+            };
             if (edge_draw_active) { // If player has selected a starting node
                 for (c of node_li) {
                     let weight_draw = true;
@@ -118,40 +118,45 @@ window.addEventListener("load", () => {
                                 temp_line_rev.endNodeId = temp_line.startNodeId;    // Sets end node
                                 line_li.push(temp_line_rev);    // Add temporary line
                                 adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] = 99; // Update the adjacency matrix
-                            }
+                            };
                         } else {
                             weight_draw = false;    // Prevent weight input from showing if line already exists
-                        }
+                        };
 
                         if (dir_bool) { // Check if edge is a directed edge
                             if (adjacency_matrix[temp_line.endNodeId][temp_line.startNodeId] != Infinity) { // Check if a line exists going the opposite direction
                                 for (let li=0;li<line_li.length;li++) { // Loop through line list
                                     if ((line_li[li].startNodeId == temp_line.endNodeId) &&
                                         (line_li[li].endNodeId == temp_line.startNodeId)) {   // If line goes opposite of recently drawn line
-                                            line_li[li].offsetLine();   // Offset line
+                                            line_li[li].offsetLine(circleFrameRadius);   // Offset line
                                             line_li[li].offsetBool = true;  // Line is offsetted
                                             break;
-                                    }
-                                }
-                                line_li[line_li.length - 1].offsetLine();   // Offset last drawn line
+                                    };
+                                };
+                                line_li[line_li.length - 1].offsetLine(circleFrameRadius);   // Offset last drawn line
                                 line_li[line_li.length - 1].offsetBool = true;  // Line is offsetted
-                            }
-                        }
+                            };
+                        };
                         edge_draw_active = false;   // Drawing is complete. Revert back to non-active draw state
 
                         // Get weight if applicable //
                         if (weighted_bool && weight_draw) {
                             weight_form.style.display = "block";    // Show the weight input
                             const last_edge = line_li[line_li.length - 1];  // Get the most recently added edge
-                            const mid_p = midPoint(last_edge.endx + (last_edge.startx - last_edge.endx) * 3 / 4, last_edge.endx, last_edge.endy + (last_edge.starty - last_edge.endy) * 3 / 4, last_edge.endy); // Find the midpoint of the edge
+                            if (dir_bool) {
+                                mid_p = midPoint(last_edge.endx + (last_edge.startx - last_edge.endx) * 3 / 4, last_edge.endx, last_edge.endy + (last_edge.starty - last_edge.endy) * 3 / 4, last_edge.endy); // Find the midpoint of the edge
+                            } else if (undir_bool) {
+                                mid_p = midPoint(last_edge.startx, last_edge.endx, last_edge.starty, last_edge.endy);
+                            };
+                            
                             weight_form.style.left = `${mid_p[0] - circleFrameRadius}px`;  // Position the input
                             weight_form.style.top = `${mid_p[1] - circleFrameRadius}px`;   // Position the input
-                        }
+                        };
 
                         break;
-                    }
-                }
-            }
+                    };
+                };
+            };
             
         // -- Remove edge -- //
         } else if (rem_edge_bool) {
@@ -162,15 +167,15 @@ window.addEventListener("load", () => {
                         for (let l2=0;l2<line_li.length;l2++) { // Loop through each line
                             if (((line_li[l2].startNodeId == line_li[l].endNodeId) &&
                             (line_li[l2].endNodeId == line_li[l].startNodeId)) && dir_bool) {   // Find directed edge going the other way
-                                line_li[l2].offsetLine(-20);    // Un-offset line
+                                line_li[l2].offsetLine(circleFrameRadius * -1);    // Un-offset line
                                 line_li[l2].offsetBool = false; // Line is no longer offsetted
-                            }
-                        }
-                    }
+                            };
+                        };
+                    };
                     line_li.splice(l, 1);   // Remove line from list
                     return;
-                }
-            }
+                };
+            };
 
         // -- Set Start Node -- //
         } else if (set_start_bool) { 
@@ -179,13 +184,13 @@ window.addEventListener("load", () => {
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == startId) { // Find the previous starting node
                             n2.color = (n2.id == endId) ? "magenta" : "#397EC9"; // If the previous starting node is also an end node set the color to magenta otherwise reset to blue
-                        }
-                    }
+                        };
+                    };
                     startId = n.id; // Sets start node id
                     n.color = (n.id == endId) ? "yellow" : "cyan"; // If the node is also an end node set to yellow otherwise set to cyan
                     return; // Breaks out of canvas click event
-                }
-            }
+                };
+            };
         
         // -- Set End Node -- //
         } else if (set_end_bool) {
@@ -194,15 +199,15 @@ window.addEventListener("load", () => {
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == endId) { // Find the previous ending node
                             n2.color = (n2.id == startId) ? "cyan" : "#397EC9"; // If the previous ending node is also a starting node set the color to cyan otherwise reset to blue
-                        }
-                    }
+                        };
+                    };
                     endId = n.id;   // Sets start node id
                     n.color = (n.id == startId) ? "yellow" : "magenta";   // If the node is also a start node set to yellow otherwise set to cyan
                     return;
-                }
-            }
-        }
-    })
+                };
+            };
+        };
+    });
 
     weight_form.addEventListener("submit", (e) => {
         e.preventDefault(); // Prevents the form's default submission action. Basically doesn't break the program.
@@ -211,7 +216,7 @@ window.addEventListener("load", () => {
                 line_li[line_li.length - 1].capacity = weight_input.value;   // Sets the flow output
             } else {
                 line_li[line_li.length - 1].weight = weight_input.value;    // Update the value of the edge    
-            }
+            };
             line_li[line_li.length - 1].drawweight = true;  // Show the value
 
             // Note: Updates 2 lines since creating an unweighted edge creates two lines going both directions
@@ -237,14 +242,14 @@ window.addEventListener("load", () => {
         adjacency_matrix[line_li[line_li.length - 1].startNodeId][line_li[line_li.length - 1].endNodeId] = line_li[line_li.length - 1].weight;  // Updates the adjacency matrix
         if (undir_bool) {   // If line is an undirected line
             adjacency_matrix[line_li[line_li.length - 1].endNodeId][line_li[line_li.length - 1].startNodeId] = line_li[line_li.length - 1].weight;  // Updates the adjacency matrix
-        }
-    })
-})
+        };
+    });
+});
 
 window.addEventListener("resize", () => {
     const canvas = document.querySelector(".canvas");
     const ctx = canvas.getContext("2d"); 
 
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.75;  // Canvas is 3/4 of virtual height
-})
+    canvas.height = window.innerHeight;
+});

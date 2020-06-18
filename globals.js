@@ -15,6 +15,7 @@ const weight_form = document.getElementById("weight-form"); // Gets the form con
 const weight_input = document.getElementById("weight-input");   // Gets the input field
 const canvas = document.querySelector(".canvas");
 const ctx = canvas.getContext("2d"); 
+let mid_p;  // Initialize the midpoint variable
 
 // Initialize the adjacency matrix //
 for (let row=0;row<133;row++) {   // For simplicity the program will only handle 133 nodes including those that have been removed. 133 is the max number of nodes that can fit in canvas assuming none have been removed.
@@ -97,7 +98,12 @@ class CustomLine {  // Builds lines
         };
 
         if (this.drawweight) {
-            const mid_p = midPoint(this.endx + (this.startx - this.endx) * 3 / 4, this.endx, this.endy + (this.starty - this.endy) * 3 / 4, this.endy);
+            if (dir_bool) {
+                mid_p = midPoint(this.endx + (this.startx - this.endx) * 3 / 4, this.endx, this.endy + (this.starty - this.endy) * 3 / 4, this.endy);
+            } else if (undir_bool) {
+                mid_p = midPoint(this.startx, this.endx, this.starty, this.endy);
+            };
+            
             // Draw the circle //
             ctx.beginPath();    // Start the circle
             ctx.arc(mid_p[0], mid_p[1], this.circleFrameRadius, 0, 2 * Math.PI);
@@ -166,8 +172,8 @@ class CustomLine {  // Builds lines
         ctx.fill();
     };
 
-    offsetLine() {  // Offsets the line
-        const offsetDistance = this.circleFrameRadius;
+    offsetLine(arg0) {  // Offsets the line
+        const offsetDistance = arg0;
         const edge_vec = [this.endx - this.startx, this.endy - this.starty];
         const x = edge_vec[0];
         const y = edge_vec[1];

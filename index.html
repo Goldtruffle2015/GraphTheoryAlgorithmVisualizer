@@ -35,11 +35,6 @@
                     <button id="rem-node-but">Remove Node</button>    
                 </div>
 
-                <div id="start-end-options" class="options">
-                    <button id="set-start-node">Set Start</button>
-                    <button id="set-end-node">Set Finish</button>
-                </div>
-
                 <div id="edge-options" class="options">
                     <button id="add-edge-but">Add Edge</button>
                     <button id="rem-edge-but">Remove Edge</button>
@@ -53,6 +48,11 @@
                 <div id="weight-option" class="options" >
                     <button id="weighted-but">Weighted</button>
                     <button id="unweighted-but">Unweighted</button>
+                </div>
+
+                <div id="start-end-options" class="options">
+                    <button id="set-start-node">Set Start</button>
+                    <button id="set-end-node">Set Finish</button>
                 </div>
                 
                 <div id="clean-up-options" class="options">
@@ -70,12 +70,11 @@
                     </ul>
                 </div>
 
+                <a id="docs" href="documentation.html" target="_blank">Docs</a>
+
                 <button id="start-but">START</button>
             </div>
         </nav>
-        <div id="legend">
-
-        </div>
         <canvas class="canvas"></canvas>
         <form id="weight-form">
             <input id="weight-input" type="number" min="-99" max="99" value="99">

@@ -234,7 +234,7 @@ window.addEventListener("load", () => {
         weight_input.min = -99;
     });
 
-    // Eulerian Path //
+    // Hierholzer //
     algo_options_buttons_arr[8].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = true;
@@ -519,6 +519,12 @@ window.addEventListener("load", () => {
             adjacency_matrix[row].fill(Infinity);
         };
         ctx.clearRect(0, 0, canvas.width, canvas.height);   // Clears the canvas
+        for (let i=0;i<algo_options_bool_arr.length;i++) {
+            if (algo_options_bool_arr[i]) {
+                algo_options_buttons_arr[i].click();  
+                break;  
+            };
+        };
     });
 
     // -- Speed Button -- //

@@ -6,6 +6,7 @@
 }
 
 #nav-title {    /*Styles the title of the navigation bar*/
+    font-family: 'Times New Roman', Times, serif;
     font-size: 20pt;
     color: #05E9FF;
 }
@@ -15,13 +16,6 @@
     justify-content: space-around;
     align-items: center;
     width: 70%;
-}
-
-#legend {   /*Styles the div containing all the legends*/
-    display: block;
-    padding: 10px;
-    background-color: red;
-    height: 15vh;
 }
 
 #start-but {    /*Styles the start button*/
@@ -92,10 +86,28 @@
     z-index: 99;
 }
 
+#docs {
+    margin: 2px 2px;
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 10pt;
+    text-align: center;
+    color: white;
+    background-color: #4682B4;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#docs:hover {
+    background-color: rgb(4, 166, 247);
+}
+
 .canvas {   /*Styles the canvas*/
     display: block;
     position: absolute;
-    top: 25vh;
+    top: 10vh;
     left: 0px;
     background-color: black;
 }
@@ -131,6 +143,7 @@ button {    /*Styles all buttons*/
     margin-bottom: 2px;
     border-radius: 5px;
     padding: 8px 14px;
+    font-family: 'Times New Roman', Times, serif;
     font-size: 10pt;
     text-align: center;
     color: white;
@@ -146,4 +159,8 @@ button:hover {  /*Styles all buttons on hover*/
 button:disabled {   /*Styles all buttons that are disabled*/
     cursor: not-allowed;
     background-color: rgb(26, 93, 148);
+}
+
+body {
+    overflow: hidden;
 }
