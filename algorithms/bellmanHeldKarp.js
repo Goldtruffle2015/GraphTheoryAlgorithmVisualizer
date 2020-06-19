@@ -10,6 +10,10 @@ This file runs in a separate thread from the main thread.
 self.onmessage = (e) => {
     // -- Initialize variables -- //
     const startId = e.data[0];
+    if (startId == null) {  // If no start node is specified
+        self.postMessage("missingStart");   // Tells main thread start node is missing
+        return; // Ends web worker
+    };
     const endId = e.data[1];
     const node_li = e.data[2];
     const line_li = e.data[3];

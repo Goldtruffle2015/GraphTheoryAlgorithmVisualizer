@@ -9,7 +9,15 @@ This file runs in a separate thread from the main loop.
 self.onmessage = (e) => {
     // -- Initialize variables -- //
     const startId = e.data[0];
+    if (startId == null) {  // If no start node is specified
+        self.postMessage("missingStart");   // Tells main thread start node is missing
+        return; // Ends web worker
+    };
     const endId = e.data[1];
+    if (endId == null) {  // If no start node is specified
+        self.postMessage("missingEnd");   // Tells main thread start node is missing
+        return; // Ends web worker
+    };
     const node_li = e.data[2];
     const line_li = e.data[3];
     const adjacency_matrix = e.data[4];
@@ -74,6 +82,17 @@ self.onmessage = (e) => {
         self.postMessage([null, null, index, color, null, null]);
     };
 
+    function updateLineByStartEnd(startIndex, endIndex, color) {    // Updates a line given a start and end index
+        for (let lineIndex=0;lineIndex < line_li.length;lineIndex++) {
+            let from = idToIndex(line_li[lineIndex].startNodeId);
+            let to = idToIndex(line_li[lineIndex].endNodeId);
+            if ((from == startIndex) && (to == endIndex)) {
+                updateLine(lineIndex, color);
+                return lineIndex;
+            };
+        };
+    };
+
     // -- Code Starts Here -- //
     // Setup //
     for (let i=0;i<node_li.length;i++) {    // Start node. i = index of node, not id
@@ -88,87 +107,50 @@ self.onmessage = (e) => {
         };
     };
     // Execute Floyd-Warshall //
-    for (let k=0;k<node_li.length;k++) {    // Intermediate node. k = index of node, not id
-        if (display) updateNode(k, "#FFA849");   // Sets node as being processed
-        for (let i=0;i<node_li.length;i++) {    // Start node. i = index of node, not id
-            if (display) updateNode(i, "#FFA849");   // Sets node as being processed
-            for (let j=0;j<node_li.length;j++) {    // End node. j = index of node, not id
-                let betterPath = false;
-                if (dp[i][j] > dp[i][k] + dp[k][j]) {   // If route through intermediate is shorter
-                    dp[i][j] = dp[i][k] + dp[k][j]; // Set new route
-                    next[i][j] = next[i][k]; // Sets previous node to intermediate
+    for (let iteration=0;iteration<2;iteration++) {
+        for (let k=0;k<node_li.length;k++) {    // Intermediate node. k = index of node, not id
+            if (display) updateNode(k, "#FFA849");   // Sets node as being processed
+            for (let i=0;i<node_li.length;i++) {    // Start node. i = index of node, not id
+                if (display) updateNode(i, "#FFA849");   // Sets node as being processed
+                for (let j=0;j<node_li.length;j++) {    // End node. j = index of node, not id
+                    if (dp[i][j] > dp[i][k] + dp[k][j]) {   // If route through intermediate is shorter
+                        if (iteration == 0) {   // First Iteration
+                            dp[i][j] = dp[i][k] + dp[k][j]; // Set new route
+                            next[i][j] = next[i][k]; // Sets previous node to intermediate
+                        };
+                        if (iteration == 1) {   // Second Iteration
+                            dp[i][j] = Number.NEGATIVE_INFINITY; // Set new route
+                            next[i][j] = null; // Sets previous node to intermedite
+                        };
+                    };
+                    // Draw //
+                    if (display) {
+                        updateNode(j, "#FFA849");   // Sets node as being processed
+                        sleep(sleep_time);
+
+                        // Reset colors //
+                        if ((k != j) && (i != j)) updateNode(j, "#397EC9");   // Sets node as being processed
+                        sleep(sleep_time);   
+                    };  
                 };
-                // Draw //
                 if (display) {
-                    updateNode(j, "#FFA849");   // Sets node as being processed
-                    sleep(sleep_time);
-
-                    // Reset colors //
-                    if ((k != j) && (i != j)) updateNode(j, "#397EC9");   // Sets node as being processed
-                    sleep(sleep_time);   
-                };  
-            };
-            if (display) {
-                if (k != i) updateNode(i, "#397EC9");
-                sleep(sleep_time);    
-            };
-        };
-        if (display) {
-            updateNode(k, "#397EC9");
-            sleep(sleep_time);    
-        };  
-    };
-
-    // Propagate negative cycles //
-    for (let k=0;k<node_li.length;k++) {    // Intermediate node. k = index of node, not id
-        if (display) updateNode(k, "#FFA849");   // Sets node as being processed
-        for (let i=0;i<node_li.length;i++) {    // Start node. i = index of node, not id
-            if (display) updateNode(i, "#FFA849");   // Sets node as being processed
-            for (let j=0;j<node_li.length;j++) {    // End node. j = index of node, not id
-                let betterPath = false;
-                if (dp[i][j] > dp[i][k] + dp[k][j]) {   // If route through intermediate is shorter
-                    dp[i][j] = Number.NEGATIVE_INFINITY; // Set new route
-                    next[i][j] = null; // Sets previous node to intermedite
-                    betterPath = true;
-                };
-                // Draw //
-                if (display) {
-                    updateNode(j, "#FFA849");   // Sets node as being processed
-                    sleep(sleep_time);
-
-                    // Reset colors //
-                    if ((k != j) && (i != j)) updateNode(j, "#397EC9");   // Sets node as being processed
+                    if (k != i) updateNode(i, "#397EC9");
                     sleep(sleep_time);    
                 };
             };
             if (display) {
-                if (k != i) updateNode(i, "#397EC9");
+                updateNode(k, "#397EC9");
                 sleep(sleep_time);    
-            };
-        };
-        if (display) {
-            updateNode(k, "#397EC9");
-            sleep(sleep_time);    
+            };  
         };
     };
 
     // Reconstruct shortest path //
     currentIndex = startIndex;
+    console.log(`next => ${next}`);
     nextIndex = next[currentIndex][endIndex];
     while ((currentIndex != nextIndex) && (nextIndex != null)) {   // While a previous node exists
-        for (let line_index = 0;line_index < line_li.length;line_index++) { // Finds the line(s)
-            if (((idToIndex(line_li[line_index].endNodeId) == nextIndex) && 
-            (idToIndex(line_li[line_index].startNodeId) == currentIndex)) && dir_bool) {    // If an edge connects the current node and the previous node and edge is directed
-                updateLine(line_index, "#2F7B1F");   // Updates the line
-                sleep(sleep_time);
-            };
-            if ((((idToIndex(line_li[line_index].startNodeId) == currentIndex) && 
-            (idToIndex(line_li[line_index].endNodeId) == nextIndex)) || 
-            ((idToIndex(line_li[line_index].endNodeId) == currentIndex) && 
-            (idToIndex(line_li[line_index].startNodeId) == nextIndex))) && undir_bool) {    // If an edge connects the current node and the previous node and edge is undirected
-                updateLine(line_index, "#2F7B1F");   // Updates the line
-            };
-        };
+        updateLineByStartEnd(currentIndex, nextIndex, "#2F7B1F");
         sleep(sleep_time);  // Sleep
         currentIndex = nextIndex; // Sets current node to its previous node
         nextIndex = next[currentIndex][endIndex];  // Sets previous node to its corresponding previous node

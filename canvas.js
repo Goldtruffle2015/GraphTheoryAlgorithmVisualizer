@@ -188,6 +188,7 @@ window.addEventListener("load", () => {
                     };
                     startId = n.id; // Sets start node id
                     n.color = (n.id == endId) ? "yellow" : "cyan"; // If the node is also an end node set to yellow otherwise set to cyan
+                    set_start_button.classList.remove("button-warning-background-color");
                     return; // Breaks out of canvas click event
                 };
             };
@@ -203,6 +204,7 @@ window.addEventListener("load", () => {
                     };
                     endId = n.id;   // Sets start node id
                     n.color = (n.id == startId) ? "yellow" : "magenta";   // If the node is also a start node set to yellow otherwise set to cyan
+                    set_end_button.classList.remove("button-warning-background-color");
                     return;
                 };
             };

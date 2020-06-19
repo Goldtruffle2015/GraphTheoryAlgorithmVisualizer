@@ -217,7 +217,7 @@ window.addEventListener("load", () => {
         weight_input.min = -99;
     });
 
-    // Bellman-Ford-Karp //
+    // Bellman-Held-Karp //
     algo_options_buttons_arr[7].addEventListener("click", () => {
         // enable/disable options //
         set_start_button.disabled = false;
@@ -370,6 +370,7 @@ window.addEventListener("load", () => {
         rem_node_button.classList.remove("button-active-background-color");
         add_edge_button.classList.remove("button-active-background-color");
         rem_edge_button.classList.remove("button-active-background-color"); 
+        set_start_button.classList.remove("button-warning-background-color");
 
         add_node_bool = false;
         rem_node_bool = false;
@@ -389,6 +390,7 @@ window.addEventListener("load", () => {
         rem_node_button.classList.remove("button-active-background-color");
         add_edge_button.classList.remove("button-active-background-color");
         rem_edge_button.classList.remove("button-active-background-color");
+        set_end_button.classList.remove("button-warning-background-color");
 
         add_node_bool = false;
         rem_node_bool = false;
@@ -586,10 +588,16 @@ window.addEventListener("load", () => {
             if (algo_options_bool_arr[algo_option]) {
                 worker = new Worker(dict[algo_option]);
                 worker.onmessage = (event) => {    // Listens for messsage from web worker
-                    if (event.data == "terminate") {
-                        worker.terminate(); // Ends the web worker
-                        worker = undefined;
-                        return;
+                    switch (event.data) {
+                        case "terminate":
+                            worker.terminate(); // Ends the web worker
+                            worker = undefined;
+                            return;
+                        case "missingStart":
+                            set_start_button.classList.add("button-warning-background-color");
+                            return;
+                        case "missingEnd":
+                            set_end_button.classList.add("button-warning-background-color");
                     };
                     if (event.data[0] != null) {    // Node Data. Checks if a node index is provided
                         node_li[event.data[0]].color = event.data[1];   // Update the node    

@@ -121,6 +121,10 @@
     background-color: rgb(4, 166, 247);
 }
 
+.button-warning-background-color {
+    background-color: 	#cc3300;
+}
+
 .toggleDisplayNone {
     display: none;
 }

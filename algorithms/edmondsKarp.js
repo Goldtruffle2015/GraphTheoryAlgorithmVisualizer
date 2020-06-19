@@ -5,7 +5,15 @@ This file runs in a separate thread from the main thread.
 self.onmessage = (e) => {
     // -- Initialize Variables -- //
     const startId = e.data[0];
+    if (startId == null) {  // If no start node is specified
+        self.postMessage("missingStart");   // Tells main thread start node is missing
+        return; // Ends web worker
+    };
     const endId = e.data[1];
+    if (endId == null) {  // If no start node is specified
+        self.postMessage("missingEnd");   // Tells main thread start node is missing
+        return; // Ends web worker
+    };
     const node_li = e.data[2];
     let line_li = e.data[3];
     const adjacency_matrix = e.data[4];
