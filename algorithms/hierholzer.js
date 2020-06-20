@@ -120,7 +120,7 @@ self.onmessage = (e) => {
             let nextNode = -1;    // Tracks the next edge to go to
             while (counter < outDegree[at]) { // Loops until the counter matches the ith end node
                 nextNode++; // Increment node id
-                if (adjacency_matrix[at][nextNode] != Infinity) counter++;  // Add to counter is edge exists
+                if (adjacency_matrix[indexToId(at)][nextNode] != Infinity) counter++;  // Add to counter is edge exists
             };
             outDegree[at]--;
             nextNode = idToIndex(nextNode); // Convert node id to node index
@@ -148,11 +148,11 @@ self.onmessage = (e) => {
             for (let lineIndex=0;lineIndex<line_li.length;lineIndex++) {
                 updateLine(lineIndex, "red");
             };
-        };
-
-        dfs(findStartNode());
-        if (path.length == line_li.length + 1) return path;
-        return null;
+        } else {
+            dfs(findStartNode());
+            if (path.length == line_li.length + 1) return path;
+            return null;
+        };        
     };
 
     function reconstructPath(arg0) {
@@ -162,13 +162,8 @@ self.onmessage = (e) => {
             };
         } else {    // If a path is found
             for (let i=1;i<arg0.length;i++) {   // Loop through each next node
-                for (let lineIndex=0;lineIndex<line_li.length;lineIndex++) {
-                    if ((idToIndex(line_li[lineIndex].startNodeId) == arg0[i - 1])
-                    && (idToIndex(line_li[lineIndex].endNodeId) == arg0[i])) {
-                        updateLine(lineIndex, "#2F7B1F");
-                        sleep(sleep_time);
-                    };
-                };
+                updateLineByStartEnd(arg0[i - 1], arg0[i], "#2F7B1F");
+                sleep(sleep_time);
             };
         };
     };
