@@ -81,7 +81,7 @@ self.onmessage = (e) => {
         // Find neighbors //
         neighbors[disc[currentIndex]] = []; // Adds an empty array storing the neighbors of disc[currentIndex]
         for (let i=0;i<=node_li[node_li.length - 1].id;i++) {  // Loop through each of the current node's connections
-            if (adjacency_matrix[idToIndex(currentIndex)][i] != Infinity) {    // If a connection exists
+            if (adjacency_matrix[indexToId(currentIndex)][i] != Infinity) {    // If a connection exists
                 neighbors[disc[currentIndex]].push(i); // Adds a neighbor
             };
         };
