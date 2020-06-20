@@ -106,7 +106,7 @@ self.onmessage = (e) => {
             */
             for (let i=0;i<N;i++) { // i represents a node
                 if (i == S) continue;   // If the node is the starting node skip
-                memo[i][(1 << S) | (1 << i)] = m[S][i];
+                memo[i][(1 << S) | (1 << i)] = m[S][indexToId(i)];
                 /*
                 1 << S represents the binary representation of the start node. 
                 Ex: 1 means node index 0 is the starting node since the 1st digit (index 0) is 1.
@@ -182,7 +182,7 @@ self.onmessage = (e) => {
                             /*
                             Skip if e is the start or end node or if e is not part of subset
                             */
-                            newDistance = memo[e][state] + m[e][next];  
+                            newDistance = memo[e][state] + m[indexToId(e)][indexToId(next)];  
                             /*
                             memo[e][state] => shortest distance from start node to end node passing through 
                             a given set of nodes
@@ -221,8 +221,8 @@ self.onmessage = (e) => {
                     updateNode(j, "#FFA849");   // Set j as temporary end node
                     sleep(sleep_time);
                     if (index == -1) index = j; // Once a valid candidate node is found store candidate node index
-                    let prevDist = memo[index][state] + m[index][lastIndex];    // Gets the distance of last candidate node
-                    let newDist = memo[j][state] + m[j][lastIndex]; // Finds the distance of new candidate node
+                    let prevDist = memo[index][state] + m[indexToId(index)][indexToId(lastIndex)];    // Gets the distance of last candidate node
+                    let newDist = memo[j][state] + m[indexToId(j)][indexToId(lastIndex)]; // Finds the distance of new candidate node
                     if (newDist < prevDist) index = j;  // If new candidate node improves distance store j
                     updateNode(j, "#397EC9");   // Resets node color
                     sleep(sleep_time);
