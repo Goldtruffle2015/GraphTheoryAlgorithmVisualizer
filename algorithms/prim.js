@@ -83,8 +83,8 @@ self.onmessage = (e) => {
             };
             visited[currentNodeIndex] = true;   // Marks the current node as visited
             let neighbors = [];
-            for (let id=0;id<adjacency_matrix[currentNodeIndex].length;id++) {  // Loops through adjacency matrix at current node
-                if (adjacency_matrix[currentNodeIndex][id] != Infinity) {   // If a connection exists
+            for (let id=0;id<adjacency_matrix[indexToId(currentNodeIndex)].length;id++) {  // Loops through adjacency matrix at current node
+                if (adjacency_matrix[indexToId(currentNodeIndex)][id] != Infinity) {   // If a connection exists
                     neighbors.push(id); // Add the node it's connected to
                 };
                 if (neighbors.length > N) break;    // Exits for loop if maximum possible nodes is added
@@ -95,12 +95,12 @@ self.onmessage = (e) => {
                 if (!ipqEnd.includes(neighborIndex)) {  // If neighbor is not included
                     ipqStart.push(currentNodeIndex);
                     ipqEnd.push(neighborIndex);
-                    ipqWeight.push(adjacency_matrix[currentNodeIndex][neighborIndex]);
+                    ipqWeight.push(adjacency_matrix[indexToId(currentNodeIndex)][indexToId(neighborIndex)]);
                 } else {    // If node was already visited
                     let indexOfEnd = ipqEnd.indexOf(neighborIndex);
-                    if (adjacency_matrix[currentNodeIndex][neighborId] < ipqWeight[indexOfEnd]) {
+                    if (adjacency_matrix[indexToId(currentNodeIndex)][neighborId] < ipqWeight[indexOfEnd]) {
                         ipqStart[indexOfEnd] = currentNodeIndex;
-                        ipqWeight[indexOfEnd] = adjacency_matrix[currentNodeIndex][neighborId];
+                        ipqWeight[indexOfEnd] = adjacency_matrix[indexToId(currentNodeIndex)][neighborId];
                     };
                 };
                 if (display) {
