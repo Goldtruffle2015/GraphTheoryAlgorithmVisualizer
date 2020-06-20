@@ -83,6 +83,10 @@ window.addEventListener("load", () => {
             for (let row=0;row<adjacency_matrix.length;row++) {
                 adjacency_matrix[row][node_id_of_removed_node] = Infinity;  // Sets the column of removed node to infinity
             };
+
+            // Update start-end node if applicable
+            if (startId == node_id_of_removed_node) startId = null;
+            if (endId == node_id_of_removed_node) endId = null;
         
         // -- Add edge -- //
         } else if (add_edge_bool) {

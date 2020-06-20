@@ -109,7 +109,7 @@ self.onmessage = (e) => {
         
         neighbors[disc[nodeIndex]] = []; // Pushes an empty array
         for (let id=0;id<=node_li[node_li.length - 1].id;id++) {    // Searches through the adjacency matrix
-            if ((adjacency_matrix[nodeIndex][id] != Infinity) && (idToIndex(id) != prevIndex)) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
+            if ((adjacency_matrix[indexToId(nodeIndex)][id] != Infinity) && (idToIndex(id) != prevIndex)) {   // Finds any values that are not infinity and makes sure to disclude the node it just came from
                 function includes2D(someArr, element) {   // Checks whether an element is included in a 2d array
                     for (let row=0;row<someArr.length;row++) {    // Searches through each array
                         if (someArr[row].includes(element)) { // Checks if element is included
