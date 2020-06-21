@@ -105,7 +105,7 @@ self.onmessage = (e) => {
             left++;
             right++;
         };
-        return pairs;   // Returns the pairrs
+        return pairs;   // Returns the pairs. 
     };
 
     function checkInPairsandOrientation(s, e, pairs) {
@@ -211,17 +211,17 @@ self.onmessage = (e) => {
         q = [idToIndex(startId)]; // Resets the queue
         visited = new Array(node_li.length).fill(false);    // Resets the visited array
         visited[idToIndex(startId)] = true;
-        augmentPath = [];   // Resets the augmenting path
+        augmentPath = [];   // Resets the augmenting path. Stores indexes
         prev = new Array(node_li.length).fill(null);    // Reset the prev array
         augmentPath = breadthFirstSearch();   // Perform a depth first search
-        const pairs = findStartEndPairs(augmentPath);
+        const pairs = findStartEndPairs(augmentPath);   // Pairs are indices
         bottleneckValue = Infinity; // Resets the bottleneck value
 
         if (!augmentPath.includes(idToIndex(endId))) break; // If the end node is not included in the path break
 
         // -- Compute bottleneck value -- //
         for (pair of pairs) {
-            var computedBottleneckValue = computeBottleNeckValue(pair[0], pair[1]);
+            var computedBottleneckValue = computeBottleNeckValue(indexToId(pair[0]), indexToId(pair[1]));
             bottleneckValue = (computedBottleneckValue < bottleneckValue) ? computedBottleneckValue : bottleneckValue; // Update the bottleneck value if applicable
         }
 
