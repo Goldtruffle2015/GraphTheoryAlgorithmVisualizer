@@ -722,7 +722,7 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     // Start Node //
     for (n of node_li) {
         if (n.id == startId) {
-            n.color = (n.id == endId) ? "yellow" : "cyan";
+            n.color = (n.id == endId) ? "yellow" : "green";
             break;
         };
     };
@@ -730,7 +730,7 @@ window.addEventListener("click", () => {    // Handles button disabling/activati
     // End Node //
     for (n of node_li) {
         if (n.id == endId) {
-            n.color = (n.id == startId) ? "yellow" : "magenta";
+            n.color = (n.id == startId) ? "yellow" : "red";
             break;
         };
     };

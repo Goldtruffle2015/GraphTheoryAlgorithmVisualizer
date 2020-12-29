@@ -187,11 +187,11 @@ window.addEventListener("load", () => {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= nodeRadius) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == startId) { // Find the previous starting node
-                            n2.color = (n2.id == endId) ? "magenta" : "#397EC9"; // If the previous starting node is also an end node set the color to magenta otherwise reset to blue
+                            n2.color = (n2.id == endId) ? "green" : "#397EC9"; // If the previous starting node is also an end node set the color to magenta otherwise reset to blue
                         };
                     };
                     startId = n.id; // Sets start node id
-                    n.color = (n.id == endId) ? "yellow" : "cyan"; // If the node is also an end node set to yellow otherwise set to cyan
+                    n.color = (n.id == endId) ? "yellow" : "red"; // If the node is also an end node set to yellow otherwise set to cyan
                     set_start_button.classList.remove("button-warning-background-color");
                     return; // Breaks out of canvas click event
                 };
@@ -203,11 +203,11 @@ window.addEventListener("load", () => {
                 if (distance(n.x, e.offsetX, n.y, e.offsetY) <= nodeRadius) {   // Checks if user clicked on node
                     for (n2 of node_li) {   // Searches through the nodes
                         if (n2.id == endId) { // Find the previous ending node
-                            n2.color = (n2.id == startId) ? "cyan" : "#397EC9"; // If the previous ending node is also a starting node set the color to cyan otherwise reset to blue
+                            n2.color = (n2.id == startId) ? "red" : "#397EC9"; // If the previous ending node is also a starting node set the color to cyan otherwise reset to blue
                         };
                     };
                     endId = n.id;   // Sets start node id
-                    n.color = (n.id == startId) ? "yellow" : "magenta";   // If the node is also a start node set to yellow otherwise set to cyan
+                    n.color = (n.id == startId) ? "yellow" : "green";   // If the node is also a start node set to yellow otherwise set to cyan
                     set_end_button.classList.remove("button-warning-background-color");
                     return;
                 };
